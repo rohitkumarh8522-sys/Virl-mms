@@ -38,7 +38,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     welcome_msg = DATA.get("welcome_text", "👋 **हमारे Business Bot में आपका स्वागत है!**")
     
     keyboard = []
-    # Buttons को 1, 2, 3 एक के नीचे एक (Single Column) लगाना
     for item in DATA["items"]:
         keyboard.append([InlineKeyboardButton(item["name"], callback_data=f"select_{item['id']}")])
         
@@ -78,7 +77,6 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if data.startswith("select_"):
         item_id = data.replace("select_", "")
         
-        # ID के आधार पर आइटम खोजना
         selected_item = next((item for item in DATA["items"] if item["id"] == item_id), None)
         
         if not selected_item:
@@ -112,7 +110,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif data.startswith("approve_"):
         parts = data.split("_")
         user_id = int(parts[1])
-        item_id = parts[2]
+        item_id = "_".join(parts[2:])  # Fixed: अब underscores सही से हैंडल होंगे और सही लिंक मिलेगा
         
         selected_item = next((item for item in DATA["items"] if item["id"] == item_id), None)
         delivery_link = selected_item["link"] if selected_item else "Link Not Found"
@@ -158,7 +156,6 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
 
-    # Admin updating QR Code
     if context.user_data.get("waiting_for_qr") and user_id == ADMIN_ID:
         context.user_data["waiting_for_qr"] = False
         DATA["qr_code"] = update.message.photo[-1].file_id
@@ -166,7 +163,6 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await admin_panel(update, context)
         return
 
-    # Customer uploading Screenshot
     if context.user_data.get("waiting_for_proof"):
         item_id = context.user_data.get("selected_item_id")
         user = update.effective_user
@@ -226,7 +222,6 @@ async def get_btn_link(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await admin_panel(update, context)
     return ConversationHandler.END
 
-# Welcome Text Edit Handlers
 async def start_edit_welcome(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
