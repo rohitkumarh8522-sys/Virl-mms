@@ -1,4 +1,4 @@
-woimport os
+import os
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     ApplicationBuilder, CommandHandler, CallbackQueryHandler, 
@@ -21,7 +21,7 @@ WELCOME_MESSAGE = """🕊️𝗪𝗘𝗟𝗖𝗢𝗠𝗘 𝗧𝗢 𝗧𝗔𝗡�
 💥𝗗𝗘𝗠𝗢 𝗩𝗜𝗗𝗘𝗢𝗦👉https://t.me/+2jSY317AQww2ZjM9"""
 
 # Default Support Username (Without @)
-DEFAULT_SUPPORT_USERNAME = "tanweer_store_support"
+DEFAULT_SUPPORT_USERNAME = "G_KlNG"
 
 # ---------------- BUTTON 1 (₹199) ----------------
 BTN_1_NAME = "1. All Category Combo (₹199)"
@@ -71,7 +71,7 @@ BTN_15_NAME = "15. Pack 15 (₹98)"
 BTN_15_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
 # =====================================================================
-# ⚙️ SYSTEM CONFIGURATIONS (Inhe badalne ki zaroorat nahi hai)
+# ⚙️ SYSTEM CONFIGURATIONS
 # =====================================================================
 
 TOKEN = os.getenv("BOT_TOKEN")
@@ -143,7 +143,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     for item in DATA["items"]:
         keyboard.append([InlineKeyboardButton(item["name"], callback_data=f"select_{item['id']}")])
         
-    support_user = CONFIG.get("@G_KlNG", DEFAULT_SUPPORT_USERNAME)
+    support_user = CONFIG.get("support_username", DEFAULT_SUPPORT_USERNAME)
     keyboard.append([InlineKeyboardButton("💬 Support / Contact Admin", url=f"https://t.me/{support_user}")])
 
     reply_markup = InlineKeyboardMarkup(keyboard)
@@ -362,7 +362,7 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_photo(
             chat_id=ADMIN_ID,
             photo=photo_id,
-            caption=f"📩 **Naya Payment Screenshot आया hai!**\n\n👤 **User:** @{user.username or 'No Username'}\n🆔 **User ID:** `{user.id}`\n📦 **Selected Item:** {item_name}",
+            caption=f"📩 **Naya Payment Screenshot aaya hai!**\n\n👤 **User:** @{user.username or 'No Username'}\n🆔 **User ID:** `{user.id}`\n📦 **Selected Item:** {item_name}",
             reply_markup=admin_markup
         )
 
@@ -415,7 +415,7 @@ async def get_welcome_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def start_edit_support(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    await query.message.reply_text("✏️ Naya **Support Telegram Username** lekhar bhejein (bina @ ke, jaise: `tanweer_store_support`):")
+    await query.message.reply_text("✏️ Naya **Support Telegram Username** lekhar bhejein (bina @ ke, jaise: `G_KlNG`):")
     return WAITING_SUPPORT_USER
 
 async def get_support_username(update: Update, context: ContextTypes.DEFAULT_TYPE):
