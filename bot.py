@@ -5,33 +5,98 @@ from telegram.ext import (
     MessageHandler, ConversationHandler, filters, ContextTypes
 )
 
-# ----------------- CONFIGURATIONS -----------------
-TOKEN = os.getenv("BOT_TOKEN")  # Render Env Variable
-ADMIN_ID = int(os.getenv("ADMIN_ID", "123456789"))  # Aapki Telegram ID
+# =====================================================================
+# ✏️ EASY EDIT SECTION: Aasani se yahan Naam aur Link badlein
+# =====================================================================
+
+# Store Welcome Message
+WELCOME_MESSAGE = """🕊️𝗪𝗘𝗟𝗖𝗢𝗠𝗘 𝗧𝗢 𝗧𝗔𝗡𝗪𝗘𝗘𝗥 𝗦𝗧𝗢𝗥𝗘🕊️
+
+⚡𝗡𝗘𝗪 𝗖𝗢𝗟𝗟𝗘𝗖𝗧𝗜𝗢𝗡 𝗔𝗩𝗔𝗜𝗟𝗔𝗕𝗟𝗘⚡
+
+𝗘𝗔𝗖𝗛 𝗖𝗔𝗧𝗘𝗚𝗢𝗥𝗬 𝗖𝗢𝗡𝗧𝗔𝗜𝗡𝗦 4 𝗚𝗥𝗢𝗨𝗣𝗦 (𝟭𝟮𝟬𝟬-𝟭𝟴𝟬𝟬 𝗩𝗜𝗗𝗘𝗢𝗦 𝗣𝗘𝗥 𝗚𝗥𝗢𝗨𝗣)
+
+🕊️𝗣𝗔𝗬𝗠𝗘𝗡𝗧 𝗣𝗥𝗢𝗢𝗙𝗦👉https://t.me/+hbere12UWTMzYTI1
+
+💥𝗗𝗘𝗠𝗢 𝗩𝗜𝗗𝗘𝗢𝗦👉https://t.me/+2jSY317AQww2ZjM9"""
+
+# Default Support Username (Without @)
+DEFAULT_SUPPORT_USERNAME = "tanweer_store_support"
+
+# ---------------- BUTTON 1 (₹199) ----------------
+BTN_1_NAME = "1. All Category Combo (₹199)"
+BTN_1_LINK = "https://t.me/+ehTHId3ryhY3YmJl"
+
+# ---------------- BUTTON 2 TO 15 (₹98) ----------------
+BTN_2_NAME  = "2. Pack 2 (₹98)"
+BTN_2_LINK  = "https://t.me/+bPhyrYiSBQozNDBl"
+
+BTN_3_NAME  = "3. Pack 3 (₹98)"
+BTN_3_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+
+BTN_4_NAME  = "4. Pack 4 (₹98)"
+BTN_4_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+
+BTN_5_NAME  = "5. Pack 5 (₹98)"
+BTN_5_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+
+BTN_6_NAME  = "6. Pack 6 (₹98)"
+BTN_6_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+
+BTN_7_NAME  = "7. Pack 7 (₹98)"
+BTN_7_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+
+BTN_8_NAME  = "8. Pack 8 (₹98)"
+BTN_8_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+
+BTN_9_NAME  = "9. Pack 9 (₹98)"
+BTN_9_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+
+BTN_10_NAME = "10. Pack 10 (₹98)"
+BTN_10_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+
+BTN_11_NAME = "11. Pack 11 (₹98)"
+BTN_11_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+
+BTN_12_NAME = "12. Pack 12 (₹98)"
+BTN_12_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+
+BTN_13_NAME = "13. Pack 13 (₹98)"
+BTN_13_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+
+BTN_14_NAME = "14. Pack 14 (₹98)"
+BTN_14_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+
+BTN_15_NAME = "15. Pack 15 (₹98)"
+BTN_15_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+
+# =====================================================================
+# ⚙️ SYSTEM CONFIGURATIONS (Inhe badalne ki zaroorat nahi hai)
+# =====================================================================
+
+TOKEN = os.getenv("BOT_TOKEN")
+ADMIN_ID = int(os.getenv("ADMIN_ID", "123456789"))
 PORT = int(os.environ.get("PORT", 10000))
 
 RENDER_HOST = os.getenv("RENDER_EXTERNAL_HOSTNAME")
 WEBHOOK_URL = os.getenv("WEBHOOK_URL", f"https://{RENDER_HOST}" if RENDER_HOST else None)
 
-# Default Working QR Code
 DEFAULT_QR = "https://raw.githubusercontent.com/telegram-bot-sdk/telegram-bot-sdk/main/tests/fixtures/image.jpg"
 
-# Analytics / Stats Storage
-STATS = {
-    "pending": 0,
-    "approved": 0,
-    "rejected": 0
-}
+STATS = {"pending": 0, "approved": 0, "rejected": 0}
+USER_MAP = {}
+CONFIG = {"support_username": DEFAULT_SUPPORT_USERNAME}
 
-# User Mapping Database (In-Memory)
-USER_MAP = {}  # username -> user_id
+DETAILS_199 = (
+    "💳 UPI ID: roxxxx@axl\n"
+    "📲 Please scan the QR and pay, then click 'I have paid' ✅\n"
+    "💰 Amount: ₹199\n"
+    "♾ Lifetime Access | 🎬 50+ Group Full Video\n"
+    "⚡ Instant Delivery After Payment\n"
+    "🚫 No Extra Charges\n"
+    "💯 No Fake / Dead Links"
+)
 
-# Dynamic Configuration
-CONFIG = {
-    "support_username": "tanweer_store_support"  # Without @ symbol
-}
-
-# Common Details Template for Pack 2 to 15 (₹98)
 DETAILS_98 = (
     "💳 UPI ID: roxxxx@axl\n"
     "📲 Please scan the QR and pay, then click 'I have paid' ✅\n"
@@ -42,53 +107,28 @@ DETAILS_98 = (
     "💯 No Fake / Dead Links"
 )
 
-# Default Link Template
-DEFAULT_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
-
-# ----------------- HARDCODED DEFAULT DATA -----------------
 DATA = {
-    "welcome_text": """🕊️𝗪𝗘𝗟𝗖𝗢𝗠𝗘 𝗧𝗢 𝗧𝗔𝗡𝗪𝗘𝗘𝗥 𝗦𝗧𝗢𝗥𝗘🕊️
-
-⚡𝗡𝗘𝗪 𝗖𝗢𝗟𝗟𝗘𝗖𝗧𝗜𝗢𝗡 𝗔𝗩𝗔𝗜𝗟𝗔𝗕𝗟𝗘⚡
-
-𝗘𝗔𝗖𝗛 𝗖𝗔𝗧𝗘𝗚𝗢𝗥𝗬 𝗖𝗢𝗡𝗧𝗔𝗜𝗡𝗦 4 𝗚𝗥𝗢𝗨𝗣𝗦 (𝟭𝟮𝟬𝟬-𝟭𝟴𝟬𝟬 𝗩𝗜𝗗𝗘𝗢𝗦 𝗣𝗘𝗥 𝗚𝗥𝗢𝗨𝗣)
-
-🕊️𝗣𝗔𝗬𝗠𝗘𝗡𝗧 𝗣𝗥𝗢𝗢𝗙𝗦👉https://t.me/+hbere12UWTMzYTI1
-
-💥𝗗𝗘𝗠𝗢 𝗩𝗜𝗗𝗘𝗢𝗦👉https://t.me/+2jSY317AQww2ZjM9""",
-    
+    "welcome_text": WELCOME_MESSAGE,
     "qr_code": DEFAULT_QR,
-    
     "items": [
-        {
-            "id": "btn_1",
-            "name": "1. All Category Combo (₹199)",
-            "details": "💳 UPI ID: roxxxx@axl\n📲 Please scan the QR and pay, then click 'I have paid' ✅\n💰 Amount: ₹199\n♾ Lifetime Access | 🎬 50+ Group Full Video\n⚡ Instant Delivery After Payment\n🚫 No Extra Charges\n💯 No Fake / Dead Links",
-            "link": "https://t.me/+ehTHId3ryhY3YmJl"
-        },
-        {
-            "id": "btn_2",
-            "name": "2. Pack 2 (₹98)",
-            "details": DETAILS_98,
-            "link": "https://t.me/+bPhyrYiSBQozNDBl"
-        },
-        {"id": "btn_3", "name": "3. Pack 3 (₹98)", "details": DETAILS_98, "link": DEFAULT_LINK},
-        {"id": "btn_4", "name": "4. Pack 4 (₹98)", "details": DETAILS_98, "link": DEFAULT_LINK},
-        {"id": "btn_5", "name": "5. Pack 5 (₹98)", "details": DETAILS_98, "link": DEFAULT_LINK},
-        {"id": "btn_6", "name": "6. Pack 6 (₹98)", "details": DETAILS_98, "link": DEFAULT_LINK},
-        {"id": "btn_7", "name": "7. Pack 7 (₹98)", "details": DETAILS_98, "link": DEFAULT_LINK},
-        {"id": "btn_8", "name": "8. Pack 8 (₹98)", "details": DETAILS_98, "link": DEFAULT_LINK},
-        {"id": "btn_9", "name": "9. Pack 9 (₹98)", "details": DETAILS_98, "link": DEFAULT_LINK},
-        {"id": "btn_10", "name": "10. Pack 10 (₹98)", "details": DETAILS_98, "link": DEFAULT_LINK},
-        {"id": "btn_11", "name": "11. Pack 11 (₹98)", "details": DETAILS_98, "link": DEFAULT_LINK},
-        {"id": "btn_12", "name": "12. Pack 12 (₹98)", "details": DETAILS_98, "link": DEFAULT_LINK},
-        {"id": "btn_13", "name": "13. Pack 13 (₹98)", "details": DETAILS_98, "link": DEFAULT_LINK},
-        {"id": "btn_14", "name": "14. Pack 14 (₹98)", "details": DETAILS_98, "link": DEFAULT_LINK},
-        {"id": "btn_15", "name": "15. Pack 15 (₹98)", "details": DETAILS_98, "link": DEFAULT_LINK}
+        {"id": "btn_1",  "name": BTN_1_NAME,  "details": DETAILS_199, "link": BTN_1_LINK},
+        {"id": "btn_2",  "name": BTN_2_NAME,  "details": DETAILS_98,  "link": BTN_2_LINK},
+        {"id": "btn_3",  "name": BTN_3_NAME,  "details": DETAILS_98,  "link": BTN_3_LINK},
+        {"id": "btn_4",  "name": BTN_4_NAME,  "details": DETAILS_98,  "link": BTN_4_LINK},
+        {"id": "btn_5",  "name": BTN_5_NAME,  "details": DETAILS_98,  "link": BTN_5_LINK},
+        {"id": "btn_6",  "name": BTN_6_NAME,  "details": DETAILS_98,  "link": BTN_6_LINK},
+        {"id": "btn_7",  "name": BTN_7_NAME,  "details": DETAILS_98,  "link": BTN_7_LINK},
+        {"id": "btn_8",  "name": BTN_8_NAME,  "details": DETAILS_98,  "link": BTN_8_LINK},
+        {"id": "btn_9",  "name": BTN_9_NAME,  "details": DETAILS_98,  "link": BTN_9_LINK},
+        {"id": "btn_10", "name": BTN_10_NAME, "details": DETAILS_98,  "link": BTN_10_LINK},
+        {"id": "btn_11", "name": BTN_11_NAME, "details": DETAILS_98,  "link": BTN_11_LINK},
+        {"id": "btn_12", "name": BTN_12_NAME, "details": DETAILS_98,  "link": BTN_12_LINK},
+        {"id": "btn_13", "name": BTN_13_NAME, "details": DETAILS_98,  "link": BTN_13_LINK},
+        {"id": "btn_14", "name": BTN_14_NAME, "details": DETAILS_98,  "link": BTN_14_LINK},
+        {"id": "btn_15", "name": BTN_15_NAME, "details": DETAILS_98,  "link": BTN_15_LINK},
     ]
 }
 
-# States for ConversationHandler
 WAITING_BTN_NAME, WAITING_BTN_DETAILS, WAITING_BTN_LINK, WAITING_WELCOME_TEXT, WAITING_SUPPORT_USER = range(5)
 
 # ----------------- CUSTOMER FLOW -----------------
@@ -103,7 +143,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     for item in DATA["items"]:
         keyboard.append([InlineKeyboardButton(item["name"], callback_data=f"select_{item['id']}")])
         
-    support_user = CONFIG.get("support_username", "admin")
+    support_user = CONFIG.get("support_username", DEFAULT_SUPPORT_USERNAME)
     keyboard.append([InlineKeyboardButton("💬 Support / Contact Admin", url=f"https://t.me/{support_user}")])
 
     reply_markup = InlineKeyboardMarkup(keyboard)
@@ -113,7 +153,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif update.callback_query:
         await update.callback_query.message.reply_text(welcome_msg, parse_mode="Markdown", reply_markup=reply_markup)
 
-# ----------------- ADMIN DIRECT MESSAGE TO USER -----------------
+# ----------------- ADMIN DIRECT MSG TO USER -----------------
 async def send_user_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     if user_id != ADMIN_ID:
@@ -121,8 +161,8 @@ async def send_user_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if not context.args or len(context.args) < 2:
         await update.message.reply_text(
-            "⚠️ **Sahi tarika:**\n"
-            "`/send <User_ID ya @username> <Aapka Message>`\n\n"
+            "⚠️ **Command Use Format:**\n"
+            "`/send <User_ID ya @username> <Message>`\n\n"
             "**Example:**\n"
             "`/send 123456789 Aapka payment mil gaya hai!`\n"
             "`/send @john_doe Aapka access active hai.`",
@@ -170,7 +210,7 @@ async def admin_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"✅ Approved Payments: `{STATS['approved']}`\n"
         f"❌ Rejected Payments: `{STATS['rejected']}`\n\n"
         f"👤 Current Support Username: `@{CONFIG['support_username']}`\n\n"
-        f"💬 **Direct Customer Msg Command:**\n"
+        f"💬 **Direct Msg Command:**\n"
         f"`/send <ID or @username> <Message>`\n\n"
         f"Neeche diye gaye options se bot ko manage karein:"
     )
@@ -178,7 +218,6 @@ async def admin_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     admin_buttons = InlineKeyboardMarkup([
         [InlineKeyboardButton("✏️ Edit Welcome Text", callback_data="admin_edit_welcome")],
         [InlineKeyboardButton("✏️ Edit Support Username", callback_data="admin_edit_support")],
-        [InlineKeyboardButton("✏️ Edit Button Name/Details", callback_data="admin_edit_btn_menu")],
         [InlineKeyboardButton("➕ Add New Button", callback_data="admin_add_btn")],
         [InlineKeyboardButton("🖼️ Change Payment QR Code", callback_data="admin_change_qr")],
         [InlineKeyboardButton("🗑️ Delete Button", callback_data="admin_del_btn")],
@@ -287,14 +326,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif data == "admin_back":
         await admin_panel(update, context)
 
-    elif data == "admin_edit_btn_menu":
-        keyboard = []
-        for item in DATA["items"]:
-            keyboard.append([InlineKeyboardButton(f"✏️ Edit {item['name']}", callback_data=f"start_edit_{item['id']}")])
-        keyboard.append([InlineKeyboardButton("🔙 Back to Admin", callback_data="admin_back")])
-        await query.message.edit_text("Kis button ka Naam/Details badalna chahte hain?", reply_markup=InlineKeyboardMarkup(keyboard))
-
-# ----------------- SCREENSHOT & QR HANDLER -----------------
+# ----------------- PHOTO HANDLER -----------------
 async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     user = update.effective_user
@@ -330,7 +362,7 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_photo(
             chat_id=ADMIN_ID,
             photo=photo_id,
-            caption=f"📩 **Naya Payment Screenshot aaya hai!**\n\n👤 **User:** @{user.username or 'No Username'}\n🆔 **User ID:** `{user.id}`\n📦 **Selected Item:** {item_name}",
+            caption=f"📩 **Naya Payment Screenshot आया hai!**\n\n👤 **User:** @{user.username or 'No Username'}\n🆔 **User ID:** `{user.id}`\n📦 **Selected Item:** {item_name}",
             reply_markup=admin_markup
         )
 
