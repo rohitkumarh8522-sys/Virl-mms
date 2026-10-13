@@ -10,21 +10,21 @@ from telegram.ext import (
 # =====================================================================
 
 # Store Welcome Message
-WELCOME_MESSAGE = """🕊️𝗪𝗘𝗟𝗖𝗢𝗠𝗘 𝗧𝗢 𝗧𝗔𝗡𝗪𝗘𝗘𝗥 𝗦𝗧𝗢𝗥𝗘🕊️
+WELCOME_MESSAGE = """🕊️WELCOME TO TANWEER STORE🕊️
 
-⚡𝗡𝗘𝗪 𝗖𝗢𝗟𝗟𝗘𝗖𝗧𝗜𝗢𝗡 𝗔𝗩𝗔𝗜𝗟𝗔𝗕𝗟𝗘⚡
+⚡NEW COLLECTION AVAILABLE⚡
 
-𝗘𝗔𝗖𝗛 𝗖𝗔𝗧𝗘𝗚𝗢𝗥𝗬 𝗖𝗢𝗡𝗧𝗔𝗜𝗡𝗦 4 𝗚𝗥𝗢𝗨𝗣𝗦 (𝟭𝟮𝟬𝟬-𝟭𝟴𝟬𝟬 𝗩𝗜𝗗𝗘𝗢𝗦 𝗣𝗘𝗥 𝗚𝗥𝗢𝗨𝗣)
+EACH CATEGORY CONTAINS 4 GROUPS (1200-1800 VIDEOS PER GROUP)
 
-🕊️𝗣𝗔𝗬𝗠𝗘𝗡𝗧 𝗣𝗥𝗢𝗢𝗙𝗦👉https://t.me/+hbere12UWTMzYTI1
+🕊️PAYMENT PROOFS 👉 https://t.me/+hbere12UWTMzYTI1
 
-💥𝗗𝗘𝗠𝗢 𝗩𝗜𝗗𝗘𝗢𝗦👉https://t.me/+2jSY317AQww2ZjM9"""
+💥DEMO VIDEOS 👉 https://t.me/+2jSY317AQww2ZjM9"""
 
 # Default Support Username (Without @)
 DEFAULT_SUPPORT_USERNAME = "G_KlNG"
 
 # ---------------- BUTTON 1 (₹199) ----------------
-BTN_1_NAME = "🌟𝗔𝗟𝗟 𝗩𝗜𝗗𝗘𝗢🌟 -- ₹𝟭𝟵𝟵|𝟭𝗠 𝗩𝗜𝗗𝗘𝗢"
+BTN_1_NAME = "✨𝗔𝗟𝗟 𝗩𝗜𝗗𝗘𝗢✨ -- ₹𝟭𝟵𝟵|𝟭𝗠 𝗩𝗜𝗗𝗘𝗢"
 BTN_1_LINK = "https://t.me/+ehTHId3ryhY3YmJl"
 
 # ---------------- BUTTON 2 TO 15 (₹98) ----------------
@@ -34,19 +34,19 @@ BTN_2_LINK  = "https://t.me/+bPhyrYiSBQozNDBl"
 BTN_3_NAME  = "👙𝗜𝗡𝗗𝗜𝗔 𝗥𝗔𝗣𝗘𝗘👙 -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
 BTN_3_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_4_NAME  = "🍑𝗕𝗥𝗢 𝗦𝗜𝗦,𝘀🍑 -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
+BTN_4_NAME  = "🫦𝗠𝟬𝗠 𝗦𝟬𝗡 🫦-- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
 BTN_4_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_5_NAME  = "🫦𝗠𝟬𝗠 𝗦𝟬𝗡 🫦-- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
+BTN_5_NAME  = "🍑𝗕𝗥𝗢 𝗦𝗜𝗦,𝘀🍑 -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
 BTN_5_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_6_NAME  = "🐶𝗚𝗜𝗥𝗟 𝗗𝗢𝗚🐶   -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
+BTN_6_NAME  = "🏘️𝗦𝗖𝗛𝗢𝗢𝗟 𝗚𝗜𝗥𝗟🏘️ -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
 BTN_6_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
 BTN_7_NAME  = "🎭𝗜𝗡𝗖𝗔𝗧 🎭  -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
 BTN_7_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_8_NAME  = "🏘️𝗦𝗖𝗛𝗢𝗢𝗟 𝗚𝗜𝗥𝗟🏘️ -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
+BTN_8_NAME  = "🐶𝗚𝗜𝗥𝗟 𝗗𝗢𝗚🐶   -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
 BTN_8_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
 BTN_9_NAME  = "💗𝗜𝗡𝗦𝗧𝗔 𝗩𝗜𝗥𝗟💗-- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
@@ -61,10 +61,10 @@ BTN_11_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 BTN_12_NAME = "🌜𝗧𝗔𝗠𝗜𝗟🌜-- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
 BTN_12_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_13_NAME = "😻𝗥𝗨𝗦𝗦𝗜𝗔𝗡😻  -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
+BTN_13_NAME = "💦𝗠𝗔𝗟𝗨💦-- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
 BTN_13_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_14_NAME = "💦𝗠𝗔𝗟𝗨💦-- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
+BTN_14_NAME = "😻𝗥𝗨𝗦𝗦𝗜𝗔𝗡😻  -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
 BTN_14_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
 BTN_15_NAME = "🤤𝗗𝗘𝗦𝗜 𝗩𝗜𝗗𝗘𝗢🤤  -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
@@ -149,9 +149,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     reply_markup = InlineKeyboardMarkup(keyboard)
     
     if update.message:
-        await update.message.reply_text(welcome_msg, parse_mode="Markdown", reply_markup=reply_markup)
+        await update.message.reply_text(welcome_msg, reply_markup=reply_markup)
     elif update.callback_query:
-        await update.callback_query.message.reply_text(welcome_msg, parse_mode="Markdown", reply_markup=reply_markup)
+        await update.callback_query.message.reply_text(welcome_msg, reply_markup=reply_markup)
 
 # ----------------- ADMIN DIRECT MSG TO USER -----------------
 async def send_user_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -161,12 +161,11 @@ async def send_user_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if not context.args or len(context.args) < 2:
         await update.message.reply_text(
-            "⚠️ **Command Use Format:**\n"
-            "`/send <User_ID ya @username> <Message>`\n\n"
-            "**Example:**\n"
-            "`/send 123456789 Aapka payment mil gaya hai!`\n"
-            "`/send @john_doe Aapka access active hai.`",
-            parse_mode="Markdown"
+            "⚠️ Command Use Format:\n"
+            "/send <User_ID ya @username> <Message>\n\n"
+            "Example:\n"
+            "/send 123456789 Aapka payment mil gaya hai!\n"
+            "/send @john_doe Aapka access active hai."
         )
         return
 
@@ -178,7 +177,7 @@ async def send_user_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         uname = target.replace("@", "").lower()
         target_id = USER_MAP.get(uname)
         if not target_id:
-            await update.message.reply_text(f"❌ Username `@{uname}` ki ID nahi mili. User ko pehle `/start` dabana hoga.")
+            await update.message.reply_text(f"❌ Username @{uname} ki ID nahi mili. User ko pehle /start dabana hoga.")
             return
     else:
         try:
@@ -190,10 +189,9 @@ async def send_user_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         await context.bot.send_message(
             chat_id=target_id,
-            text=f"📩 **Admin Message:**\n\n{msg_text}",
-            parse_mode="Markdown"
+            text=f"📩 Admin Message:\n\n{msg_text}"
         )
-        await update.message.reply_text(f"✅ Message user `{target_id}` ko safaltapoorvak bhej diya gaya hai!")
+        await update.message.reply_text(f"✅ Message user {target_id} ko safaltapoorvak bhej diya gaya hai!")
     except Exception as e:
         await update.message.reply_text(f"❌ Message nahi bhej paaye: {str(e)}")
 
@@ -204,15 +202,15 @@ async def admin_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     admin_text = (
-        f"⚙️ **TANWEER STORE - Admin Control Panel**\n\n"
-        f"📊 **Payment Analytics:**\n"
-        f"⏳ Pending Requests: `{STATS['pending']}`\n"
-        f"✅ Approved Payments: `{STATS['approved']}`\n"
-        f"❌ Rejected Payments: `{STATS['rejected']}`\n\n"
-        f"👤 Current Support Username: `@{CONFIG['support_username']}`\n\n"
-        f"💬 **Direct Msg Command:**\n"
-        f"`/send <ID or @username> <Message>`\n\n"
-        f"Neeche diye gaye options se bot ko manage karein:"
+        "⚙️ TANWEER STORE - Admin Control Panel\n\n"
+        f"📊 Payment Analytics:\n"
+        f"⏳ Pending Requests: {STATS['pending']}\n"
+        f"✅ Approved Payments: {STATS['approved']}\n"
+        f"❌ Rejected Payments: {STATS['rejected']}\n\n"
+        f"👤 Current Support Username: @{CONFIG['support_username']}\n\n"
+        "💬 Direct Msg Command:\n"
+        "/send <ID or @username> <Message>\n\n"
+        "Neeche diye gaye options se bot ko manage karein:"
     )
     
     admin_buttons = InlineKeyboardMarkup([
@@ -225,9 +223,9 @@ async def admin_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     ])
     
     if update.message:
-        await update.message.reply_text(admin_text, parse_mode="Markdown", reply_markup=admin_buttons)
+        await update.message.reply_text(admin_text, reply_markup=admin_buttons)
     elif update.callback_query:
-        await update.callback_query.message.edit_text(admin_text, parse_mode="Markdown", reply_markup=admin_buttons)
+        await update.callback_query.message.edit_text(admin_text, reply_markup=admin_buttons)
 
 # ----------------- CALLBACK HANDLER -----------------
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -245,7 +243,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         context.user_data["selected_item_id"] = item_id
         
-        caption = f"🛒 **{selected_item['name']}**\n\n📝 **Details:**\n{selected_item['details']}\n\n━━━━━━━━━━━━━━━━━━━\n💳 **Pay karke '✅ I have paid' button dabayein.**"
+        caption = f"🛒 {selected_item['name']}\n\n📝 Details:\n{selected_item['details']}\n\n-----------------------------------\n💳 Pay karke '✅ I have paid' button dabayein."
         
         pay_buttons = InlineKeyboardMarkup([
             [InlineKeyboardButton("✅ I have paid", callback_data="paid")],
@@ -253,9 +251,9 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ])
         
         try:
-            await query.message.reply_photo(photo=DATA["qr_code"], caption=caption, parse_mode="Markdown", reply_markup=pay_buttons)
+            await query.message.reply_photo(photo=DATA["qr_code"], caption=caption, reply_markup=pay_buttons)
         except Exception:
-            await query.message.reply_text(caption, parse_mode="Markdown", reply_markup=pay_buttons)
+            await query.message.reply_text(caption, reply_markup=pay_buttons)
 
     elif data == "paid":
         context.user_data["waiting_for_proof"] = True
@@ -280,10 +278,9 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         try:
             await context.bot.send_message(
                 chat_id=user_id,
-                text=f"🎉 **Aapka payment Approve ho gaya hai!**\n\nAapka Access Link ye raha:\n🔗 {delivery_link}",
-                parse_mode="Markdown"
+                text=f"🎉 Aapka payment Approve ho gaya hai!\n\nAapka Access Link ye raha:\n🔗 {delivery_link}"
             )
-            await query.edit_message_caption(caption=query.message.caption + "\n\n✅ **APPROVED BY ADMIN**")
+            await query.edit_message_caption(caption=query.message.caption + "\n\n✅ APPROVED BY ADMIN")
         except Exception as e:
             await query.message.reply_text(f"⚠️ Approved! Par user ko message nahi bhej paaye: {str(e)}")
 
@@ -298,17 +295,17 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         try:
             await context.bot.send_message(
                 chat_id=user_id,
-                text="❌ **Aapka payment Reject kar diya gaya hai.** Kripya sahi screenshot bhejein ya Support se contact karein."
+                text="❌ Aapka payment Reject kar diya gaya hai. Kripya sahi screenshot bhejein ya Support se contact karein."
             )
-            await query.edit_message_caption(caption=query.message.caption + "\n\n❌ **REJECTED BY ADMIN**")
+            await query.edit_message_caption(caption=query.message.caption + "\n\n❌ REJECTED BY ADMIN")
         except Exception as e:
             await query.message.reply_text(f"⚠️ Rejected! Par user ko message nahi bhej paaye: {str(e)}")
 
     elif data == "admin_view_btns":
-        msg = "📋 **Current Active Buttons & Links:**\n\n"
+        msg = "📋 Current Active Buttons & Links:\n\n"
         for idx, item in enumerate(DATA["items"], 1):
-            msg += f"**{idx}. {item['name']}**\n📄 **Details:**\n{item['details']}\n🔗 **Link:** {item['link']}\n\n"
-        await query.message.reply_text(msg, parse_mode="Markdown")
+            msg += f"{idx}. {item['name']}\n📄 Details:\n{item['details']}\n🔗 Link: {item['link']}\n\n"
+        await query.message.reply_text(msg)
 
     elif data == "admin_del_btn":
         keyboard = []
@@ -336,7 +333,7 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if context.user_data.get("waiting_for_qr") and user_id == ADMIN_ID:
         context.user_data["waiting_for_qr"] = False
         DATA["qr_code"] = update.message.photo[-1].file_id
-        await update.message.reply_text("✅ **Naya Payment QR Code set ho gaya!**")
+        await update.message.reply_text("✅ Naya Payment QR Code set ho gaya!")
         await admin_panel(update, context)
         return
 
@@ -362,7 +359,7 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_photo(
             chat_id=ADMIN_ID,
             photo=photo_id,
-            caption=f"📩 **Naya Payment Screenshot aaya hai!**\n\n👤 **User:** @{user.username or 'No Username'}\n🆔 **User ID:** `{user.id}`\n📦 **Selected Item:** {item_name}",
+            caption=f"📩 Naya Payment Screenshot aaya hai!\n\n👤 User: @{user.username or 'No Username'}\n🆔 User ID: {user.id}\n📦 Selected Item: {item_name}",
             reply_markup=admin_markup
         )
 
@@ -370,17 +367,17 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def start_add_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    await query.message.reply_text("✏️ **Step 1:** Naye Button ka **Naam** likhkar bhejein:")
+    await query.message.reply_text("✏️ Step 1: Naye Button ka Naam likhkar bhejein:")
     return WAITING_BTN_NAME
 
 async def get_btn_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data["temp_btn_name"] = update.message.text
-    await update.message.reply_text("📝 **Step 2:** Service ki **Details** likhkar bhejein:")
+    await update.message.reply_text("📝 Step 2: Service ki Details likhkar bhejein:")
     return WAITING_BTN_DETAILS
 
 async def get_btn_details(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data["temp_btn_details"] = update.message.text
-    await update.message.reply_text("🔗 **Step 3:** Access **Link** bhejein:")
+    await update.message.reply_text("🔗 Step 3: Access Link bhejein:")
     return WAITING_BTN_LINK
 
 async def get_btn_link(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -396,32 +393,32 @@ async def get_btn_link(update: Update, context: ContextTypes.DEFAULT_TYPE):
     }
     DATA["items"].append(new_item)
     
-    await update.message.reply_text(f"✅ Naya button **'{btn_name}'** jod diya gaya!")
+    await update.message.reply_text(f"✅ Naya button '{btn_name}' jod diya gaya!")
     await admin_panel(update, context)
     return ConversationHandler.END
 
 async def start_edit_welcome(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    await query.message.reply_text("📝 Naya **Welcome Message** likhkar bhejein:")
+    await query.message.reply_text("📝 Naya Welcome Message likhkar bhejein:")
     return WAITING_WELCOME_TEXT
 
 async def get_welcome_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
     DATA["welcome_text"] = update.message.text
-    await update.message.reply_text("✅ **Welcome Message update ho gaya!**")
+    await update.message.reply_text("✅ Welcome Message update ho gaya!")
     await admin_panel(update, context)
     return ConversationHandler.END
 
 async def start_edit_support(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    await query.message.reply_text("✏️ Naya **Support Telegram Username** lekhar bhejein (bina @ ke, jaise: `G_KlNG`):")
+    await query.message.reply_text("✏️ Naya Support Telegram Username lekhar bhejein (bina @ ke, jaise: G_KlNG):")
     return WAITING_SUPPORT_USER
 
 async def get_support_username(update: Update, context: ContextTypes.DEFAULT_TYPE):
     username = update.message.text.replace("@", "").strip()
     CONFIG["support_username"] = username
-    await update.message.reply_text(f"✅ **Support Username change ho gaya: @{username}**")
+    await update.message.reply_text(f"✅ Support Username change ho gaya: @{username}")
     await admin_panel(update, context)
     return ConversationHandler.END
 
@@ -429,7 +426,7 @@ async def start_change_qr(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     context.user_data["waiting_for_qr"] = True
-    await query.message.reply_text("🖼️ Naya **Payment QR Code** photo me bhejein:")
+    await query.message.reply_text("🖼️ Naya Payment QR Code photo me bhejein:")
 
 def main():
     app = ApplicationBuilder().token(TOKEN).build()
