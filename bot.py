@@ -40,49 +40,49 @@ DATA = {
     "items": [
         {
             "id": "btn_1",
-            "name": "1. All Category Combo (₹198)",
+            "name": "✨𝗔𝗟𝗟 𝗩𝗜𝗗𝗘𝗢✨ -- ₹𝟭𝟵𝟵|𝟭𝗠 𝗩𝗜𝗗𝗘𝗢",
             "details": "💳 UPI ID: roxxxx@axl\n📲 Please scan the QR and pay, then click 'I have paid' ✅\n💰 Amount: ₹198\n♾ Lifetime Access | 🎬 50+ Group Full Video\n⚡ Instant Delivery After Payment\n🚫 No Extra Charges\n💯 No Fake / Dead Links",
             "link": "https://t.me/+ehTHId3ryhY3YmJl"
         },
         {
             "id": "btn_2",
-            "name": "2. Pack 2 (₹98)",
+            "name": "🌽𝗖𝗛𝗜𝗟𝗗 𝗖𝗛𝗢𝗥𝗡🌽 -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢",
             "details": "💳 UPI ID: roxxxx@axl\n📲 Please scan the QR and pay, then click 'I have paid' ✅\n💰 Amount: ₹98\n♾ Lifetime Access | 🎬 01+ Group Full Video\n⚡ Instant Delivery After Payment\n🚫 No Extra Charges\n💯 No Fake / Dead Links",
             "link": "https://t.me/+bPhyrYiSBQozNDBl"
         },
         {
             "id": "btn_3",
-            "name": "3. Pack 3 (₹98)",
+            "name": "👙𝗜𝗡𝗗𝗜𝗔 𝗥𝗔𝗣𝗘𝗘👙 -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢",
             "details": "💳 UPI ID: roxxxx@axl\n📲 Please scan the QR and pay, then click 'I have paid' ✅\n💰 Amount: ₹98\n♾ Lifetime Access | 🎬 01+ Group Full Video\n⚡ Instant Delivery After Payment\n🚫 No Extra Charges\n💯 No Fake / Dead Links",
             "link": "https://t.me/+b4HvE2hp_Cs2ZDBl"
         },
         {
             "id": "btn_4",
-            "name": "4. Pack 4 (₹98)",
+            "name": "🍑𝗕𝗥𝗢 𝗦𝗜𝗦,𝘀🍑 -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢",
             "details": "💳 UPI ID: roxxxx@axl\n📲 Please scan the QR and pay, then click 'I have paid' ✅\n💰 Amount: ₹98\n♾ Lifetime Access | 🎬 01+ Group Full Video\n⚡ Instant Delivery After Payment\n🚫 No Extra Charges\n💯 No Fake / Dead Links",
             "link": "https://t.me/+b4HvE2hp_Cs2ZDBl"
         },
         {
             "id": "btn_5",
-            "name": "5. Pack 5 (₹98)",
+            "name": "🫦𝗠𝟬𝗠 𝗦𝟬𝗡 🫦-- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢",
             "details": "💳 UPI ID: roxxxx@axl\n📲 Please scan the QR and pay, then click 'I have paid' ✅\n💰 Amount: ₹98\n♾ Lifetime Access | 🎬 01+ Group Full Video\n⚡ Instant Delivery After Payment\n🚫 No Extra Charges\n💯 No Fake / Dead Links",
             "link": "https://t.me/+b4HvE2hp_Cs2ZDBl"
         },
         {
             "id": "btn_6",
-            "name": "6. Pack 6 (₹98)",
+            "name": "🏘️𝗦𝗖𝗛𝗢𝗢𝗟 𝗚𝗜𝗥𝗟🏘️ -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢",
             "details": "💳 UPI ID: roxxxx@axl\n📲 Please scan the QR and pay, then click 'I have paid' ✅\n💰 Amount: ₹98\n♾ Lifetime Access | 🎬 01+ Group Full Video\n⚡ Instant Delivery After Payment\n🚫 No Extra Charges\n💯 No Fake / Dead Links",
             "link": "https://t.me/+b4HvE2hp_Cs2ZDBl"
         },
         {
             "id": "btn_7",
-            "name": "7. Pack 7 (₹98)",
+            "name": "🐶𝗚𝗜𝗥𝗟 𝗗𝗢𝗚🐶   -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢",
             "details": "💳 UPI ID: roxxxx@axl\n📲 Please scan the QR and pay, then click 'I have paid' ✅\n💰 Amount: ₹98\n♾ Lifetime Access | 🎬 01+ Group Full Video\n⚡ Instant Delivery After Payment\n🚫 No Extra Charges\n💯 No Fake / Dead Links",
             "link": "https://t.me/+b4HvE2hp_Cs2ZDBl"
         },
         {
             "id": "btn_8",
-            "name": "8. Pack 8 (₹98)",
+            "name": "🎭𝗜𝗡𝗖𝗔𝗧 🎭  -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢",
             "details": "💳 UPI ID: roxxxx@axl\n📲 Please scan the QR and pay, then click 'I have paid' ✅\n💰 Amount: ₹98\n♾ Lifetime Access | 🎬 01+ Group Full Video\n⚡ Instant Delivery After Payment\n🚫 No Extra Charges\n💯 No Fake / Dead Links",
             "link": "https://t.me/+b4HvE2hp_Cs2ZDBl"
         }
