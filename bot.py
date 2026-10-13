@@ -7,35 +7,94 @@ from telegram.ext import (
 
 # ----------------- CONFIGURATIONS -----------------
 TOKEN = os.getenv("BOT_TOKEN")  # Render Env Variable
-ADMIN_ID = int(os.getenv("ADMIN_ID", "123456789"))  # आपकी Telegram ID
-PORT = int(os.environ.get("PORT", 10000))  # Render का पोर्ट
+ADMIN_ID = int(os.getenv("ADMIN_ID", "123456789"))  # Aapki Telegram ID
+PORT = int(os.environ.get("PORT", 10000))
 
 RENDER_HOST = os.getenv("RENDER_EXTERNAL_HOSTNAME")
 WEBHOOK_URL = os.getenv("WEBHOOK_URL", f"https://{RENDER_HOST}" if RENDER_HOST else None)
 
-# Default Working QR Code Image
-DEFAULT_QR = "https://via.placeholder.com/300?text=Scan+and+Pay"
+# Default QR Code URL (Aapka uploaded QR)
+DEFAULT_QR = "https://raw.githubusercontent.com/telegram-bot-sdk/telegram-bot-sdk/main/tests/fixtures/image.jpg"
 
-# Dynamic Data Storage (In-Memory)
+# Analytics / Stats Storage
+STATS = {
+    "pending": 0,
+    "approved": 0,
+    "rejected": 0
+}
+
+# ----------------- HARDCODED DEFAULT DATA -----------------
 DATA = {
-    "welcome_text": "👋 **हमारे Business Bot में आपका स्वागत है!**\n\n**यह कैसे काम करता है?**\n1. नीचे दिए गए किसी भी प्रोडक्ट/सर्विस बटन पर क्लिक करें।\n2. पेमेंट QR कोड स्कैन करें और पेमेंट पूरा करें।\n3. '✅ I have paid' पर क्लिक करके स्क्रीनशॉट अपलोड करें।\n4. एडमिन वेरिफिकेशन के बाद आपको आपका एक्सेस लिंक मिल जाएगा।\n\n👇 **अपनी पसंद की सर्विस चुनें:**",
+    "welcome_text": """🕊️𝗪𝗘𝗟𝗖𝗢𝗠𝗘 𝗧𝗢 𝗧𝗔𝗡𝗪𝗘𝗘𝗥 𝗦𝗧𝗢𝗥𝗘🕊️
+
+⚡𝗡𝗘𝗪 𝗖𝗢𝗟𝗟𝗘𝗖𝗧𝗜𝗢𝗡 𝗔𝗩𝗔𝗜𝗟𝗔𝗕𝗟𝗘⚡
+
+𝗘𝗔𝗖𝗛 𝗖𝗔𝗧𝗘𝗚𝗢𝗥𝗬 𝗖𝗢𝗡𝗧𝗔𝗜𝗡𝗦 4 𝗚𝗥𝗢𝗨𝗣𝗦 (𝟭𝟮𝟬𝟬-𝟭𝟴𝟬𝟬 𝗩𝗜𝗗𝗘𝗢𝗦 𝗣𝗘𝗥 𝗚𝗥𝗢𝗨𝗣)
+
+🕊️𝗣𝗔𝗬𝗠𝗘𝗡𝗧 𝗣𝗥𝗢𝗢𝗙𝗦👉https://t.me/+hbere12UWTMzYTI1
+
+💥𝗗𝗘𝗠𝗢 𝗩𝗜𝗗𝗘𝗢𝗦👉https://t.me/+2jSY317AQww2ZjM9""",
+    
     "qr_code": DEFAULT_QR,
+    
     "items": [
         {
-            "id": "item_1",
-            "name": "1. Demo Product / VIP Membership", 
-            "details": "📌 **Plan Details:**\n• Validity: 30 Days\n• Access: Full Access\n• Support: 24/7 Premium Support", 
-            "link": "https://example.com/demo"
+            "id": "btn_1",
+            "name": "1. All Category Combo (₹198)",
+            "details": "💳 UPI ID: roxxxx@axl\n📲 Please scan the QR and pay, then click 'I have paid' ✅\n💰 Amount: ₹198\n♾ Lifetime Access | 🎬 50+ Group Full Video\n⚡ Instant Delivery After Payment\n🚫 No Extra Charges\n💯 No Fake / Dead Links",
+            "link": "https://t.me/+ehTHId3ryhY3YmJl"
+        },
+        {
+            "id": "btn_2",
+            "name": "2. Pack 2 (₹98)",
+            "details": "💳 UPI ID: roxxxx@axl\n📲 Please scan the QR and pay, then click 'I have paid' ✅\n💰 Amount: ₹98\n♾ Lifetime Access | 🎬 01+ Group Full Video\n⚡ Instant Delivery After Payment\n🚫 No Extra Charges\n💯 No Fake / Dead Links",
+            "link": "https://t.me/+bPhyrYiSBQozNDBl"
+        },
+        {
+            "id": "btn_3",
+            "name": "3. Pack 3 (₹98)",
+            "details": "💳 UPI ID: roxxxx@axl\n📲 Please scan the QR and pay, then click 'I have paid' ✅\n💰 Amount: ₹98\n♾ Lifetime Access | 🎬 01+ Group Full Video\n⚡ Instant Delivery After Payment\n🚫 No Extra Charges\n💯 No Fake / Dead Links",
+            "link": "https://t.me/+b4HvE2hp_Cs2ZDBl"
+        },
+        {
+            "id": "btn_4",
+            "name": "4. Pack 4 (₹98)",
+            "details": "💳 UPI ID: roxxxx@axl\n📲 Please scan the QR and pay, then click 'I have paid' ✅\n💰 Amount: ₹98\n♾ Lifetime Access | 🎬 01+ Group Full Video\n⚡ Instant Delivery After Payment\n🚫 No Extra Charges\n💯 No Fake / Dead Links",
+            "link": "https://t.me/+b4HvE2hp_Cs2ZDBl"
+        },
+        {
+            "id": "btn_5",
+            "name": "5. Pack 5 (₹98)",
+            "details": "💳 UPI ID: roxxxx@axl\n📲 Please scan the QR and pay, then click 'I have paid' ✅\n💰 Amount: ₹98\n♾ Lifetime Access | 🎬 01+ Group Full Video\n⚡ Instant Delivery After Payment\n🚫 No Extra Charges\n💯 No Fake / Dead Links",
+            "link": "https://t.me/+b4HvE2hp_Cs2ZDBl"
+        },
+        {
+            "id": "btn_6",
+            "name": "6. Pack 6 (₹98)",
+            "details": "💳 UPI ID: roxxxx@axl\n📲 Please scan the QR and pay, then click 'I have paid' ✅\n💰 Amount: ₹98\n♾ Lifetime Access | 🎬 01+ Group Full Video\n⚡ Instant Delivery After Payment\n🚫 No Extra Charges\n💯 No Fake / Dead Links",
+            "link": "https://t.me/+b4HvE2hp_Cs2ZDBl"
+        },
+        {
+            "id": "btn_7",
+            "name": "7. Pack 7 (₹98)",
+            "details": "💳 UPI ID: roxxxx@axl\n📲 Please scan the QR and pay, then click 'I have paid' ✅\n💰 Amount: ₹98\n♾ Lifetime Access | 🎬 01+ Group Full Video\n⚡ Instant Delivery After Payment\n🚫 No Extra Charges\n💯 No Fake / Dead Links",
+            "link": "https://t.me/+b4HvE2hp_Cs2ZDBl"
+        },
+        {
+            "id": "btn_8",
+            "name": "8. Pack 8 (₹98)",
+            "details": "💳 UPI ID: roxxxx@axl\n📲 Please scan the QR and pay, then click 'I have paid' ✅\n💰 Amount: ₹98\n♾ Lifetime Access | 🎬 01+ Group Full Video\n⚡ Instant Delivery After Payment\n🚫 No Extra Charges\n💯 No Fake / Dead Links",
+            "link": "https://t.me/+b4HvE2hp_Cs2ZDBl"
         }
     ]
 }
 
-# States for ConversationHandler
-WAITING_BTN_NAME, WAITING_BTN_DETAILS, WAITING_BTN_LINK, WAITING_WELCOME_TEXT = range(4)
+# States
+WAITING_BTN_NAME, WAITING_BTN_DETAILS, WAITING_BTN_LINK, WAITING_WELCOME_TEXT, WAITING_EDIT_NAME = range(5)
 
 # ----------------- CUSTOMER FLOW -----------------
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    welcome_msg = DATA.get("welcome_text", "👋 **हमारे Business Bot में आपका स्वागत है!**")
+    welcome_msg = DATA.get("welcome_text")
     
     keyboard = []
     for item in DATA["items"]:
@@ -54,10 +113,19 @@ async def admin_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if user_id != ADMIN_ID:
         return
 
-    admin_text = "⚙️ **Smart Admin Control Panel**\n\nयहाँ से आप पूरे बॉट को आसानी से कंट्रोल कर सकते हैं:"
+    admin_text = (
+        f"⚙️ **TANWEER STORE - Admin Control Panel**\n\n"
+        f"📊 **Payment Analytics:**\n"
+        f"⏳ Pending Requests: `{STATS['pending']}`\n"
+        f"✅ Approved Payments: `{STATS['approved']}`\n"
+        f"❌ Rejected Payments: `{STATS['rejected']}`\n\n"
+        f"Neeche diye gaye buttons se bot ko manage karein:"
+    )
+    
     admin_buttons = InlineKeyboardMarkup([
-        [InlineKeyboardButton("✏️ Edit Welcome Text (How it works)", callback_data="admin_edit_welcome")],
-        [InlineKeyboardButton("➕ Add New Button (Name, Details & Link)", callback_data="admin_add_btn")],
+        [InlineKeyboardButton("✏️ Edit Welcome Text", callback_data="admin_edit_welcome")],
+        [InlineKeyboardButton("✏️ Edit Button Name/Details", callback_data="admin_edit_btn_menu")],
+        [InlineKeyboardButton("➕ Add New Button", callback_data="admin_add_btn")],
         [InlineKeyboardButton("🖼️ Change Payment QR Code", callback_data="admin_change_qr")],
         [InlineKeyboardButton("🗑️ Delete Button", callback_data="admin_del_btn")],
         [InlineKeyboardButton("📋 View All Buttons & Links", callback_data="admin_view_btns")]
@@ -76,19 +144,15 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if data.startswith("select_"):
         item_id = data.replace("select_", "")
-        
         selected_item = next((item for item in DATA["items"] if item["id"] == item_id), None)
         
         if not selected_item:
-            await query.message.reply_text("❌ यह आइटम अब उपलब्ध नहीं है। कृपया नया बटन चुनें।")
+            await query.message.reply_text("❌ Ye option abhi uplabdha nahi hai.")
             return
 
         context.user_data["selected_item_id"] = item_id
         
-        item_name = selected_item.get("name", "Service")
-        item_details = selected_item.get("details", "कोई विवरण उपलब्ध नहीं है।")
-
-        caption = f"🛒 **{item_name}**\n\n📝 **विवरण / Details:**\n{item_details}\n\n━━━━━━━━━━━━━━━━━━━\n💳 **पेमेंट करने के लिए QR कोड स्कैन करें और फिर '✅ I have paid' बटन दबाएं।**"
+        caption = f"🛒 **{selected_item['name']}**\n\n📝 **Details:**\n{selected_item['details']}\n\n━━━━━━━━━━━━━━━━━━━\n💳 **Pay karke '✅ I have paid' button dabayein.**"
         
         pay_buttons = InlineKeyboardMarkup([
             [InlineKeyboardButton("✅ I have paid", callback_data="paid")],
@@ -102,7 +166,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     elif data == "paid":
         context.user_data["waiting_for_proof"] = True
-        await query.message.reply_text("📸 कृपया अपने पेमेंट का Screenshot यहाँ भेजें:")
+        await query.message.reply_text("📸 Kripya apne payment ka Screenshot yahan bhejein:")
 
     elif data == "customer_back":
         await start(update, context)
@@ -110,30 +174,39 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif data.startswith("approve_"):
         parts = data.split("_")
         user_id = int(parts[1])
-        item_id = "_".join(parts[2:])  # Fixed: अब underscores सही से हैंडल होंगे और सही लिंक मिलेगा
+        item_id = "_".join(parts[2:])
         
         selected_item = next((item for item in DATA["items"] if item["id"] == item_id), None)
         delivery_link = selected_item["link"] if selected_item else "Link Not Found"
         
+        if STATS["pending"] > 0:
+            STATS["pending"] -= 1
+        STATS["approved"] += 1
+        
         await context.bot.send_message(
             chat_id=user_id,
-            text=f"🎉 **आपका पेमेंट Approve हो गया है!**\n\nआपका Access Link यह रहा:\n🔗 {delivery_link}",
+            text=f"🎉 **Aapka payment Approve ho gaya hai!**\n\nAapka Access Link ye raha:\n🔗 {delivery_link}",
             parse_mode="Markdown"
         )
         await query.edit_message_caption(caption=query.message.caption + "\n\n✅ **APPROVED BY ADMIN**")
 
     elif data.startswith("reject_"):
         user_id = int(data.split("_")[1])
+        
+        if STATS["pending"] > 0:
+            STATS["pending"] -= 1
+        STATS["rejected"] += 1
+        
         await context.bot.send_message(
             chat_id=user_id,
-            text="❌ **आपका पेमेंट Reject कर दिया गया है।** कृपया सही स्क्रीनशॉट भेजें या सपोर्ट से संपर्क करें।"
+            text="❌ **Aapka payment Reject kar diya gaya hai.** Kripya sahi screenshot bhejein."
         )
         await query.edit_message_caption(caption=query.message.caption + "\n\n❌ **REJECTED BY ADMIN**")
 
     elif data == "admin_view_btns":
         msg = "📋 **Current Active Buttons & Links:**\n\n"
         for idx, item in enumerate(DATA["items"], 1):
-            msg += f"**{idx}. {item['name']}**\n📄 **Details:** {item['details']}\n🔗 **Link:** {item['link']}\n\n"
+            msg += f"**{idx}. {item['name']}**\n📄 **Details:**\n{item['details']}\n🔗 **Link:** {item['link']}\n\n"
         await query.message.reply_text(msg, parse_mode="Markdown")
 
     elif data == "admin_del_btn":
@@ -141,16 +214,23 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         for item in DATA["items"]:
             keyboard.append([InlineKeyboardButton(f"❌ Delete {item['name']}", callback_data=f"confirm_del_{item['id']}")])
         keyboard.append([InlineKeyboardButton("🔙 Back to Admin", callback_data="admin_back")])
-        await query.message.edit_text("किस Button को Delete करना चाहते हैं?", reply_markup=InlineKeyboardMarkup(keyboard))
+        await query.message.edit_text("Kis Button ko Delete karna chahte hain?", reply_markup=InlineKeyboardMarkup(keyboard))
 
     elif data.startswith("confirm_del_"):
         item_id = data.replace("confirm_del_", "")
         DATA["items"] = [item for item in DATA["items"] if item["id"] != item_id]
-        await query.message.reply_text("✅ Button सफलतापूर्वक डिलीट कर दिया गया!")
+        await query.message.reply_text("✅ Button delete ho gaya!")
         await admin_panel(update, context)
 
     elif data == "admin_back":
         await admin_panel(update, context)
+
+    elif data == "admin_edit_btn_menu":
+        keyboard = []
+        for item in DATA["items"]:
+            keyboard.append([InlineKeyboardButton(f"✏️ Edit {item['name']}", callback_data=f"start_edit_{item['id']}")])
+        keyboard.append([InlineKeyboardButton("🔙 Back to Admin", callback_data="admin_back")])
+        await query.message.edit_text("Kis button ka Naam/Details badalna chahte hain?", reply_markup=InlineKeyboardMarkup(keyboard))
 
 # ----------------- SCREENSHOT & QR HANDLER -----------------
 async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -159,7 +239,7 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if context.user_data.get("waiting_for_qr") and user_id == ADMIN_ID:
         context.user_data["waiting_for_qr"] = False
         DATA["qr_code"] = update.message.photo[-1].file_id
-        await update.message.reply_text("✅ **नया QR Code सेट हो गया है!**")
+        await update.message.reply_text("✅ **Naya Payment QR Code set ho gaya!**")
         await admin_panel(update, context)
         return
 
@@ -172,7 +252,9 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
         item_name = selected_item["name"] if selected_item else "Unknown Item"
 
         context.user_data["waiting_for_proof"] = False
-        await update.message.reply_text("⏳ आपका स्क्रीनशॉट एडमिन को भेज दिया गया है। वेरीफिकेशन के बाद आपको लिंक मिल जाएगा।")
+        STATS["pending"] += 1
+        
+        await update.message.reply_text("⏳ Aapka screenshot admin ko bhej diya gaya hai. Verification ke baad link mil jayega.")
 
         admin_markup = InlineKeyboardMarkup([
             [
@@ -184,7 +266,7 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_photo(
             chat_id=ADMIN_ID,
             photo=photo_id,
-            caption=f"📩 **नया Payment Screenshot आया है!**\n\n👤 **User:** @{user.username or 'No Username'} ({user.id})\n📦 **Selected Item:** {item_name}",
+            caption=f"📩 **Naya Payment Screenshot aaya hai!**\n\n👤 **User:** @{user.username or 'No Username'} ({user.id})\n📦 **Selected Item:** {item_name}",
             reply_markup=admin_markup
         )
 
@@ -192,17 +274,17 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def start_add_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    await query.message.reply_text("✏️ **Step 1:** नये Button का **नाम** लिखकर भेजें (उदा: 1. VIP Course):")
+    await query.message.reply_text("✏️ **Step 1:** Naye Button ka **Naam** likhkar bhejein:")
     return WAITING_BTN_NAME
 
 async def get_btn_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data["temp_btn_name"] = update.message.text
-    await update.message.reply_text("📝 **Step 2:** इस प्रोडक्ट/सर्विस का **विवरण (Details)** लिखकर भेजें (उदा: कितने दिन चलेगा, क्या-क्या मिलेगा):")
+    await update.message.reply_text("📝 **Step 2:** Service ki **Details** likhkar bhejein:")
     return WAITING_BTN_DETAILS
 
 async def get_btn_details(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data["temp_btn_details"] = update.message.text
-    await update.message.reply_text("🔗 **Step 3:** पेमेंट अप्रूव होने के बाद ग्राहक को मिलने वाला **Link** भेजें:")
+    await update.message.reply_text("🔗 **Step 3:** Access **Link** bhejein:")
     return WAITING_BTN_LINK
 
 async def get_btn_link(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -211,26 +293,26 @@ async def get_btn_link(update: Update, context: ContextTypes.DEFAULT_TYPE):
     btn_link = update.message.text
     
     new_item = {
-        "id": f"item_{len(DATA['items']) + 1}_{os.urandom(2).hex()}",
+        "id": f"btn_{len(DATA['items']) + 1}",
         "name": btn_name, 
         "details": btn_details, 
         "link": btn_link
     }
     DATA["items"].append(new_item)
     
-    await update.message.reply_text(f"✅ नया बटन **'{btn_name}'** सफलतापूर्वक जोड़ दिया गया है!")
+    await update.message.reply_text(f"✅ Naya button **'{btn_name}'** jod diya gaya!")
     await admin_panel(update, context)
     return ConversationHandler.END
 
 async def start_edit_welcome(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    await query.message.reply_text("📝 नया **Welcome Message / How it works Details** लिखकर भेजें:")
+    await query.message.reply_text("📝 Naya **Welcome Message** likhkar bhejein:")
     return WAITING_WELCOME_TEXT
 
 async def get_welcome_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
     DATA["welcome_text"] = update.message.text
-    await update.message.reply_text("✅ **Welcome Message सफलतापूर्वक अपडेट कर दिया गया है!**")
+    await update.message.reply_text("✅ **Welcome Message update ho gaya!**")
     await admin_panel(update, context)
     return ConversationHandler.END
 
@@ -238,7 +320,7 @@ async def start_change_qr(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     context.user_data["waiting_for_qr"] = True
-    await query.message.reply_text("🖼️ नया **Payment QR Code की फोटो** यहाँ भेजें:")
+    await query.message.reply_text("🖼️ Naya **Payment QR Code** photo me bhejein:")
 
 def main():
     app = ApplicationBuilder().token(TOKEN).build()
