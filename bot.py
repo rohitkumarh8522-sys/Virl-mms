@@ -1,4 +1,4 @@
-import os
+woimport os
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     ApplicationBuilder, CommandHandler, CallbackQueryHandler, 
@@ -143,7 +143,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     for item in DATA["items"]:
         keyboard.append([InlineKeyboardButton(item["name"], callback_data=f"select_{item['id']}")])
         
-    support_user = CONFIG.get("support_username", DEFAULT_SUPPORT_USERNAME)
+    support_user = CONFIG.get("@G_KlNG", DEFAULT_SUPPORT_USERNAME)
     keyboard.append([InlineKeyboardButton("💬 Support / Contact Admin", url=f"https://t.me/{support_user}")])
 
     reply_markup = InlineKeyboardMarkup(keyboard)
