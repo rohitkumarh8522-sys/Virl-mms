@@ -25,50 +25,50 @@ DEFAULT_SUPPORT_USERNAME = "G_KlNG"
 
 # ---------------- BUTTON 1 (₹199) ----------------
 BTN_1_NAME = "✨𝗔𝗟𝗟 𝗩𝗜𝗗𝗘𝗢✨ -- ₹𝟭𝟵𝟵|𝟭𝗠 𝗩𝗜𝗗𝗘𝗢"
-BTN_1_LINK = "https://t.me/+ehTHId3ryhY3YmJl"
+BTN_1_LINK = "https://t.me/+9PoaaQmiAEhmODI1"
 
 # ---------------- BUTTON 2 TO 15 (₹98) ----------------
 BTN_2_NAME  = "🌽𝗖𝗛𝗜𝗟𝗗 𝗖𝗛𝗢𝗥𝗡🌽 -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_2_LINK  = "https://t.me/+bPhyrYiSBQozNDBl"
+BTN_2_LINK  = "https://t.me/+9PoaaQmiAEhmODI1"
 
 BTN_3_NAME  = "👙𝗜𝗡𝗗𝗜𝗔 𝗥𝗔𝗣𝗘𝗘👙 -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_3_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+BTN_3_LINK  = https://t.me/+9PoaaQmiAEhmODI1""
 
 BTN_4_NAME  = "🫦𝗠𝟬𝗠 𝗦𝟬𝗡 🫦-- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_4_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+BTN_4_LINK  = "https://t.me/+9PoaaQmiAEhmODI1"
 
 BTN_5_NAME  = "🍑𝗕𝗥𝗢 𝗦𝗜𝗦,𝘀🍑 -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_5_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+BTN_5_LINK  = "https://t.me/+9PoaaQmiAEhmODI1"
 
 BTN_6_NAME  = "🏘️𝗦𝗖𝗛𝗢𝗢𝗟 𝗚𝗜𝗥𝗟🏘️ -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_6_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+BTN_6_LINK  = "https://t.me/+9PoaaQmiAEhmODI1"
 
 BTN_7_NAME  = "🎭𝗜𝗡𝗖𝗔𝗧 🎭  -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_7_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+BTN_7_LINK  = "https://t.me/+9PoaaQmiAEhmODI1"
 
 BTN_8_NAME  = "🐶𝗚𝗜𝗥𝗟 𝗗𝗢𝗚🐶   -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_8_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+BTN_8_LINK  = "https://t.me/+9PoaaQmiAEhmODI1"
 
 BTN_9_NAME  = "💗𝗜𝗡𝗦𝗧𝗔 𝗩𝗜𝗥𝗟💗-- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_9_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+BTN_9_LINK  = "https://t.me/+9PoaaQmiAEhmODI1"
 
 BTN_10_NAME = "❤️‍🔥𝗦𝗡𝗔𝗣 𝗩𝗜𝗥𝗔𝗟❤️‍🔥-- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_10_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+BTN_10_LINK = "https://t.me/+9PoaaQmiAEhmODI1"
 
 BTN_11_NAME = "🤪𝗖𝗨𝗖𝗞#𝗢𝗟𝗗🤪 -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_11_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+BTN_11_LINK = "https://t.me/+9PoaaQmiAEhmODI1"
 
 BTN_12_NAME = "🌜𝗧𝗔𝗠𝗜𝗟🌜-- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_12_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+BTN_12_LINK = "https://t.me/+9PoaaQmiAEhmODI1"
 
 BTN_13_NAME = "💦𝗠𝗔𝗟𝗨💦-- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_13_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+BTN_13_LINK = "https://t.me/+9PoaaQmiAEhmODI1"
 
 BTN_14_NAME = "😻𝗥𝗨𝗦𝗦𝗜𝗔𝗡😻  -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_14_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+BTN_14_LINK = "https://t.me/+9PoaaQmiAEhmODI1"
 
 BTN_15_NAME = "🤤𝗗𝗘𝗦𝗜 𝗩𝗜𝗗𝗘𝗢🤤  -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_15_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+BTN_15_LINK = "https://t.me/+9PoaaQmiAEhmODI1"
 
 # =====================================================================
 # ⚙️ SYSTEM CONFIGURATIONS
