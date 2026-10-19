@@ -32,7 +32,7 @@ BTN_2_NAME  = "🌽𝗖𝗛𝗜𝗟𝗗 𝗖𝗛𝗢𝗥𝗡🌽 -- ₹𝟵𝟴|
 BTN_2_LINK  = "https://t.me/+9PoaaQmiAEhmODI1"
 
 BTN_3_NAME  = "👙𝗜𝗡𝗗𝗜𝗔 𝗥𝗔𝗣𝗘𝗘👙 -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_3_LINK  = https://t.me/+9PoaaQmiAEhmODI1""
+BTN_3_LINK  = "https://t.me/+9PoaaQmiAEhmODI1"
 
 BTN_4_NAME  = "🫦𝗠𝟬𝗠 𝗦𝟬𝗡 🫦-- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
 BTN_4_LINK  = "https://t.me/+9PoaaQmiAEhmODI1"
