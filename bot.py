@@ -16,12 +16,12 @@ WELCOME_MESSAGE = """🕊️WELCOME TO TANWEER STORE🕊️
 
 EACH CATEGORY CONTAINS 4 GROUPS (1200-1800 VIDEOS PER GROUP)
 
-🕊️PAYMENT PROOFS 👉 https://t.me/+hbere12UWTMzYTI1
+🕊️PAYMENT PROOFS 👉 https://t.me/+fod6fBwf64piZTJl
 
-💥DEMO VIDEOS 👉 https://t.me/+2jSY317AQww2ZjM9"""
+💥DEMO VIDEOS 👉 https://t.me/+d_OLe_ddNzAxYWI9"""
 
 # Default Support Username (Without @)
-DEFAULT_SUPPORT_USERNAME = "G_KlNG"
+DEFAULT_SUPPORT_USERNAME = "stark_seIIer"
 
 # ---------------- BUTTON 1 (₹199) ----------------
 BTN_1_NAME = "✨𝗔𝗟𝗟 𝗩𝗜𝗗𝗘𝗢✨ -- ₹𝟭𝟵𝟵|𝟭𝗠 𝗩𝗜𝗗𝗘𝗢"
