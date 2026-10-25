@@ -16,9 +16,9 @@ WELCOME_MESSAGE = """🕊️WELCOME TO TANWEER STORE🕊️
 
 EACH CATEGORY CONTAINS 4 GROUPS (1200-1800 VIDEOS PER GROUP)
 
-🕊️PAYMENT PROOFS 👉 https://t.me/+DXAihRSAubQyYmY1
+🕊️PAYMENT PROOFS 👉 https://t.me/+QtunfHJIqyowMjg9
 
-💥DEMO VIDEOS 👉 https://t.me/+d_OLe_ddNzAxYWI9"""
+💥DEMO VIDEOS 👉 https://t.me/+JKA9PDR63KRjZjI1"""
 
 # Default Support Username (Without @)
 DEFAULT_SUPPORT_USERNAME = "stark_seIIer"
