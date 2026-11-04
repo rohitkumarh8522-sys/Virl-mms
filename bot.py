@@ -15,34 +15,34 @@ WELCOME_MESSAGE = """🕊️WELCOME TO TANWEER STORE🕊️
 
 EACH CATEGORY CONTAINS 4 GROUPS (1200-1800 VIDEOS PER GROUP)
 
-🕊️PAYMENT PROOFS 👉 https://t.me/+hbere12UWTMzYTI1
+🕊️PAYMENT PROOF 👉 https://t.me/dfttgfrr
 
-💥DEMO VIDEOS 👉 https://t.me/+2jSY317AQww2ZjM9"""
+💥DEMO VIDEOS 👉 https://t.me/+n0J9Ekl38JxmYTA1"""
 
-DEFAULT_SUPPORT_USERNAME = "G_KlNG"
+DEFAULT_SUPPORT_USERNAME = "@STARK_SELLER1"
 
 # ---------------- BUTTON 1 (₹199) ----------------
-BTN_1_NAME = "1. All Category Combo (₹199)"
-BTN_1_LINK = "https://t.me/+ehTHId3ryhY3YmJl"
+BTN_1_NAME = "✨𝗔𝗟𝗟 𝗩𝗜𝗗𝗘𝗢✨ -- ₹𝟭𝟵𝟵|𝟭𝗠 𝗩𝗜𝗗𝗘𝗢"
+BTN_1_LINK = "https://t.me/+Zh38WxFJ_fs4N2M1"
 
 # ---------------- BUTTON 2 TO 7 (₹98) ----------------
-BTN_2_NAME  = "2. Pack 2 (₹98)"
-BTN_2_LINK  = "https://t.me/+bPhyrYiSBQozNDBl"
+BTN_2_NAME  = "🌽𝗖𝗛𝗟𝗗 𝗖𝗛𝗢𝗥𝗡🌽 -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
+BTN_2_LINK  = "https://t.me/+Zh38WxFJ_fs4N2M1"
 
-BTN_3_NAME  = "3. Pack 3 (₹98)"
-BTN_3_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+BTN_3_NAME  = "🏘️𝗦𝗖𝗛𝗢𝗢𝗟 🏘️ -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
+BTN_3_LINK  = "https://t.me/+Zh38WxFJ_fs4N2M1"
 
-BTN_4_NAME  = "4. Pack 4 (₹98)"
-BTN_4_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+BTN_4_NAME  = "👙𝗜𝗡𝗗𝗜𝗔 𝗥𝗘𝗘P👙 -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
+BTN_4_LINK  = "https://t.me/+Zh38WxFJ_fs4N2M1"
 
-BTN_5_NAME  = "5. Pack 5 (₹98)"
-BTN_5_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+BTN_5_NAME  = "🫦𝗠𝟬𝗠 𝗦𝟬𝗡 🫦-- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
+BTN_5_LINK  = "https://t.me/+Zh38WxFJ_fs4N2M1"
 
-BTN_6_NAME  = "6. Pack 6 (₹98)"
-BTN_6_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+BTN_6_NAME  = "🍑𝗕𝗥𝗢 𝗦l𝗦,𝘀🍑 -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
+BTN_6_LINK  = "https://t.me/+Zh38WxFJ_fs4N2M1"
 
-BTN_7_NAME  = "7. Pack 7 (₹98)"
-BTN_7_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+BTN_7_NAME  = "🐶𝗚𝗜𝗥𝗟 𝗗𝗢𝗚🐶   -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
+BTN_7_LINK  = "https://t.me/+Zh38WxFJ_fs4N2M1"
 
 # =====================================================================
 # ⚙️ SYSTEM CONFIGURATIONS
