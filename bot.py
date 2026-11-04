@@ -6,69 +6,43 @@ from telegram.ext import (
 )
 
 # =====================================================================
-# ✏️ EASY EDIT SECTION: Aasani se yahan Naam aur Link badlein
+# ✏️ EASY EDIT SECTION: Aasani se yahan 7 Buttons ke Naam aur Link badlein
 # =====================================================================
 
-# Store Welcome Message
 WELCOME_MESSAGE = """🕊️WELCOME TO TANWEER STORE🕊️
 
 ⚡NEW COLLECTION AVAILABLE⚡
 
 EACH CATEGORY CONTAINS 4 GROUPS (1200-1800 VIDEOS PER GROUP)
 
-🕊️PAYMENT PROOFS 👉 https://t.me/+QtunfHJIqyowMjg9
+🕊️PAYMENT PROOFS 👉 https://t.me/+hbere12UWTMzYTI1
 
-💥DEMO VIDEOS 👉 https://t.me/+JKA9PDR63KRjZjI1"""
+💥DEMO VIDEOS 👉 https://t.me/+2jSY317AQww2ZjM9"""
 
-# Default Support Username (Without @)
-DEFAULT_SUPPORT_USERNAME = "stark_seIIer"
+DEFAULT_SUPPORT_USERNAME = "G_KlNG"
 
 # ---------------- BUTTON 1 (₹199) ----------------
-BTN_1_NAME = "✨𝗔𝗟𝗟 𝗩𝗜𝗗𝗘𝗢✨ -- ₹𝟭𝟵𝟵|𝟭𝗠 𝗩𝗜𝗗𝗘𝗢"
-BTN_1_LINK = "https://t.me/+5NxbFHY02oQyMWQ1"
+BTN_1_NAME = "1. All Category Combo (₹199)"
+BTN_1_LINK = "https://t.me/+ehTHId3ryhY3YmJl"
 
-# ---------------- BUTTON 2 TO 15 (₹98) ----------------
-BTN_2_NAME  = "🌽𝗖𝗛𝗟𝗗 𝗖𝗛𝗢𝗥𝗡🌽 -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_2_LINK  = "https://t.me/+5NxbFHY02oQyMWQ1"
+# ---------------- BUTTON 2 TO 7 (₹98) ----------------
+BTN_2_NAME  = "2. Pack 2 (₹98)"
+BTN_2_LINK  = "https://t.me/+bPhyrYiSBQozNDBl"
 
-BTN_3_NAME  = "👙𝗜𝗡𝗗𝗜𝗔 𝗥𝗘𝗘P👙 -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_3_LINK  = "https://t.me/+5NxbFHY02oQyMWQ1"
+BTN_3_NAME  = "3. Pack 3 (₹98)"
+BTN_3_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_4_NAME  = "🫦𝗠𝟬𝗠 𝗦𝟬𝗡 🫦-- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_4_LINK  = "https://t.me/+5NxbFHY02oQyMWQ1"
+BTN_4_NAME  = "4. Pack 4 (₹98)"
+BTN_4_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_5_NAME  = "🍑𝗕𝗥𝗢 𝗦l𝗦,𝘀🍑 -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_5_LINK  = "https://t.me/+5NxbFHY02oQyMWQ1"
+BTN_5_NAME  = "5. Pack 5 (₹98)"
+BTN_5_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_6_NAME  = "🏘️𝗦𝗖𝗛𝗢𝗢𝗟 🏘️ -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_6_LINK  = "https://t.me/+5NxbFHY02oQyMWQ1"
+BTN_6_NAME  = "6. Pack 6 (₹98)"
+BTN_6_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_7_NAME  = "🎭𝗜𝗡𝗖𝗔𝗧 🎭  -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_7_LINK  = "https://t.me/+5NxbFHY02oQyMWQ1"
-
-BTN_8_NAME  = "🐶𝗚𝗜𝗥𝗟 𝗗𝗢𝗚🐶   -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_8_LINK  = "https://t.me/+5NxbFHY02oQyMWQ1"
-
-BTN_9_NAME  = "💗𝗜𝗡𝗦𝗧𝗔 𝗩𝗜𝗥𝗟💗-- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_9_LINK  = "https://t.me/+5NxbFHY02oQyMWQ1"
-
-BTN_10_NAME = "❤️‍🔥𝗦𝗡𝗔𝗣 𝗩𝗜𝗥𝗔𝗟❤️‍🔥-- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_10_LINK = "https://t.me/+5NxbFHY02oQyMWQ1"
-
-BTN_11_NAME = "🤪𝗖𝗨𝗖𝗞#𝗢𝗟𝗗🤪 -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_11_LINK = "https://t.me/+5NxbFHY02oQyMWQ1"
-
-BTN_12_NAME = "🌜𝗧𝗔𝗠𝗜𝗟🌜-- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_12_LINK = "https://t.me/+5NxbFHY02oQyMWQ1"
-
-BTN_13_NAME = "💦𝗠𝗔𝗟𝗨💦-- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_13_LINK = "https://t.me/+5NxbFHY02oQyMWQ1"
-
-BTN_14_NAME = "😻𝗥𝗨𝗦𝗦𝗜𝗔𝗡😻  -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_14_LINK = "https://t.me/+5NxbFHY02oQyMWQ1"
-
-BTN_15_NAME = "🤤𝗗𝗘𝗦𝗜 𝗩𝗜𝗗𝗘𝗢🤤  -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_15_LINK = "https://t.me/+5NxbFHY02oQyMWQ1"
+BTN_7_NAME  = "7. Pack 7 (₹98)"
+BTN_7_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
 # =====================================================================
 # ⚙️ SYSTEM CONFIGURATIONS
@@ -111,21 +85,13 @@ DATA = {
     "welcome_text": WELCOME_MESSAGE,
     "qr_code": DEFAULT_QR,
     "items": [
-        {"id": "btn_1",  "name": BTN_1_NAME,  "details": DETAILS_199, "link": BTN_1_LINK},
-        {"id": "btn_2",  "name": BTN_2_NAME,  "details": DETAILS_98,  "link": BTN_2_LINK},
-        {"id": "btn_3",  "name": BTN_3_NAME,  "details": DETAILS_98,  "link": BTN_3_LINK},
-        {"id": "btn_4",  "name": BTN_4_NAME,  "details": DETAILS_98,  "link": BTN_4_LINK},
-        {"id": "btn_5",  "name": BTN_5_NAME,  "details": DETAILS_98,  "link": BTN_5_LINK},
-        {"id": "btn_6",  "name": BTN_6_NAME,  "details": DETAILS_98,  "link": BTN_6_LINK},
-        {"id": "btn_7",  "name": BTN_7_NAME,  "details": DETAILS_98,  "link": BTN_7_LINK},
-        {"id": "btn_8",  "name": BTN_8_NAME,  "details": DETAILS_98,  "link": BTN_8_LINK},
-        {"id": "btn_9",  "name": BTN_9_NAME,  "details": DETAILS_98,  "link": BTN_9_LINK},
-        {"id": "btn_10", "name": BTN_10_NAME, "details": DETAILS_98,  "link": BTN_10_LINK},
-        {"id": "btn_11", "name": BTN_11_NAME, "details": DETAILS_98,  "link": BTN_11_LINK},
-        {"id": "btn_12", "name": BTN_12_NAME, "details": DETAILS_98,  "link": BTN_12_LINK},
-        {"id": "btn_13", "name": BTN_13_NAME, "details": DETAILS_98,  "link": BTN_13_LINK},
-        {"id": "btn_14", "name": BTN_14_NAME, "details": DETAILS_98,  "link": BTN_14_LINK},
-        {"id": "btn_15", "name": BTN_15_NAME, "details": DETAILS_98,  "link": BTN_15_LINK},
+        {"id": "btn_1", "name": BTN_1_NAME, "details": DETAILS_199, "link": BTN_1_LINK},
+        {"id": "btn_2", "name": BTN_2_NAME, "details": DETAILS_98,  "link": BTN_2_LINK},
+        {"id": "btn_3", "name": BTN_3_NAME, "details": DETAILS_98,  "link": BTN_3_LINK},
+        {"id": "btn_4", "name": BTN_4_NAME, "details": DETAILS_98,  "link": BTN_4_LINK},
+        {"id": "btn_5", "name": BTN_5_NAME, "details": DETAILS_98,  "link": BTN_5_LINK},
+        {"id": "btn_6", "name": BTN_6_NAME, "details": DETAILS_98,  "link": BTN_6_LINK},
+        {"id": "btn_7", "name": BTN_7_NAME, "details": DETAILS_98,  "link": BTN_7_LINK},
     ]
 }
 
