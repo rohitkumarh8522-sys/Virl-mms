@@ -66,7 +66,7 @@ BTN_10_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 BTN_10_AMT  = 98
 
 BTN_11_NAME = "11. Pack 11 (₹98)"
-BTN_11_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+BTN_11_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 BTN_11_AMT  = 98
 
 BTN_12_NAME = "12. Pack 12 (₹98)"
@@ -152,7 +152,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         await query.message.reply_text(text, parse_mode="Markdown", reply_markup=method_keyboard)
 
-    # Step 2: UPI Payment par click karne par turant QR Code aur Details generate karna
+    # Step 2: UPI Payment par click karne par turant payment details aur direct pay button dena
     elif data.startswith("pay_upi_"):
         item_id = data.replace("pay_upi_", "")
         selected_item = next((item for item in DATA["items"] if item["id"] == item_id), None)
@@ -160,15 +160,13 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if not selected_item:
             return
 
-        # UPI Intent aur QR Code URL banana (₹199 ya ₹98 ke hisab se)
         upi_intent = f"upi://pay?pa={YOUR_UPI_ID}&pn=TanweerStore&am={selected_item['amount']}&cu=INR"
-        qr_code_url = f"https://api.qrserver.com/v1/create-qr-code/?size=300x300&data={upi_intent}"
 
         caption = (
             f"🛒 *{selected_item['name']}*\n\n"
             f"💰 *Amount:* ₹{selected_item['amount']}\n"
             f"💳 *UPI ID:* `{YOUR_UPI_ID}`\n\n"
-            f"📲 **QR Code scan karein ya neeche diye gaye button se payment karein:**"
+            f"📲 **Neeche diye gaye 'Pay Now' button par click karke payment karein:**"
         )
         
         buttons = InlineKeyboardMarkup([
@@ -176,10 +174,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             [InlineKeyboardButton("❌ Cancel", callback_data="cancel_payment")]
         ])
         
-        try:
-            await query.message.reply_photo(photo=qr_code_url, caption=caption, parse_mode="Markdown", reply_markup=buttons)
-        except Exception:
-            await query.message.reply_text(caption, parse_mode="Markdown", reply_markup=buttons)
+        await query.message.reply_text(caption, parse_mode="Markdown", reply_markup=buttons)
 
     # Step 3: Crypto Payment Click
     elif data.startswith("pay_crypto_"):
