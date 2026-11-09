@@ -1,5 +1,4 @@
 import os
-import requests
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     ApplicationBuilder, CommandHandler, CallbackQueryHandler, 
@@ -7,7 +6,7 @@ from telegram.ext import (
 )
 
 # =====================================================================
-# ✏️ EASY EDIT SECTION: 12 Buttons, Links & ZapUPI Settings
+# ✏️ EASY EDIT SECTION: 12 Buttons, Links & UPI Settings
 # =====================================================================
 
 WELCOME_MESSAGE = """🕊️WELCOME TO TANWEER STORE🕊️
@@ -22,10 +21,8 @@ EACH CATEGORY CONTAINS 4 GROUPS (1200-1800 VIDEOS PER GROUP)
 
 DEFAULT_SUPPORT_USERNAME = "G_KlNG"
 
-# ZapUPI API Credentials
-ZAPUPI_API_URL = "https://panel.zapupi.com/api/v1/create"
-ZAPUPI_API_KEY = "zapf07aa3ea43fdc79164fef3c23bfd52"  # Aapki Zap Key
-YOUR_UPI_ID = "roxxxx@axl"                              # Aapki UPI ID
+# Apni UPI ID yahan dalein
+YOUR_UPI_ID = "roxxxx@axl"
 
 # ---------------- 12 BUTTONS CONFIGURATION ----------------
 BTN_1_NAME  = "1. All Category Combo (₹199)"
@@ -69,7 +66,7 @@ BTN_10_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 BTN_10_AMT  = 98
 
 BTN_11_NAME = "11. Pack 11 (₹98)"
-BTN_11_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+BTN_11_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 BTN_11_AMT  = 98
 
 BTN_12_NAME = "12. Pack 12 (₹98)"
@@ -136,7 +133,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer()
     data = query.data
 
-    # Step 1: 12 button me se kisi par click karne par payment option dikhana
+    # Step 1: 12 buttons me se kisi par click karne par payment option dikhana
     if data.startswith("select_"):
         item_id = data.replace("select_", "")
         selected_item = next((item for item in DATA["items"] if item["id"] == item_id), None)
@@ -155,7 +152,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         await query.message.reply_text(text, parse_mode="Markdown", reply_markup=method_keyboard)
 
-    # Step 2: UPI Payment par click karne par ZapUPI se QR generate karna
+    # Step 2: UPI Payment par click karne par turant QR Code aur Details generate karna
     elif data.startswith("pay_upi_"):
         item_id = data.replace("pay_upi_", "")
         selected_item = next((item for item in DATA["items"] if item["id"] == item_id), None)
@@ -163,93 +160,26 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if not selected_item:
             return
 
-        wait_msg = await query.message.reply_text("⏳ ZapUPI se QR Code generate kiya ja raha hai...")
+        # UPI Intent aur QR Code URL banana (₹199 ya ₹98 ke hisab se)
+        upi_intent = f"upi://pay?pa={YOUR_UPI_ID}&pn=TanweerStore&am={selected_item['amount']}&cu=INR"
+        qr_code_url = f"https://api.qrserver.com/v1/create-qr-code/?size=300x300&data={upi_intent}"
 
-        payload = {
-            "key": ZAPUPI_API_KEY,
-            "client_txn_id": f"txn_{update.effective_user.id}_{int(os.urandom(4).hex(), 16)}",
-            "amount": str(selected_item['amount']),
-            "p_info": selected_item['name'],
-            "udf1": str(update.effective_user.id),
-            "udf2": item_id,
-            "redirect_url": f"https://t.me/{context.bot.username}"
-        }
-
+        caption = (
+            f"🛒 *{selected_item['name']}*\n\n"
+            f"💰 *Amount:* ₹{selected_item['amount']}\n"
+            f"💳 *UPI ID:* `{YOUR_UPI_ID}`\n\n"
+            f"📲 **QR Code scan karein ya neeche diye gaye button se payment karein:**"
+        )
+        
+        buttons = InlineKeyboardMarkup([
+            [InlineKeyboardButton("🔗 Pay Now (UPI App)", url=upi_intent)],
+            [InlineKeyboardButton("❌ Cancel", callback_data="cancel_payment")]
+        ])
+        
         try:
-            response = requests.post(ZAPUPI_API_URL, json=payload, timeout=15)
-            res_data = response.json()
-            print("ZapUPI Response:", res_data) # Render logs me check karne ke liye
-
-            # Response ke alag-alag formats ko handle karne ke liye
-            result = res_data.get("result") or res_data.get("data") or res_data
-            
-            qr_image_url = (
-                result.get("qr_code") or 
-                result.get("qrcode") or 
-                result.get("qr_image") or 
-                result.get("upi_qr_code") or
-                res_data.get("qr_code") or
-                res_data.get("upi_qr_code")
-            )
-            
-            payment_url = (
-                result.get("payment_url") or 
-                result.get("upi_intent") or 
-                result.get("intent") or 
-                result.get("upi_link") or
-                res_data.get("payment_url")
-            )
-
-            caption = (
-                f"🛒 *{selected_item['name']}*\n\n"
-                f"💰 *Amount:* ₹{selected_item['amount']}\n"
-                f"💳 *UPI ID:* `{YOUR_UPI_ID}`\n\n"
-                f"📲 **QR Code ko scan karke ya neeche diye gaye button se payment karein:**"
-            )
-
-            buttons = []
-            if payment_url:
-                buttons.append([InlineKeyboardButton("🔗 Pay Now (UPI App)", url=payment_url)])
-            else:
-                upi_intent = f"upi://pay?pa={YOUR_UPI_ID}&pn=TanweerStore&am={selected_item['amount']}&cu=INR"
-                buttons.append([InlineKeyboardButton("🔗 Pay Now (UPI App)", url=upi_intent)])
-                
-            buttons.append([InlineKeyboardButton("❌ Cancel", callback_data="cancel_payment")])
-            reply_markup = InlineKeyboardMarkup(buttons)
-
-            try:
-                await wait_msg.delete()
-            except Exception:
-                pass
-
-            if qr_image_url:
-                try:
-                    await query.message.reply_photo(photo=qr_image_url, caption=caption, parse_mode="Markdown", reply_markup=reply_markup)
-                    return
-                except Exception:
-                    pass
-            
-            # Agar direct image URL na chale ya na mile toh text ke sath link bhej do
-            await query.message.reply_text(caption, parse_mode="Markdown", reply_markup=reply_markup)
-
-        except Exception as e:
-            try:
-                await wait_msg.delete()
-            except Exception:
-                pass
-
-            upi_intent = f"upi://pay?pa={YOUR_UPI_ID}&pn=TanweerStore&am={selected_item['amount']}&cu=INR"
-            caption = (
-                f"🛒 *{selected_item['name']}*\n\n"
-                f"💰 *Amount:* ₹{selected_item['amount']}\n"
-                f"💳 *UPI ID:* `{YOUR_UPI_ID}`\n\n"
-                f"📲 **Pay Now par click karke payment complete karein:**"
-            )
-            err_markup = InlineKeyboardMarkup([
-                [InlineKeyboardButton("🔗 Pay Now (UPI App)", url=upi_intent)],
-                [InlineKeyboardButton("❌ Cancel", callback_data="cancel_payment")]
-            ])
-            await query.message.reply_text(caption, parse_mode="Markdown", reply_markup=err_markup)
+            await query.message.reply_photo(photo=qr_code_url, caption=caption, parse_mode="Markdown", reply_markup=buttons)
+        except Exception:
+            await query.message.reply_text(caption, parse_mode="Markdown", reply_markup=buttons)
 
     # Step 3: Crypto Payment Click
     elif data.startswith("pay_crypto_"):
