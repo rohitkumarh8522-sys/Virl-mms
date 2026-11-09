@@ -17,18 +17,18 @@ WELCOME_MESSAGE = """▪️𝐂𝐄𝐑𝐓𝐈𝐅𝐈𝐄𝐃 𝐒𝐇𝐎𝐏
 
 💥𝐁𝐔𝐘 𝐅𝐔𝐋𝐋 𝐏𝐀𝐂𝐊𝐀𝐆𝐄 𝐀𝐓 𝟏𝟗𝟗 𝐀𝐍𝐃 𝐆𝐄𝐓 𝟐𝟎𝟎+𝐃𝐀𝐈𝐋𝐘 𝐍𝐄𝐖 𝐔𝐏𝐋𝐎𝐀𝐃𝐄𝐃 𝐆𝐑𝐎𝐔𝐏𝐒
 
-*𝐎𝐍𝐄 𝐓𝐈𝐌𝐄 𝐏𝐀𝐘𝐌𝐄𝐍𝐓 𝐏𝐄𝐑𝐌𝐄𝐍𝐄𝐍𝐓 𝐀𝙲𝙲𝙴𝚂𝚂*
+*𝐎𝐍𝐄 𝐓𝐈𝐌𝐄 𝐏𝐀𝐘𝐌𝐄𝐍𝐓 𝐏𝐄𝐑𝐌𝙴𝙽𝙴𝙽𝚃 𝙰𝙲𝙲𝙴𝚂𝚂*
 
-𝐍𝐎 𝐄𝐗𝐓𝐑𝐀 𝐂𝐇𝐀𝐑𝙶𝙴
-𝐍𝐎 𝐄𝚇𝙿𝙸𝚁𝙴𝙳 𝐋𝐈𝐍𝐊𝐒
+𝐍𝐎 𝙴𝚇𝚃𝚁𝙰 𝙲𝙷𝙰𝚁𝙶𝙴
+𝐍𝙾 𝙴𝚇𝙿𝙸𝚁𝙴𝙳 𝐋𝙸𝙽𝐊𝚂
 
-*𝐃𝐀𝐈𝐋𝐘 𝐍𝐄𝐖 𝐕𝐈𝐃𝐄𝐎𝐒 𝐔𝐏𝐋𝐎𝐀𝐃𝐄𝐃✅
+*𝐃𝐀𝐈𝐋𝐘 𝐍𝐄𝐖 𝐕𝐈𝐃𝙴𝙾𝚂 𝐔𝐏𝐋𝐎𝐀𝐃𝙴𝙳✅
 
 𝐒𝐔𝐏𝐎𝐑𝐓 : @BOTSUPPORTHELL
 
-𝐃𝐄𝐌𝐎 𝐏𝐈𝐂𝐒: https://t.me/+8NSAu6AwbuQ1ZTk1
-𝐏𝐀𝐘𝙼𝙴𝙽𝚃 𝐏𝐑𝐎𝐎𝐅𝐒: https://t.me/+AnxkmFajMo01ZDVl
-𝐃𝐄𝐌𝐎 𝐕𝐈𝐃𝐄𝐎𝐒 : https://t.me/+qIaukTR44z1hYTk9"""
+𝐃𝐄𝐌𝐎 𝐏𝙸𝙲𝚂: https://t.me/+8NSAu6AwbuQ1ZTk1
+𝐏𝙰𝚈𝙼𝙴𝙽𝚃 𝐏𝚁𝙾𝙾𝐅𝚂: https://t.me/+AnxkmFajMo01ZDVl
+𝐃𝐄𝐌𝙾 𝐕𝙸𝙳𝙴𝙾𝚂 : https://t.me/+qIaukTR44z1hYTk9"""
 
 DEFAULT_SUPPORT_USERNAME = "BOTSUPPORTHELL"
 
@@ -129,7 +129,6 @@ DATA = {
 
 WAITING_BTN_NAME, WAITING_BTN_DETAILS, WAITING_BTN_LINK, WAITING_WELCOME_TEXT, WAITING_SUPPORT_USER = range(5)
 
-# ----------------- HELPER: MAIN MENU KEYBOARD -----------------
 def get_main_menu_markup():
     keyboard = []
     for item in DATA["items"]:
@@ -138,7 +137,6 @@ def get_main_menu_markup():
     keyboard.append([InlineKeyboardButton("💬 Support / Contact Admin", url=f"https://t.me/{support_user}")])
     return InlineKeyboardMarkup(keyboard)
 
-# ----------------- CUSTOMER FLOW -----------------
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     if user.username:
@@ -151,11 +149,14 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(welcome_msg, reply_markup=reply_markup)
     elif update.callback_query:
         try:
-            await update.callback_query.message.edit_text(welcome_msg, reply_markup=reply_markup)
+            if update.callback_query.message.photo:
+                await update.callback_query.message.delete()
+                await update.callback_query.message.reply_text(welcome_msg, reply_markup=reply_markup)
+            else:
+                await update.callback_query.message.edit_text(welcome_msg, reply_markup=reply_markup)
         except Exception:
             await update.callback_query.message.reply_text(welcome_msg, reply_markup=reply_markup)
 
-# ----------------- ADMIN DIRECT MSG TO USER -----------------
 async def send_user_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     if user_id != ADMIN_ID:
@@ -187,7 +188,6 @@ async def send_user_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         await update.message.reply_text("❌ User nahi mila.")
 
-# ----------------- ADMIN PANEL -----------------
 async def admin_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     if user_id != ADMIN_ID:
@@ -218,15 +218,20 @@ async def admin_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.message:
         await update.message.reply_text(admin_text, reply_markup=admin_buttons)
     elif update.callback_query:
-        await update.callback_query.message.edit_text(admin_text, reply_markup=admin_buttons)
+        try:
+            if update.callback_query.message.photo:
+                await update.callback_query.message.delete()
+                await update.callback_query.message.reply_text(admin_text, reply_markup=admin_buttons)
+            else:
+                await update.callback_query.message.edit_text(admin_text, reply_markup=admin_buttons)
+        except Exception:
+            await update.callback_query.message.reply_text(admin_text, reply_markup=admin_buttons)
 
-# ----------------- CALLBACK HANDLER -----------------
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     data = query.data
 
-    # Step 1: Pack select karne par Payment Methods (UPI / Crypto) dikhana (Message Edit hoga)
     if data.startswith("select_"):
         item_id = data.replace("select_", "")
         selected_item = next((item for item in DATA["items"] if item["id"] == item_id), None)
@@ -246,7 +251,6 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ])
         
         try:
-            # Agar purana message photo tha toh use delete karke text bhejo, ya text tha toh edit karo
             if query.message.photo:
                 await query.message.delete()
                 await query.message.reply_text(text, parse_mode="Markdown", reply_markup=method_keyboard)
@@ -255,7 +259,6 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         except Exception:
             await query.message.reply_text(text, parse_mode="Markdown", reply_markup=method_keyboard)
 
-    # Step 2: UPI Payment par click karne par QR Code aur Details dikhana
     elif data.startswith("pay_upi_"):
         item_id = data.replace("pay_upi_", "")
         selected_item = next((item for item in DATA["items"] if item["id"] == item_id), None)
@@ -268,7 +271,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         pay_buttons = InlineKeyboardMarkup([
             [InlineKeyboardButton("✅ I have paid", callback_data="paid")],
-            [InlineKeyboardButton(f"🔙 Back", callback_data=f"select_{item_id}")]
+            [InlineKeyboardButton("🔙 Back", callback_data=f"select_{item_id}")]
         ])
         
         qr_to_send = QR_CONFIG["qr_199"] if selected_item.get("price_type") == "199" else QR_CONFIG["qr_98"]
@@ -284,7 +287,6 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         except Exception:
             await query.message.reply_text(caption, reply_markup=pay_buttons)
 
-    # Step 3: Crypto Payment Click
     elif data.startswith("pay_crypto_"):
         item_id = data.replace("pay_crypto_", "")
         text = "💎 Crypto payment filhal available nahi hai. Kripya 🇮🇳 UPI Payment ka upyog karein."
@@ -371,7 +373,6 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif data == "admin_back":
         await admin_panel(update, context)
 
-# ----------------- PHOTO HANDLER -----------------
 async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     user = update.effective_user
@@ -418,7 +419,6 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=admin_markup
         )
 
-# ----------------- CONVERSATIONS -----------------
 async def start_add_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
