@@ -23,8 +23,8 @@ EACH CATEGORY CONTAINS 4 GROUPS (1200-1800 VIDEOS PER GROUP)
 DEFAULT_SUPPORT_USERNAME = "G_KlNG"
 
 # ZapUPI API Credentials
-ZAPUPI_API_URL = "https://panel.zapupi.com/api/v1/create"  # ZapUPI API endpoint agar QR generate ke liye use karna ho
-ZAPUPI_API_KEY = "zapf07aa3ea43fdc7c9164fcef3c23bfd52"  # Aapki ZapUPI API Key
+ZAPUPI_API_URL = "https://panel.zapupi.com/api/v1/create"
+ZAPUPI_API_KEY = "zapf07aa3ea43fdc79164fef3c23bfd52"  # Aapki Zap Key
 YOUR_UPI_ID = "roxxxx@axl"                              # Aapki UPI ID
 
 # ---------------- 12 BUTTONS CONFIGURATION ----------------
@@ -87,14 +87,11 @@ PORT = int(os.environ.get("PORT", 10000))
 RENDER_HOST = os.getenv("RENDER_EXTERNAL_HOSTNAME")
 WEBHOOK_URL = os.getenv("WEBHOOK_URL", f"https://{RENDER_HOST}" if RENDER_HOST else None)
 
-DEFAULT_QR = "https://raw.githubusercontent.com/telegram-bot-sdk/telegram-bot-sdk/main/tests/fixtures/image.jpg"
-
 USER_MAP = {}
 CONFIG = {"support_username": DEFAULT_SUPPORT_USERNAME}
 
 DATA = {
     "welcome_text": WELCOME_MESSAGE,
-    "qr_code": DEFAULT_QR,
     "items": [
         {"id": "btn_1",  "name": BTN_1_NAME,  "amount": BTN_1_AMT,  "link": BTN_1_LINK},
         {"id": "btn_2",  "name": BTN_2_NAME,  "amount": BTN_2_AMT,  "link": BTN_2_LINK},
@@ -133,13 +130,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif update.callback_query:
         await update.callback_query.message.reply_text(welcome_msg, reply_markup=reply_markup)
 
-# ----------------- CALLBACK HANDLER (PAYMENT METHOD SELECTION) -----------------
+# ----------------- CALLBACK HANDLER -----------------
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     data = query.data
 
-    # Step 1: Jab user 12 buttons me se kisi par click kare
+    # Step 1: 12 button me se kisi par click karne par payment option dikhana
     if data.startswith("select_"):
         item_id = data.replace("select_", "")
         selected_item = next((item for item in DATA["items"] if item["id"] == item_id), None)
@@ -147,10 +144,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if not selected_item:
             await query.message.reply_text("❌ Ye option abhi uplabdha nahi hai.")
             return
-
-        context.user_data["selected_item_id"] = item_id
         
-        # Jo image apne bheji hai, bilkul waisa payment method selection menu
         text = f"*{selected_item['name']}*\n\nSelect your preferred payment method below:"
         
         method_keyboard = InlineKeyboardMarkup([
@@ -161,7 +155,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         await query.message.reply_text(text, parse_mode="Markdown", reply_markup=method_keyboard)
 
-    # Step 2: Jab user "🇮🇳 UPI Payment" par click kare (QR Code & Details)
+    # Step 2: UPI Payment par click karne par ZapUPI se QR generate karna
     elif data.startswith("pay_upi_"):
         item_id = data.replace("pay_upi_", "")
         selected_item = next((item for item in DATA["items"] if item["id"] == item_id), None)
@@ -169,26 +163,95 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if not selected_item:
             return
 
-        upi_intent = f"upi://pay?pa={YOUR_UPI_ID}&pn=TanweerStore&am={selected_item['amount']}&cu=INR"
-        
-        caption = (
-            f"🛒 *{selected_item['name']}*\n\n"
-            f"💰 *Amount:* ₹{selected_item['amount']}\n"
-            f"💳 *UPI ID:* `{YOUR_UPI_ID}`\n\n"
-            f"📲 QR code scan karke ya neeche diye gaye button se payment karein[cite: 2]:"
-        )
-        
-        qr_buttons = InlineKeyboardMarkup([
-            [InlineKeyboardButton("🔗 Pay Now (UPI App)", url=upi_intent)],
-            [InlineKeyboardButton("❌ Cancel", callback_data="cancel_payment")]
-        ])
-        
-        try:
-            await query.message.reply_photo(photo=DATA["qr_code"], caption=caption, parse_mode="Markdown", reply_markup=qr_buttons)
-        except Exception:
-            await query.message.reply_text(caption, parse_mode="Markdown", reply_markup=qr_buttons)
+        wait_msg = await query.message.reply_text("⏳ ZapUPI se QR Code generate kiya ja raha hai...")
 
-    # Step 3: Jab user "💎 Crypto Payment" par click kare
+        payload = {
+            "key": ZAPUPI_API_KEY,
+            "client_txn_id": f"txn_{update.effective_user.id}_{int(os.urandom(4).hex(), 16)}",
+            "amount": str(selected_item['amount']),
+            "p_info": selected_item['name'],
+            "udf1": str(update.effective_user.id),
+            "udf2": item_id,
+            "redirect_url": f"https://t.me/{context.bot.username}"
+        }
+
+        try:
+            response = requests.post(ZAPUPI_API_URL, json=payload, timeout=15)
+            res_data = response.json()
+            print("ZapUPI Response:", res_data) # Render logs me check karne ke liye
+
+            # Response ke alag-alag formats ko handle karne ke liye
+            result = res_data.get("result") or res_data.get("data") or res_data
+            
+            qr_image_url = (
+                result.get("qr_code") or 
+                result.get("qrcode") or 
+                result.get("qr_image") or 
+                result.get("upi_qr_code") or
+                res_data.get("qr_code") or
+                res_data.get("upi_qr_code")
+            )
+            
+            payment_url = (
+                result.get("payment_url") or 
+                result.get("upi_intent") or 
+                result.get("intent") or 
+                result.get("upi_link") or
+                res_data.get("payment_url")
+            )
+
+            caption = (
+                f"🛒 *{selected_item['name']}*\n\n"
+                f"💰 *Amount:* ₹{selected_item['amount']}\n"
+                f"💳 *UPI ID:* `{YOUR_UPI_ID}`\n\n"
+                f"📲 **QR Code ko scan karke ya neeche diye gaye button se payment karein:**"
+            )
+
+            buttons = []
+            if payment_url:
+                buttons.append([InlineKeyboardButton("🔗 Pay Now (UPI App)", url=payment_url)])
+            else:
+                upi_intent = f"upi://pay?pa={YOUR_UPI_ID}&pn=TanweerStore&am={selected_item['amount']}&cu=INR"
+                buttons.append([InlineKeyboardButton("🔗 Pay Now (UPI App)", url=upi_intent)])
+                
+            buttons.append([InlineKeyboardButton("❌ Cancel", callback_data="cancel_payment")])
+            reply_markup = InlineKeyboardMarkup(buttons)
+
+            try:
+                await wait_msg.delete()
+            except Exception:
+                pass
+
+            if qr_image_url:
+                try:
+                    await query.message.reply_photo(photo=qr_image_url, caption=caption, parse_mode="Markdown", reply_markup=reply_markup)
+                    return
+                except Exception:
+                    pass
+            
+            # Agar direct image URL na chale ya na mile toh text ke sath link bhej do
+            await query.message.reply_text(caption, parse_mode="Markdown", reply_markup=reply_markup)
+
+        except Exception as e:
+            try:
+                await wait_msg.delete()
+            except Exception:
+                pass
+
+            upi_intent = f"upi://pay?pa={YOUR_UPI_ID}&pn=TanweerStore&am={selected_item['amount']}&cu=INR"
+            caption = (
+                f"🛒 *{selected_item['name']}*\n\n"
+                f"💰 *Amount:* ₹{selected_item['amount']}\n"
+                f"💳 *UPI ID:* `{YOUR_UPI_ID}`\n\n"
+                f"📲 **Pay Now par click karke payment complete karein:**"
+            )
+            err_markup = InlineKeyboardMarkup([
+                [InlineKeyboardButton("🔗 Pay Now (UPI App)", url=upi_intent)],
+                [InlineKeyboardButton("❌ Cancel", callback_data="cancel_payment")]
+            ])
+            await query.message.reply_text(caption, parse_mode="Markdown", reply_markup=err_markup)
+
+    # Step 3: Crypto Payment Click
     elif data.startswith("pay_crypto_"):
         await query.message.reply_text("💎 Crypto payment filhal available nahi hai. Kripya 🇮🇳 UPI Payment ka upyog karein.")
 
@@ -199,9 +262,6 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await query.message.delete()
         except Exception:
             pass
-
-    elif data == "customer_back":
-        await start(update, context)
 
 # ----------------- ADMIN DIRECT MSG TO USER -----------------
 async def send_user_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
