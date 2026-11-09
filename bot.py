@@ -24,49 +24,49 @@ WELCOME_MESSAGE = """▪️𝐂𝐄𝐑𝐓𝐈𝐅𝐈𝐄𝐃 𝐒𝐇𝐎𝐏
 
 *𝐃𝐀𝐈𝐋𝐘 𝐍𝐄𝐖 𝐕𝐈𝐃𝙴𝙾𝚂 𝐔𝐏𝐋𝐎𝐀𝐃𝙴𝙳✅
 
-𝐒𝐔𝐏𝐎𝐑𝐓 : @BOTSUPPORTHELL
+𝐒𝐔𝐏𝐎𝐑𝐓 : @STARK_SELLER7
 
 𝐃𝐄𝐌𝐎 𝐏𝙸𝙲𝚂: https://t.me/+8NSAu6AwbuQ1ZTk1
 𝐏𝙰𝚈𝙼𝙴𝙽𝚃 𝐏𝚁𝙾𝙾𝐅𝚂: https://t.me/+AnxkmFajMo01ZDVl
 𝐃𝐄𝐌𝙾 𝐕𝙸𝙳𝙴𝙾𝚂 : https://t.me/+qIaukTR44z1hYTk9"""
 
-DEFAULT_SUPPORT_USERNAME = "BOTSUPPORTHELL"
+DEFAULT_SUPPORT_USERNAME = "@STARK_SELLER7"
 
 # ---------------- 12 BUTTONS CONFIGURATION ----------------
-BTN_1_NAME  = "1. All Category Combo (₹199)"
-BTN_1_LINK  = "https://t.me/+ehTHId3ryhY3YmJl"
+BTN_1_NAME  = "❤️‍🔥𝐅𝐔𝐋𝐋 𝐏𝐀𝐂𝐊𝐀𝐆𝐄❤️‍🔥 𝐉𝐔𝐒𝐓 𝐀𝐓 ₹199/-"
+BTN_1_LINK  = "https://t.me/+bPhyrYiSBQozNDBl"
 
-BTN_2_NAME  = "2. Pack 2 (₹98)"
+BTN_2_NAME  = "𝐂𝐇𝐈𝐋𝐃 𝐂𝐎𝐑𝐍 𝐀𝐓 ₹𝟗𝟖/-"
 BTN_2_LINK  = "https://t.me/+bPhyrYiSBQozNDBl"
 
-BTN_3_NAME  = "3. Pack 3 (₹98)"
+BTN_3_NAME  = "𝐈𝐍𝐃𝐈𝐀𝐍 𝐑@𝐏𝐄 𝐀𝐓 ₹𝟗𝟖/-"
 BTN_3_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_4_NAME  = "4. Pack 4 (₹98)"
+BTN_4_NAME  = "𝐒𝐂𝐇𝐎𝐎𝐋 𝐆𝐈𝐑𝐋 𝐀𝐓 ₹𝟗𝟖/-"
 BTN_4_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_5_NAME  = "5. Pack 5 (₹98)"
+BTN_5_NAME  = "𝐌𝐎𝐌 𝐒𝐎𝐍 𝐀𝐓 ₹𝟗𝟖/-"
 BTN_5_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_6_NAME  = "6. Pack 6 (₹98)"
+BTN_6_NAME  = "𝐁𝐑𝐎 𝐒𝐈𝐒 𝐀𝐓 ₹𝟗𝟖/-"
 BTN_6_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_7_NAME  = "7. Pack 7 (₹98)"
+BTN_7_NAME  = "𝐕𝐈𝐑𝐀𝐋-𝐌𝐌𝐒-𝐋𝐖𝐀𝐊𝐄𝐃 𝐀𝐓 ₹𝟗𝟖/-"
 BTN_7_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_8_NAME  = "8. Pack 8 (₹98)"
+BTN_8_NAME  = "𝐈𝐍𝐂𝐄𝐒𝐓/𝐒𝐋𝐄𝐄𝐏𝐈𝐍𝐆𝐒 𝐀𝐓 ₹𝟗𝟖/-"
 BTN_8_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_9_NAME  = "9. Pack 9 (₹98)"
+BTN_9_NAME  = "𝐓𝐀𝐌𝐈𝐋 𝐀𝐋𝐋 𝐂𝐎𝐋𝐋𝐄𝐂𝐓𝐈𝐎𝐍 𝐀𝐓 ₹𝟗𝟖/-"
 BTN_9_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_10_NAME = "10. Pack 10 (₹98)"
+BTN_10_NAME = "𝐌𝐀𝐋𝐋𝐔 𝐀𝐋𝐋 𝐂𝐎𝐋𝐋𝐄𝐂𝐓𝐈𝐎𝐍 𝐀𝐓 ₹𝟗𝟖/-"
 BTN_10_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_11_NAME = "11. Pack 11 (₹98)"
+BTN_11_NAME = "𝐂𝐔𝐂𝐊𝐄𝐃 𝐀𝐓 ₹𝟗𝟖/-"
 BTN_11_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_12_NAME = "12. Pack 12 (₹98)"
+BTN_12_NAME = "𝐒𝐓𝐑𝐈𝐏𝐂𝐇𝐀𝐓/𝐒𝐍𝐀𝐏𝐂𝐇𝐀𝐓 𝐀𝐓 ₹𝟗𝟖/-"
 BTN_12_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
 # =====================================================================
