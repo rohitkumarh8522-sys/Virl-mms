@@ -6,7 +6,7 @@ from telegram.ext import (
 )
 
 # =====================================================================
-# ✏️ EASY EDIT SECTION: 12 Buttons, Links & UPI Settings
+# ✏️ EASY EDIT SECTION: 12 Buttons, Links & Support Settings
 # =====================================================================
 
 WELCOME_MESSAGE = """🕊️WELCOME TO TANWEER STORE🕊️
@@ -20,9 +20,6 @@ EACH CATEGORY CONTAINS 4 GROUPS (1200-1800 VIDEOS PER GROUP)
 💥DEMO VIDEOS 👉 https://t.me/+2jSY317AQww2ZjM9"""
 
 DEFAULT_SUPPORT_USERNAME = "G_KlNG"
-
-# Apni UPI ID yahan dalein
-YOUR_UPI_ID = "roxxxx@axl"
 
 # ---------------- 12 BUTTONS CONFIGURATION ----------------
 BTN_1_NAME  = "1. All Category Combo (₹199)"
@@ -115,7 +112,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     keyboard = []
     for item in DATA["items"]:
-        keyboard.append([InlineKeyboardButton(f"{item['name']} - ₹{item['amount']}", callback_data=f"select_{item['id']}")])
+        # Direct button par click karne par link khulne ka setup
+        keyboard.append([InlineKeyboardButton(f"{item['name']} - ₹{item['amount']}", url=item['link'])])
         
     support_user = CONFIG.get("support_username", DEFAULT_SUPPORT_USERNAME)
     keyboard.append([InlineKeyboardButton("💬 Support / Contact Admin", url=f"https://t.me/{support_user}")])
@@ -126,67 +124,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(welcome_msg, reply_markup=reply_markup)
     elif update.callback_query:
         await update.callback_query.message.reply_text(welcome_msg, reply_markup=reply_markup)
-
-# ----------------- CALLBACK HANDLER -----------------
-async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.callback_query
-    await query.answer()
-    data = query.data
-
-    # Step 1: 12 buttons me se kisi par click karne par payment option dikhana
-    if data.startswith("select_"):
-        item_id = data.replace("select_", "")
-        selected_item = next((item for item in DATA["items"] if item["id"] == item_id), None)
-        
-        if not selected_item:
-            await query.message.reply_text("❌ Ye option abhi uplabdha nahi hai.")
-            return
-        
-        text = f"*{selected_item['name']}*\n\nSelect your preferred payment method below:"
-        
-        method_keyboard = InlineKeyboardMarkup([
-            [InlineKeyboardButton("🇮🇳 UPI Payment", callback_data=f"pay_upi_{item_id}")],
-            [InlineKeyboardButton("💎 Crypto Payment", callback_data=f"pay_crypto_{item_id}")],
-            [InlineKeyboardButton("❌ Cancel", callback_data="cancel_payment")]
-        ])
-        
-        await query.message.reply_text(text, parse_mode="Markdown", reply_markup=method_keyboard)
-
-    # Step 2: UPI Payment par click karne par turant payment details aur direct pay button dena
-    elif data.startswith("pay_upi_"):
-        item_id = data.replace("pay_upi_", "")
-        selected_item = next((item for item in DATA["items"] if item["id"] == item_id), None)
-        
-        if not selected_item:
-            return
-
-        upi_intent = f"upi://pay?pa={YOUR_UPI_ID}&pn=TanweerStore&am={selected_item['amount']}&cu=INR"
-
-        caption = (
-            f"🛒 *{selected_item['name']}*\n\n"
-            f"💰 *Amount:* ₹{selected_item['amount']}\n"
-            f"💳 *UPI ID:* `{YOUR_UPI_ID}`\n\n"
-            f"📲 **Neeche diye gaye 'Pay Now' button par click karke payment karein:**"
-        )
-        
-        buttons = InlineKeyboardMarkup([
-            [InlineKeyboardButton("🔗 Pay Now (UPI App)", url=upi_intent)],
-            [InlineKeyboardButton("❌ Cancel", callback_data="cancel_payment")]
-        ])
-        
-        await query.message.reply_text(caption, parse_mode="Markdown", reply_markup=buttons)
-
-    # Step 3: Crypto Payment Click
-    elif data.startswith("pay_crypto_"):
-        await query.message.reply_text("💎 Crypto payment filhal available nahi hai. Kripya 🇮🇳 UPI Payment ka upyog karein.")
-
-    # Step 4: Cancel Button
-    elif data == "cancel_payment":
-        await query.message.reply_text("❌ Payment cancel kar di gayi hai.")
-        try:
-            await query.message.delete()
-        except Exception:
-            pass
 
 # ----------------- ADMIN DIRECT MSG TO USER -----------------
 async def send_user_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -248,7 +185,6 @@ def main():
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("admin", admin_panel))
     app.add_handler(CommandHandler("send", send_user_message))
-    app.add_handler(CallbackQueryHandler(button_handler))
 
     print(f"Starting webhook on port {PORT} with URL {WEBHOOK_URL}...")
     
