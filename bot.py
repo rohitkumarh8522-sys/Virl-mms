@@ -17,17 +17,17 @@ WELCOME_MESSAGE = """▪️𝐂𝐄𝐑𝐓𝐈𝐅𝐈𝐄𝐃 𝐒𝐇𝐎𝐏
 
 💥𝐁𝐔𝐘 𝐅𝐔𝐋𝐋 𝐏𝐀𝐂𝐊𝐀𝐆𝐄 𝐀𝐓 𝟏𝟗𝟗 𝐀𝐍𝐃 𝐆𝐄𝐓 𝟐𝟎𝟎+𝐃𝐀𝐈𝐋𝐘 𝐍𝐄𝐖 𝐔𝐏𝐋𝐎𝐀𝐃𝐄𝐃 𝐆𝐑𝐎𝐔𝐏𝐒
 
-*𝐎𝐍𝐄 𝐓𝐈𝐌𝐄 𝐏𝐀𝐘𝐌𝐄𝐍𝐓 𝐏𝐄𝐑𝐌𝐄𝐍𝐄𝐍𝐓 𝐀𝐂𝐂𝐄𝐒𝐒*
+*𝐎𝐍𝐄 𝐓𝐈𝐌𝐄 𝐏𝐀𝐘𝐌𝐄𝐍𝐓 𝐏𝐄𝐑𝐌𝐄𝐍𝐄𝐍𝐓 𝐀𝙲𝙲𝙴𝚂𝚂*
 
-𝐍𝐎 𝐄𝐗𝐓𝐑𝐀 𝐂𝐇𝐀𝐑𝐆𝐄
-𝐍𝐎 𝐄𝐗𝐏𝐈𝐑𝐄𝐃 𝐋𝐈𝐍𝐊𝐒
+𝐍𝐎 𝐄𝐗𝐓𝐑𝐀 𝐂𝐇𝐀𝐑𝙶𝙴
+𝐍𝐎 𝐄𝚇𝙿𝙸𝚁𝙴𝙳 𝐋𝐈𝐍𝐊𝐒
 
 *𝐃𝐀𝐈𝐋𝐘 𝐍𝐄𝐖 𝐕𝐈𝐃𝐄𝐎𝐒 𝐔𝐏𝐋𝐎𝐀𝐃𝐄𝐃✅
 
 𝐒𝐔𝐏𝐎𝐑𝐓 : @BOTSUPPORTHELL
 
 𝐃𝐄𝐌𝐎 𝐏𝐈𝐂𝐒: https://t.me/+8NSAu6AwbuQ1ZTk1
-𝐏𝐀𝐘𝐌𝙴𝙽𝚃 𝐏𝐑𝐎𝐎𝐅𝐒: https://t.me/+AnxkmFajMo01ZDVl
+𝐏𝐀𝐘𝙼𝙴𝙽𝚃 𝐏𝐑𝐎𝐎𝐅𝐒: https://t.me/+AnxkmFajMo01ZDVl
 𝐃𝐄𝐌𝐎 𝐕𝐈𝐃𝐄𝐎𝐒 : https://t.me/+qIaukTR44z1hYTk9"""
 
 DEFAULT_SUPPORT_USERNAME = "BOTSUPPORTHELL"
@@ -86,7 +86,6 @@ STATS = {"pending": 0, "approved": 0, "rejected": 0}
 USER_MAP = {}
 CONFIG = {"support_username": DEFAULT_SUPPORT_USERNAME}
 
-# Separate QR storage for 199 and 98 packs
 QR_CONFIG = {
     "qr_199": DEFAULT_QR,
     "qr_98": DEFAULT_QR
@@ -130,6 +129,15 @@ DATA = {
 
 WAITING_BTN_NAME, WAITING_BTN_DETAILS, WAITING_BTN_LINK, WAITING_WELCOME_TEXT, WAITING_SUPPORT_USER = range(5)
 
+# ----------------- HELPER: MAIN MENU KEYBOARD -----------------
+def get_main_menu_markup():
+    keyboard = []
+    for item in DATA["items"]:
+        keyboard.append([InlineKeyboardButton(item["name"], callback_data=f"select_{item['id']}")])
+    support_user = CONFIG.get("support_username", DEFAULT_SUPPORT_USERNAME)
+    keyboard.append([InlineKeyboardButton("💬 Support / Contact Admin", url=f"https://t.me/{support_user}")])
+    return InlineKeyboardMarkup(keyboard)
+
 # ----------------- CUSTOMER FLOW -----------------
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
@@ -137,20 +145,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         USER_MAP[user.username.lower()] = user.id
 
     welcome_msg = DATA.get("welcome_text")
-    
-    keyboard = []
-    for item in DATA["items"]:
-        keyboard.append([InlineKeyboardButton(item["name"], callback_data=f"select_{item['id']}")])
-        
-    support_user = CONFIG.get("support_username", DEFAULT_SUPPORT_USERNAME)
-    keyboard.append([InlineKeyboardButton("💬 Support / Contact Admin", url=f"https://t.me/{support_user}")])
-
-    reply_markup = InlineKeyboardMarkup(keyboard)
+    reply_markup = get_main_menu_markup()
     
     if update.message:
         await update.message.reply_text(welcome_msg, reply_markup=reply_markup)
     elif update.callback_query:
-        await update.callback_query.message.reply_text(welcome_msg, reply_markup=reply_markup)
+        try:
+            await update.callback_query.message.edit_text(welcome_msg, reply_markup=reply_markup)
+        except Exception:
+            await update.callback_query.message.reply_text(welcome_msg, reply_markup=reply_markup)
 
 # ----------------- ADMIN DIRECT MSG TO USER -----------------
 async def send_user_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -159,13 +162,7 @@ async def send_user_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     if not context.args or len(context.args) < 2:
-        await update.message.reply_text(
-            "⚠️ Command Use Format:\n"
-            "/send <User_ID ya @username> <Message>\n\n"
-            "Example:\n"
-            "/send 123456789 Aapka payment mil gaya hai!\n"
-            "/send @john_doe Aapka access active hai."
-        )
+        await update.message.reply_text("⚠️ Format: `/send <User_ID ya @username> <Message>`")
         return
 
     target = context.args[0].strip()
@@ -175,24 +172,20 @@ async def send_user_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if target.startswith("@"):
         uname = target.replace("@", "").lower()
         target_id = USER_MAP.get(uname)
-        if not target_id:
-            await update.message.reply_text(f"❌ Username @{uname} ki ID nahi mili. User ko pehle /start dabana hoga.")
-            return
     else:
         try:
             target_id = int(target)
         except ValueError:
-            await update.message.reply_text("❌ Kripya sahi User ID ya @username dalein.")
-            return
+            pass
 
-    try:
-        await context.bot.send_message(
-            chat_id=target_id,
-            text=f"📩 Admin Message:\n\n{msg_text}"
-        )
-        await update.message.reply_text(f"✅ Message user {target_id} ko safaltapoorvak bhej diya gaya hai!")
-    except Exception as e:
-        await update.message.reply_text(f"❌ Message nahi bhej paaye: {str(e)}")
+    if target_id:
+        try:
+            await context.bot.send_message(chat_id=target_id, text=f"📩 Admin Message:\n\n{msg_text}")
+            await update.message.reply_text("✅ Message bhej diya gaya!")
+        except Exception as e:
+            await update.message.reply_text(f"❌ Error: {str(e)}")
+    else:
+        await update.message.reply_text("❌ User nahi mila.")
 
 # ----------------- ADMIN PANEL -----------------
 async def admin_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -233,6 +226,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer()
     data = query.data
 
+    # Step 1: Pack select karne par Payment Methods (UPI / Crypto) dikhana (Message Edit hoga)
     if data.startswith("select_"):
         item_id = data.replace("select_", "")
         selected_item = next((item for item in DATA["items"] if item["id"] == item_id), None)
@@ -243,27 +237,78 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         context.user_data["selected_item_id"] = item_id
         
-        caption = f"🛒 {selected_item['name']}\n\n{selected_item['details']}\n\n-----------------------------------\n💳 Pay karke '✅ I have paid' button dabayein."
+        text = f"🛒 *{selected_item['name']}*\n\nSelect your preferred payment method below:"
+        
+        method_keyboard = InlineKeyboardMarkup([
+            [InlineKeyboardButton("🇮🇳 UPI Payment", callback_data=f"pay_upi_{item_id}")],
+            [InlineKeyboardButton("💎 Crypto Payment", callback_data=f"pay_crypto_{item_id}")],
+            [InlineKeyboardButton("🔙 Back to Menu", callback_data="customer_back")]
+        ])
+        
+        try:
+            # Agar purana message photo tha toh use delete karke text bhejo, ya text tha toh edit karo
+            if query.message.photo:
+                await query.message.delete()
+                await query.message.reply_text(text, parse_mode="Markdown", reply_markup=method_keyboard)
+            else:
+                await query.message.edit_text(text, parse_mode="Markdown", reply_markup=method_keyboard)
+        except Exception:
+            await query.message.reply_text(text, parse_mode="Markdown", reply_markup=method_keyboard)
+
+    # Step 2: UPI Payment par click karne par QR Code aur Details dikhana
+    elif data.startswith("pay_upi_"):
+        item_id = data.replace("pay_upi_", "")
+        selected_item = next((item for item in DATA["items"] if item["id"] == item_id), None)
+        
+        if not selected_item:
+            return
+
+        context.user_data["selected_item_id"] = item_id
+        caption = f"🛒 *{selected_item['name']}*\n\n{selected_item['details']}\n\n-----------------------------------\n💳 Pay karke '✅ I have paid' button dabayein."
         
         pay_buttons = InlineKeyboardMarkup([
             [InlineKeyboardButton("✅ I have paid", callback_data="paid")],
-            [InlineKeyboardButton("🔙 Back to Main Menu", callback_data="customer_back")]
+            [InlineKeyboardButton(f"🔙 Back", callback_data=f"select_{item_id}")]
         ])
         
-        # Select appropriate QR code based on price type
         qr_to_send = QR_CONFIG["qr_199"] if selected_item.get("price_type") == "199" else QR_CONFIG["qr_98"]
         
         try:
-            await query.message.reply_photo(photo=qr_to_send, caption=caption, reply_markup=pay_buttons)
+            await query.message.delete()
+            await context.bot.send_photo(
+                chat_id=query.message.chat_id,
+                photo=qr_to_send,
+                caption=caption,
+                reply_markup=pay_buttons
+            )
         except Exception:
             await query.message.reply_text(caption, reply_markup=pay_buttons)
+
+    # Step 3: Crypto Payment Click
+    elif data.startswith("pay_crypto_"):
+        item_id = data.replace("pay_crypto_", "")
+        text = "💎 Crypto payment filhal available nahi hai. Kripya 🇮🇳 UPI Payment ka upyog karein."
+        back_kb = InlineKeyboardMarkup([[InlineKeyboardButton("🔙 Back", callback_data=f"select_{item_id}")]])
+        try:
+            await query.message.edit_text(text, reply_markup=back_kb)
+        except Exception:
+            await query.message.reply_text(text, reply_markup=back_kb)
 
     elif data == "paid":
         context.user_data["waiting_for_proof"] = True
         await query.message.reply_text("📸 Kripya apne payment ka Screenshot yahan bhejein:")
 
     elif data == "customer_back":
-        await start(update, context)
+        welcome_msg = DATA.get("welcome_text")
+        reply_markup = get_main_menu_markup()
+        try:
+            if query.message.photo:
+                await query.message.delete()
+                await query.message.reply_text(welcome_msg, reply_markup=reply_markup)
+            else:
+                await query.message.edit_text(welcome_msg, reply_markup=reply_markup)
+        except Exception:
+            await query.message.reply_text(welcome_msg, reply_markup=reply_markup)
 
     elif data.startswith("approve:"):
         payload = data.replace("approve:", "")
@@ -315,7 +360,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         for item in DATA["items"]:
             keyboard.append([InlineKeyboardButton(f"❌ Delete {item['name']}", callback_data=f"confirm_del_{item['id']}")])
         keyboard.append([InlineKeyboardButton("🔙 Back to Admin", callback_data="admin_back")])
-        await query.message.edit_text("Kis Button को Delete karna chahte hain?", reply_markup=InlineKeyboardMarkup(keyboard))
+        await query.message.edit_text("Kis Button ko Delete karna chahte hain?", reply_markup=InlineKeyboardMarkup(keyboard))
 
     elif data.startswith("confirm_del_"):
         item_id = data.replace("confirm_del_", "")
@@ -392,7 +437,7 @@ async def get_btn_link(update: Update, context: ContextTypes.DEFAULT_TYPE):
     new_item = {
         "id": f"btn_{len(DATA['items']) + 1}",
         "name": btn_name, 
-        "details": DETAILS_98,  # New buttons will use ₹98 details by default
+        "details": DETAILS_98,
         "link": btn_link,
         "price_type": "98"
     }
