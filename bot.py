@@ -1,5 +1,5 @@
 import os
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, InputMediaVideo
 from telegram.ext import (
     ApplicationBuilder, CommandHandler, CallbackQueryHandler, 
     MessageHandler, ConversationHandler, filters, ContextTypes
@@ -20,13 +20,12 @@ WELCOME_MESSAGE = """▪️𝐂𝐄𝐑𝐓𝐈𝐅𝐈𝐄𝐃 𝐒𝐇𝐎𝐏
 *𝐎𝐍𝐄 𝐓𝐈𝐌𝐄 𝙿𝙰𝚈𝙼𝙴𝙽𝚃 𝙿𝙴𝚁𝙼𝙴𝙽𝙴𝙽𝚃 𝙰𝙲𝙲𝙴𝚂𝚂*
 
 𝐍𝐎 𝙴𝚇𝚃𝚁𝙰 𝙲𝙷𝙰𝚁𝙶𝙴
-𝐍𝙾 𝙴𝚇𝙿𝙸𝚁𝙴𝙳 𝐋𝙸𝙽𝐊𝚂
+𝐍𝙾 𝙴𝚇𝙿𝙸𝚁𝙴𝙳 𝐋𝙸𝐍𝐊𝚂
 
-*𝐃𝐀𝐈𝐋𝐘 𝐍𝐄𝐖 𝐕𝙸𝙳𝙴𝙾𝚂 𝐔𝙿𝙻𝙾𝙰𝐃𝙴𝙳✅
+*𝐃𝐀𝐈𝐋𝐘 𝐍𝐄𝐖 𝐕𝙸𝙳𝙴𝙾𝚂 𝐔𝙿𝙻𝐎𝙰𝐃𝙴𝙳✅
 
 𝐃𝐄𝐌𝙾 𝐕𝙸𝙳𝙴𝙾𝚂 : https://t.me/+qIaukTR44z1hYTk9"""
 
-DEFAULT_SUPPORT_USERNAME = "BOTSUPPORTHELL"
 REPORT_USERNAME = "BOTSUPPORTHELL"
 HOW_TO_USE_TEXT = "📌 **How to Use / Guide:**\n\n1. Select your preferred pack from the menu.\n2. Scan the QR code and complete the payment.\n3. Tap 'I have paid' and upload your payment screenshot.\n4. Admin will verify and send your access link instantly!"
 
@@ -68,7 +67,6 @@ DEFAULT_QR = "https://raw.githubusercontent.com/telegram-bot-sdk/telegram-bot-sd
 STATS = {"pending": 0, "approved": 0, "rejected": 0}
 USER_MAP = {}
 CONFIG = {
-    "support_username": DEFAULT_SUPPORT_USERNAME,
     "report_username": REPORT_USERNAME,
     "how_to_use": HOW_TO_USE_TEXT
 }
@@ -116,21 +114,19 @@ DATA = {
     ]
 }
 
-WAITING_WELCOME_TEXT, WAITING_SUPPORT_USER, WAITING_REPORT_USER, WAITING_HOW_TO = range(4)
+WAITING_WELCOME_TEXT, WAITING_REPORT_USER, WAITING_HOW_TO = range(3)
 
 def get_main_menu_markup():
     keyboard = []
     for item in DATA["items"]:
         keyboard.append([InlineKeyboardButton(item["name"], callback_data=f"select_{item['id']}")])
     
-    # Extra 2 buttons: How to Use & Report Issue
+    # Only How to Use & Report Issue buttons (Support button removed)
     keyboard.append([
         InlineKeyboardButton("📌 How to Use", callback_data="how_to_use"),
         InlineKeyboardButton("🚨 Report Issue", callback_data="report_issue")
     ])
     
-    support_user = CONFIG.get("support_username", DEFAULT_SUPPORT_USERNAME)
-    keyboard.append([InlineKeyboardButton("💬 Support / Contact Admin", url=f"https://t.me/{support_user}")])
     return InlineKeyboardMarkup(keyboard)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -140,10 +136,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     chat_id = update.effective_chat.id
     
-    # 1. Send welcome videos first if available
-    for video_id in MEDIA_CONFIG["welcome_videos"]:
+    # Send all welcome videos together as an album if available
+    videos = MEDIA_CONFIG["welcome_videos"]
+    if videos:
         try:
-            await context.bot.send_video(chat_id=chat_id, video=video_id)
+            media_group = [InputMediaVideo(media=vid) for vid in videos[:10]] # Telegram allows max 10 media in a group
+            await context.bot.send_media_group(chat_id=chat_id, media=media_group)
         except Exception:
             pass
 
@@ -202,7 +200,7 @@ async def admin_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "⚙️ **TANWEER STORE - Admin Control Panel**\n\n"
         f"📊 **Analytics:**\n"
         f"⏳ Pending: {STATS['pending']} | ✅ Approved: {STATS['approved']} | ❌ Rejected: {STATS['rejected']}\n\n"
-        f"👤 Support: @{CONFIG['support_username']} | 🚨 Report: @{CONFIG['report_username']}\n"
+        f"🚨 Report Username: @{CONFIG['report_username']}\n"
         f"🎬 Welcome Videos Uploaded: {len(MEDIA_CONFIG['welcome_videos'])}\n\n"
         "💬 Direct Msg: `/send <ID> <Message>`"
     )
@@ -213,7 +211,7 @@ async def admin_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
         [InlineKeyboardButton("🗑️ Clear All Welcome Videos", callback_data="admin_clear_videos")],
         [InlineKeyboardButton("🖼️ Change Payment QR Code", callback_data="admin_change_qr")],
         [InlineKeyboardButton("📌 Edit How to Use Text", callback_data="admin_edit_how_to")],
-        [InlineKeyboardButton("✏️ Edit Support & Report User", callback_data="admin_edit_users")],
+        [InlineKeyboardButton("✏️ Edit Report Username", callback_data="admin_edit_users")],
         [InlineKeyboardButton("🗑️ Delete Button", callback_data="admin_del_btn")]
     ])
     
@@ -501,8 +499,7 @@ async def start_edit_users(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def get_report_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
     uname = update.message.text.replace("@", "").strip()
     CONFIG["report_username"] = uname
-    CONFIG["support_username"] = uname
-    await update.message.reply_text(f"✅ Support aur Report username update ho gaya: @{uname}")
+    await update.message.reply_text(f"✅ Report username update ho gaya: @{uname}")
     await admin_panel(update, context)
     return ConversationHandler.END
 
