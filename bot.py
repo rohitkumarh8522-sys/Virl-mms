@@ -9,24 +9,11 @@ from telegram.ext import (
 # ✏️ EASY EDIT SECTION: 7 Buttons, Links & Settings
 # =====================================================================
 
-WELCOME_MESSAGE = """▪️𝐂𝐄𝐑𝐓𝐈𝐅𝐈𝐄𝐃 𝐒𝐇𝐎𝐏▪️
+WELCOME_MESSAGE = """𝗦𝗘𝗟𝗟𝗘𝗥 𝗜𝗗 :- @SeIIerq
 
-!!𝐍𝐄𝐖 𝐂𝐎𝐋𝐄𝐂𝐓𝐈𝐎𝐍!!
+𝗣𝗥𝗢𝗢𝗙:- t.me/+QtunfHJIqyowMjg9
 
- ▪️𝐄𝐕𝐄𝐑𝐘 𝐂𝐀𝐓𝐄𝐆𝐎𝐑𝐘  𝐈𝐍𝐂𝐋𝐔𝐃𝐄𝐒 8 𝐆𝐑𝐎𝐔𝐏𝐒!!!
-
-💥𝐁𝐔𝐘 𝐅𝐔𝐋𝐋 𝐏𝐀𝐂𝐊𝐀𝐆𝐄 𝐀𝐓 𝟏𝟗𝟗 𝐀𝐍𝐃 𝐆𝐄𝐓 𝟐𝟎𝟎+𝐃𝐀𝐈𝐋𝐘 𝐍𝐄𝐖 𝐔𝐏𝐋𝐎𝐀𝐃𝐄𝐃 𝐆𝐑𝐎𝐔𝐏𝐒
-
-*𝐎𝐍𝐄 𝐓𝐈𝐌𝐄 𝙿𝙰𝚈𝙼𝙴𝙽𝚃 𝙿𝙴𝚁𝙼𝙴𝙽𝙴𝙽𝚃 𝙰𝙲𝙲𝙴𝚂𝚂*
-
-𝐍𝐎 𝙴𝚇𝚃𝚁𝙰 𝙲𝙷𝙰𝚁𝙶𝙴
-𝐍𝙾 𝙴𝚇𝙿𝙸𝚁𝙴𝙳 𝐋𝙸𝐍𝐊𝚂
-
-*𝐃𝐀𝐈𝐋𝐘 𝐍𝐄𝐖 𝐕𝙸𝙳𝙴𝙾𝚂 𝐔𝙿𝙻𝐎𝐀𝐃𝙴𝙳✅
-
-𝐃𝐄𝐌𝙾 𝐕𝙸𝙳𝙴𝙾𝚂 : https://t.me/+qIaukTR44z1hYTk9"""
-
-REPORT_USERNAME = "BOTSUPPORTHELL"
+𝗗𝗘𝗠𝗢:- t.me/+AXcdDYSki31kMmM1"
 
 # 7 Buttons Configuration (1 Combo ₹199 and 6 Packs ₹98)
 BTN_1_NAME  = "1. All Category Combo (₹199)"
