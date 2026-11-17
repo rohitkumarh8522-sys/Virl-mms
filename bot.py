@@ -55,7 +55,7 @@ DEFAULT_QR = "https://raw.githubusercontent.com/telegram-bot-sdk/telegram-bot-sd
 STATS = {"pending": 0, "approved": 0, "rejected": 0}
 USER_MAP = {}
 CONFIG = {
-    "report_username": @STARK_SELLER7 ,
+    "report_username": REPORT_USERNAME,
 }
 
 MEDIA_CONFIG = {
@@ -109,7 +109,7 @@ def get_main_menu_markup():
     for item in DATA["items"]:
         keyboard.append([InlineKeyboardButton(item["name"], callback_data=f"select_{item['id']}")])
     
-    # Sirf How to Use & Report Issue buttons (Support button permanently removed)
+    # Sirf How to Use & Report Issue buttons
     keyboard.append([
         InlineKeyboardButton("📌 How to Use", callback_data="how_to_use"),
         InlineKeyboardButton("🚨 Report Issue", callback_data="report_issue")
@@ -501,7 +501,7 @@ async def start_change_qr(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def start_edit_users(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    await query.message.reply_text("✏️ Naya Report Issue Username bhejein (bina @ ke, jaise: BOTSUPPORTHELL):")
+    await query.message.reply_text("✏️ Naya Report Issue Username bhejein (bina @ ke, jaise: STARK_SELLER7):")
     return WAITING_REPORT_USER
 
 async def get_report_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
