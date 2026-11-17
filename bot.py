@@ -9,13 +9,13 @@ from telegram.ext import (
 # ✏️ EASY EDIT SECTION: Welcome Message, 7 Buttons & Settings
 # =====================================================================
 
-WELCOME_MESSAGE = """𝗦𝗘𝗟𝗟𝗘𝗥 𝗜𝗗 :- @SeIIerq
+WELCOME_MESSAGE = """𝗦𝗘𝗟𝗟𝗘𝗥 𝗜𝗗 :- @STARK_SELLER7
 
 𝗣𝗥𝗢𝗢𝗙:- t.me/+QtunfHJIqyowMjg9
 
 𝗗𝗘𝗠𝗢:- t.me/+AXcdDYSki31kMmM1"""
 
-REPORT_USERNAME = "BOTSUPPORTHELL"
+REPORT_USERNAME = "STARK_SELLER7"
 
 # 7 Buttons Configuration (1 Combo ₹199 and 6 Packs ₹98)
 BTN_1_NAME  = "1. All Category Combo (₹199)"
@@ -55,7 +55,7 @@ DEFAULT_QR = "https://raw.githubusercontent.com/telegram-bot-sdk/telegram-bot-sd
 STATS = {"pending": 0, "approved": 0, "rejected": 0}
 USER_MAP = {}
 CONFIG = {
-    "report_username": REPORT_USERNAME,
+    "report_username": @STARK_SELLER7 ,
 }
 
 MEDIA_CONFIG = {
