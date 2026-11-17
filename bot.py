@@ -22,12 +22,11 @@ WELCOME_MESSAGE = """▪️𝐂𝐄𝐑𝐓𝐈𝐅𝐈𝐄𝐃 𝐒𝐇𝐎𝐏
 𝐍𝐎 𝙴𝚇𝚃𝚁𝙰 𝙲𝙷𝙰𝚁𝙶𝙴
 𝐍𝙾 𝙴𝚇𝙿𝙸𝚁𝙴𝙳 𝐋𝙸𝐍𝐊𝚂
 
-*𝐃𝐀𝐈𝐋𝐘 𝐍𝐄𝐖 𝐕𝙸𝙳𝙴𝙾𝚂 𝐔𝙿𝙻𝐎𝙰𝐃𝙴𝙳✅
+*𝐃𝐀𝐈𝐋𝐘 𝐍𝐄𝐖 𝐕𝙸𝙳𝙴𝙾𝚂 𝐔𝙿𝙻𝐎𝐀𝐃𝙴𝙳✅
 
 𝐃𝐄𝐌𝙾 𝐕𝙸𝙳𝙴𝙾𝚂 : https://t.me/+qIaukTR44z1hYTk9"""
 
 REPORT_USERNAME = "BOTSUPPORTHELL"
-HOW_TO_USE_TEXT = "📌 **How to Use / Guide:**\n\n1. Select your preferred pack from the menu.\n2. Scan the QR code and complete the payment.\n3. Tap 'I have paid' and upload your payment screenshot.\n4. Admin will verify and send your access link instantly!"
 
 # 7 Buttons Configuration (1 Combo ₹199 and 6 Packs ₹98)
 BTN_1_NAME  = "1. All Category Combo (₹199)"
@@ -68,11 +67,11 @@ STATS = {"pending": 0, "approved": 0, "rejected": 0}
 USER_MAP = {}
 CONFIG = {
     "report_username": REPORT_USERNAME,
-    "how_to_use": HOW_TO_USE_TEXT
 }
 
 MEDIA_CONFIG = {
-    "welcome_videos": [] # List to store file_ids of welcome videos
+    "welcome_videos": [],       # Start hone par dikhne wale videos
+    "how_to_use_video": None    # 'How to Use' ke liye alag video
 }
 
 QR_IMAGE = DEFAULT_QR
@@ -114,14 +113,14 @@ DATA = {
     ]
 }
 
-WAITING_WELCOME_TEXT, WAITING_REPORT_USER, WAITING_HOW_TO = range(3)
+WAITING_WELCOME_TEXT, WAITING_REPORT_USER = range(2)
 
 def get_main_menu_markup():
     keyboard = []
     for item in DATA["items"]:
         keyboard.append([InlineKeyboardButton(item["name"], callback_data=f"select_{item['id']}")])
     
-    # Only How to Use & Report Issue buttons (Support button removed)
+    # Sirf How to Use & Report Issue buttons (Support button permanently removed)
     keyboard.append([
         InlineKeyboardButton("📌 How to Use", callback_data="how_to_use"),
         InlineKeyboardButton("🚨 Report Issue", callback_data="report_issue")
@@ -140,7 +139,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     videos = MEDIA_CONFIG["welcome_videos"]
     if videos:
         try:
-            media_group = [InputMediaVideo(media=vid) for vid in videos[:10]] # Telegram allows max 10 media in a group
+            media_group = [InputMediaVideo(media=vid) for vid in videos[:10]]
             await context.bot.send_media_group(chat_id=chat_id, media=media_group)
         except Exception:
             pass
@@ -201,16 +200,16 @@ async def admin_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"📊 **Analytics:**\n"
         f"⏳ Pending: {STATS['pending']} | ✅ Approved: {STATS['approved']} | ❌ Rejected: {STATS['rejected']}\n\n"
         f"🚨 Report Username: @{CONFIG['report_username']}\n"
-        f"🎬 Welcome Videos Uploaded: {len(MEDIA_CONFIG['welcome_videos'])}\n\n"
+        f"🎬 Welcome Videos: {len(MEDIA_CONFIG['welcome_videos'])} | 📌 How to Use Video: {'Set ✅' if MEDIA_CONFIG['how_to_use_video'] else 'Not Set ❌'}\n\n"
         "💬 Direct Msg: `/send <ID> <Message>`"
     )
     
     admin_buttons = InlineKeyboardMarkup([
         [InlineKeyboardButton("✏️ Edit Welcome Text", callback_data="admin_edit_welcome")],
         [InlineKeyboardButton("🎬 Add Welcome Video", callback_data="admin_add_video")],
+        [InlineKeyboardButton("🎥 Add/Change How to Use Video", callback_data="admin_how_to_video")],
         [InlineKeyboardButton("🗑️ Clear All Welcome Videos", callback_data="admin_clear_videos")],
         [InlineKeyboardButton("🖼️ Change Payment QR Code", callback_data="admin_change_qr")],
-        [InlineKeyboardButton("📌 Edit How to Use Text", callback_data="admin_edit_how_to")],
         [InlineKeyboardButton("✏️ Edit Report Username", callback_data="admin_edit_users")],
         [InlineKeyboardButton("🗑️ Delete Button", callback_data="admin_del_btn")]
     ])
@@ -296,23 +295,43 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await query.message.reply_text(text, reply_markup=back_kb)
 
     elif data == "how_to_use":
-        text = CONFIG.get("how_to_use", HOW_TO_USE_TEXT)
-        back_kb = InlineKeyboardMarkup([[InlineKeyboardButton("🔙 Back to Menu", callback_data="customer_back")]])
+        chat_id = query.message.chat_id
+        vid = MEDIA_CONFIG.get("how_to_use_video")
+        
         try:
-            if query.message.photo:
+            if query.message.photo or query.message.video:
                 await query.message.delete()
-                await query.message.reply_text(text, parse_mode="Markdown", reply_markup=back_kb)
             else:
-                await query.message.edit_text(text, parse_mode="Markdown", reply_markup=back_kb)
-        except Exception:
-            await query.message.reply_text(text, parse_mode="Markdown", reply_markup=back_kb)
+                try:
+                    await query.message.delete()
+                except Exception:
+                    pass
+
+            back_kb = InlineKeyboardMarkup([[InlineKeyboardButton("🔙 Back to Menu", callback_data="customer_back")]])
+            
+            if vid:
+                await context.bot.send_video(
+                    chat_id=chat_id, 
+                    video=vid, 
+                    caption="📌 **How to Use / Guide Video**", 
+                    parse_mode="Markdown", 
+                    reply_markup=back_kb
+                )
+            else:
+                await context.bot.send_message(
+                    chat_id=chat_id, 
+                    text="⚠️ 'How to Use' video abhi admin dwara set nahi kiya gaya hai.", 
+                    reply_markup=back_kb
+                )
+        except Exception as e:
+            print("Error sending how to use video:", e)
 
     elif data == "report_issue":
         rep_user = CONFIG.get("report_username", REPORT_USERNAME)
         text = f"🚨 **Report an Issue**\n\nAgar aapko koi samasya aa rahi hai ya payment verification mein deri ho rahi hai, toh turant hamare support se contact karein:\n\n👉 @{rep_user}"
         back_kb = InlineKeyboardMarkup([[InlineKeyboardButton("🔙 Back to Menu", callback_data="customer_back")]])
         try:
-            if query.message.photo:
+            if query.message.photo or query.message.video:
                 await query.message.delete()
                 await query.message.reply_text(text, parse_mode="Markdown", reply_markup=back_kb)
             else:
@@ -396,17 +415,28 @@ async def handle_media(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if user.username:
         USER_MAP[user.username.lower()] = user.id
 
-    # Admin uploading welcome video
+    # 1. Admin uploading welcome video
     if context.user_data.get("waiting_for_welcome_video") and user_id == ADMIN_ID:
         if update.message.video:
             file_id = update.message.video.file_id
             MEDIA_CONFIG["welcome_videos"].append(file_id)
-            await update.message.reply_text(f"✅ Video add ho gaya! Total welcome videos: {len(MEDIA_CONFIG['welcome_videos'])}\n\nAur video bhejna ho toh bhejein, ya /admin dabayein.")
+            await update.message.reply_text(f"✅ Welcome video add ho gaya! Total: {len(MEDIA_CONFIG['welcome_videos'])}\n\nAur video bhejna ho toh bhejein, ya /admin dabayein.")
         else:
             await update.message.reply_text("⚠️ Kripya valid video file hi bhejein.")
         return
 
-    # Admin changing QR code
+    # 2. Admin uploading 'How to Use' video
+    if context.user_data.get("waiting_for_how_to_video") and user_id == ADMIN_ID:
+        if update.message.video:
+            MEDIA_CONFIG["how_to_use_video"] = update.message.video.file_id
+            context.user_data["waiting_for_how_to_video"] = False
+            await update.message.reply_text("✅ 'How to Use' video successfully set ho gaya!")
+            await admin_panel(update, context)
+        else:
+            await update.message.reply_text("⚠️ Kripya valid video file hi bhejein.")
+        return
+
+    # 3. Admin changing QR code
     if context.user_data.get("waiting_for_qr") and user_id == ADMIN_ID:
         context.user_data["waiting_for_qr"] = False
         global QR_IMAGE
@@ -415,7 +445,7 @@ async def handle_media(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await admin_panel(update, context)
         return
 
-    # User sending payment proof screenshot
+    # 4. User sending payment proof screenshot
     if context.user_data.get("waiting_for_proof"):
         item_id = context.user_data.get("selected_item_id")
         photo_id = update.message.photo[-1].file_id
@@ -472,23 +502,17 @@ async def start_add_video(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data["waiting_for_welcome_video"] = True
     await query.message.reply_text("🎬 Welcome ke liye video bhejein (Aap ek-ek karke kai video bhej sakte hain):")
 
+async def start_how_to_video(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    context.user_data["waiting_for_how_to_video"] = True
+    await query.message.reply_text("🎥 'How to Use' ke liye apna guide video bhejein:")
+
 async def start_change_qr(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     context.user_data["waiting_for_qr"] = True
     await query.message.reply_text("🖼️ Naya Payment QR Code photo format me bhejein:")
-
-async def start_edit_how_to(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.callback_query
-    await query.answer()
-    await query.message.reply_text("📌 Naya 'How to Use' text likhkar bhejein:")
-    return WAITING_HOW_TO
-
-async def get_how_to_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    CONFIG["how_to_use"] = update.message.text
-    await update.message.reply_text("✅ 'How to Use' text update ho gaya!")
-    await admin_panel(update, context)
-    return ConversationHandler.END
 
 async def start_edit_users(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -514,14 +538,6 @@ def main():
         fallbacks=[]
     )
 
-    edit_how_to_conv = ConversationHandler(
-        entry_points=[CallbackQueryHandler(start_edit_how_to, pattern="^admin_edit_how_to$")],
-        states={
-            WAITING_HOW_TO: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_how_to_text)]
-        },
-        fallbacks=[]
-    )
-
     edit_users_conv = ConversationHandler(
         entry_points=[CallbackQueryHandler(start_edit_users, pattern="^admin_edit_users$")],
         states={
@@ -535,10 +551,10 @@ def main():
     app.add_handler(CommandHandler("send", send_user_message))
     
     app.add_handler(edit_welcome_conv)
-    app.add_handler(edit_how_to_conv)
     app.add_handler(edit_users_conv)
     
     app.add_handler(CallbackQueryHandler(start_add_video, pattern="^admin_add_video$"))
+    app.add_handler(CallbackQueryHandler(start_how_to_video, pattern="^admin_how_to_video$"))
     app.add_handler(CallbackQueryHandler(start_change_qr, pattern="^admin_change_qr$"))
     app.add_handler(CallbackQueryHandler(button_handler))
     
