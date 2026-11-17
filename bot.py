@@ -6,25 +6,14 @@ from telegram.ext import (
 )
 
 # =====================================================================
-# ✏️ EASY EDIT SECTION: 7 Buttons, Links & Settings
+# ✏️ EASY EDIT SECTION: Welcome Message, 7 Buttons & Settings
 # =====================================================================
 
-WELCOME_MESSAGE = """▪️𝐂𝐄𝐑𝐓𝐈𝐅𝐈𝐄𝐃 𝐒𝐇𝐎𝐏▪️
+WELCOME_MESSAGE = """𝗦𝗘𝗟𝗟𝗘𝗥 𝗜𝗗 :- @SeIIerq
 
-!!𝐍𝐄𝐖 𝐂𝐎𝐋𝐄𝐂𝐓𝐈𝐎𝐍!!
+𝗣𝗥𝗢𝗢𝗙:- t.me/+QtunfHJIqyowMjg9
 
- ▪️𝐄𝐕𝐄𝐑𝐘 𝐂𝐀𝐓𝐄𝐆𝐎𝐑𝐘  𝐈𝐍𝐂𝐋𝐔𝐃𝐄𝐒 8 𝐆𝐑𝐎𝐔𝐏𝐒!!!
-
-💥𝐁𝐔𝐘 𝐅𝐔𝐋𝐋 𝐏𝐀𝐂𝐊𝐀𝐆𝐄 𝐀𝐓 𝟏𝟗𝟗 𝐀𝐍𝐃 𝐆𝐄𝐓 𝟐𝟎𝟎+𝐃𝐀𝐈𝐋𝐘 𝐍𝐄𝐖 𝐔𝐏𝐋𝐎𝐀𝐃𝐄𝐃 𝐆𝐑𝐎𝐔𝐏𝐒
-
-*𝐎𝐍𝐄 𝐓𝐈𝐌𝐄 𝙿𝙰𝚈𝙼𝙴𝙽𝚃 𝙿𝙴𝚁𝙼𝙴𝙽𝙴𝙽𝚃 𝙰𝙲𝙲𝙴𝚂𝚂*
-
-𝐍𝐎 𝙴𝚇𝚃𝚁𝙰 𝙲𝙷𝙰𝚁𝙶𝙴
-𝐍𝙾 𝙴𝚇𝙿𝙸𝚁𝙴𝙳 𝐋𝙸𝐍𝐊𝚂
-
-*𝐃𝐀𝐈𝐋𝐘 𝐍𝐄𝐖 𝐕𝙸𝙳𝙴𝙾𝚂 𝐔𝙿𝙻𝐎𝐀𝐃𝙴𝙳✅
-
-𝐃𝐄𝐌𝙾 𝐕𝙸𝙳𝙴𝙾𝚂 : https://t.me/+qIaukTR44z1hYTk9"""
+𝗗𝗘𝗠𝗢:- t.me/+AXcdDYSki31kMmM1"""
 
 REPORT_USERNAME = "BOTSUPPORTHELL"
 
@@ -70,7 +59,7 @@ CONFIG = {
 }
 
 MEDIA_CONFIG = {
-    "welcome_videos": [],       # Start hone par dikhne wale videos
+    "welcome_videos": [],       # Start hone par ek sath dikhne wale videos (Album format)
     "how_to_use_video": None    # 'How to Use' ke liye alag video
 }
 
@@ -135,7 +124,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     chat_id = update.effective_chat.id
     
-    # Send all welcome videos together as an album if available
+    # Send all welcome videos together as a single media group (Album)
     videos = MEDIA_CONFIG["welcome_videos"]
     if videos:
         try:
@@ -415,7 +404,6 @@ async def handle_media(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if user.username:
         USER_MAP[user.username.lower()] = user.id
 
-    # 1. Admin uploading welcome video
     if context.user_data.get("waiting_for_welcome_video") and user_id == ADMIN_ID:
         if update.message.video:
             file_id = update.message.video.file_id
@@ -425,7 +413,6 @@ async def handle_media(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text("⚠️ Kripya valid video file hi bhejein.")
         return
 
-    # 2. Admin uploading 'How to Use' video
     if context.user_data.get("waiting_for_how_to_video") and user_id == ADMIN_ID:
         if update.message.video:
             MEDIA_CONFIG["how_to_use_video"] = update.message.video.file_id
@@ -436,7 +423,6 @@ async def handle_media(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text("⚠️ Kripya valid video file hi bhejein.")
         return
 
-    # 3. Admin changing QR code
     if context.user_data.get("waiting_for_qr") and user_id == ADMIN_ID:
         context.user_data["waiting_for_qr"] = False
         global QR_IMAGE
@@ -445,7 +431,6 @@ async def handle_media(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await admin_panel(update, context)
         return
 
-    # 4. User sending payment proof screenshot
     if context.user_data.get("waiting_for_proof"):
         item_id = context.user_data.get("selected_item_id")
         photo_id = update.message.photo[-1].file_id
@@ -465,7 +450,6 @@ async def handle_media(update: Update, context: ContextTypes.DEFAULT_TYPE):
             ]
         ])
         
-        # Stylish formatted proof card for admin
         proof_caption = (
             "📥 **NEW PAYMENT PROOF RECEIVED**\n"
             "━━━━━━━━━━━━━━━━━━━\n"
