@@ -53,14 +53,15 @@ WEBHOOK_URL = os.getenv("WEBHOOK_URL", f"https://{RENDER_HOST}" if RENDER_HOST e
 DEFAULT_QR = "https://raw.githubusercontent.com/telegram-bot-sdk/telegram-bot-sdk/main/tests/fixtures/image.jpg"
 
 STATS = {"pending": 0, "approved": 0, "rejected": 0}
+UNIQUE_USERS = set()
 USER_MAP = {}
 CONFIG = {
     "report_username": REPORT_USERNAME,
 }
 
 MEDIA_CONFIG = {
-    "welcome_videos": [],       # Start hone par ek sath dikhne wale videos (Album format)
-    "how_to_use_video": None    # 'How to Use' ke liye alag video
+    "welcome_videos": [],       
+    "how_to_use_video": None    
 }
 
 QR_IMAGE = DEFAULT_QR
@@ -109,7 +110,6 @@ def get_main_menu_markup():
     for item in DATA["items"]:
         keyboard.append([InlineKeyboardButton(item["name"], callback_data=f"select_{item['id']}")])
     
-    # Sirf How to Use & Report Issue buttons
     keyboard.append([
         InlineKeyboardButton("📌 How to Use", callback_data="how_to_use"),
         InlineKeyboardButton("🚨 Report Issue", callback_data="report_issue")
@@ -119,12 +119,13 @@ def get_main_menu_markup():
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
-    if user.username:
-        USER_MAP[user.username.lower()] = user.id
+    if user:
+        UNIQUE_USERS.add(user.id)
+        if user.username:
+            USER_MAP[user.username.lower()] = user.id
 
     chat_id = update.effective_chat.id
     
-    # Send all welcome videos together as a single media group (Album)
     videos = MEDIA_CONFIG["welcome_videos"]
     if videos:
         try:
@@ -140,7 +141,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(welcome_msg, reply_markup=reply_markup)
     elif update.callback_query:
         try:
-            if update.callback_query.message.photo:
+            if update.callback_query.message.photo or update.callback_query.message.video:
                 await update.callback_query.message.delete()
                 await update.callback_query.message.reply_text(welcome_msg, reply_markup=reply_markup)
             else:
@@ -179,18 +180,28 @@ async def send_user_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         await update.message.reply_text("❌ User nahi mila.")
 
+# ================= ADVANCED ADMIN PANEL =================
 async def admin_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     if user_id != ADMIN_ID:
         return
 
+    total_users = len(UNIQUE_USERS)
+    total_sales = STATS["approved"]
+    revenue = (total_sales * 98) # Approximate tracking or summary
+
     admin_text = (
-        "⚙️ **TANWEER STORE - Admin Control Panel**\n\n"
-        f"📊 **Analytics:**\n"
-        f"⏳ Pending: {STATS['pending']} | ✅ Approved: {STATS['approved']} | ❌ Rejected: {STATS['rejected']}\n\n"
-        f"🚨 Report Username: @{CONFIG['report_username']}\n"
-        f"🎬 Welcome Videos: {len(MEDIA_CONFIG['welcome_videos'])} | 📌 How to Use Video: {'Set ✅' if MEDIA_CONFIG['how_to_use_video'] else 'Not Set ❌'}\n\n"
-        "💬 Direct Msg: `/send <ID> <Message>`"
+        "👑 **ADVANCED ADMIN CONTROL PANEL** 👑\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        f"👥 **Total Bot Users:** `{total_users}`\n"
+        f"📦 **Total Orders Approved:** `{total_sales}`\n"
+        f"⏳ **Pending Requests:** `{STATS['pending']}`\n"
+        f"❌ **Rejected Requests:** `{STATS['rejected']}`\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        f"🚨 **Report Username:** @{CONFIG['report_username']}\n"
+        f"🎬 **Welcome Videos:** `{len(MEDIA_CONFIG['welcome_videos'])}`\n"
+        f"📌 **How to Use Video:** `{'Set ✅' if MEDIA_CONFIG['how_to_use_video'] else 'Not Set ❌'}`\n\n"
+        "💬 *Quick Broadcast Command:* `/send <ID> <Message>`"
     )
     
     admin_buttons = InlineKeyboardMarkup([
@@ -200,25 +211,31 @@ async def admin_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
         [InlineKeyboardButton("🗑️ Clear All Welcome Videos", callback_data="admin_clear_videos")],
         [InlineKeyboardButton("🖼️ Change Payment QR Code", callback_data="admin_change_qr")],
         [InlineKeyboardButton("✏️ Edit Report Username", callback_data="admin_edit_users")],
-        [InlineKeyboardButton("🗑️ Delete Button", callback_data="admin_del_btn")]
+        [InlineKeyboardButton("🗑️ Delete Button", callback_data="admin_del_btn")],
+        [InlineKeyboardButton("🔄 Refresh Dashboard", callback_data="admin_refresh")]
     ])
     
     if update.message:
         await update.message.reply_text(admin_text, parse_mode="Markdown", reply_markup=admin_buttons)
     elif update.callback_query:
+        query = update.callback_query
         try:
-            if update.callback_query.message.photo:
-                await update.callback_query.message.delete()
-                await update.callback_query.message.reply_text(admin_text, parse_mode="Markdown", reply_markup=admin_buttons)
-            else:
-                await update.callback_query.message.edit_text(admin_text, parse_mode="Markdown", reply_markup=admin_buttons)
+            await query.message.edit_text(admin_text, parse_mode="Markdown", reply_markup=admin_buttons)
         except Exception:
-            await update.callback_query.message.reply_text(admin_text, parse_mode="Markdown", reply_markup=admin_buttons)
+            try:
+                await query.message.delete()
+                await query.message.reply_text(admin_text, parse_mode="Markdown", reply_markup=admin_buttons)
+            except Exception:
+                pass
 
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     data = query.data
+
+    if data == "admin_refresh":
+        await admin_panel(update, context)
+        return
 
     if data.startswith("select_"):
         item_id = data.replace("select_", "")
@@ -239,7 +256,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ])
         
         try:
-            if query.message.photo:
+            if query.message.photo or query.message.video:
                 await query.message.delete()
                 await query.message.reply_text(text, parse_mode="Markdown", reply_markup=method_keyboard)
             else:
@@ -288,13 +305,10 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         vid = MEDIA_CONFIG.get("how_to_use_video")
         
         try:
-            if query.message.photo or query.message.video:
+            try:
                 await query.message.delete()
-            else:
-                try:
-                    await query.message.delete()
-                except Exception:
-                    pass
+            except Exception:
+                pass
 
             back_kb = InlineKeyboardMarkup([[InlineKeyboardButton("🔙 Back to Menu", callback_data="customer_back")]])
             
@@ -399,10 +413,13 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await admin_panel(update, context)
 
 async def handle_media(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
     user = update.effective_user
-    if user.username:
-        USER_MAP[user.username.lower()] = user.id
+    if user:
+        UNIQUE_USERS.add(user.id)
+        if user.username:
+            USER_MAP[user.username.lower()] = user.id
+
+    user_id = update.effective_user.id
 
     if context.user_data.get("waiting_for_welcome_video") and user_id == ADMIN_ID:
         if update.message.video:
@@ -537,12 +554,13 @@ def main():
     app.add_handler(edit_welcome_conv)
     app.add_handler(edit_users_conv)
     
+    app.add_handler(CallbackQueryHandler(admin_panel, pattern="^admin_back$"))
     app.add_handler(CallbackQueryHandler(start_add_video, pattern="^admin_add_video$"))
     app.add_handler(CallbackQueryHandler(start_how_to_video, pattern="^admin_how_to_video$"))
     app.add_handler(CallbackQueryHandler(start_change_qr, pattern="^admin_change_qr$"))
     app.add_handler(CallbackQueryHandler(button_handler))
     
-    app.add_handler(MessageHandler(filters.PHOTO | filters.VIDEO, handle_media))
+    app.add_handler(MessageHandler(filters.PHOTO | filters.VIDEO | filters.TEXT & ~filters.COMMAND, handle_media))
 
     print(f"Starting webhook on port {PORT} with URL {WEBHOOK_URL}...")
     
