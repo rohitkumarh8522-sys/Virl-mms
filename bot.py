@@ -188,7 +188,6 @@ async def admin_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     total_users = len(UNIQUE_USERS)
     total_sales = STATS["approved"]
-    revenue = (total_sales * 98) # Approximate tracking or summary
 
     admin_text = (
         "👑 **ADVANCED ADMIN CONTROL PANEL** 👑\n"
