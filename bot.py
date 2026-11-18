@@ -44,7 +44,8 @@ BTN_7_LINK  = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 # =====================================================================
 
 TOKEN = os.getenv("BOT_TOKEN")
-ADMIN_ID = int(os.getenv("ADMIN_ID", "123456789"))
+# Yahan aapki exact Telegram ID set kar di gayi hai
+ADMIN_ID = 8496743427
 PORT = int(os.environ.get("PORT", 10000))
 
 RENDER_HOST = os.getenv("RENDER_EXTERNAL_HOSTNAME")
@@ -182,8 +183,8 @@ async def send_user_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # ================= ADVANCED ADMIN PANEL =================
 async def admin_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
-    if user_id != ADMIN_ID:
+    user = update.effective_user
+    if not user or user.id != ADMIN_ID:
         return
 
     total_users = len(UNIQUE_USERS)
