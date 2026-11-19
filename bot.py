@@ -49,7 +49,7 @@ BTN_7_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 # =====================================================================
 
 TOKEN = os.getenv("BOT_TOKEN")
-ADMIN_ID = int(os.getenv("ADMIN_ID", "8496743427"))
+ADMIN_ID = int(os.getenv("ADMIN_ID", "0"))
 PORT = int(os.environ.get("PORT", 10000))
 
 RENDER_HOST = os.getenv("RENDER_EXTERNAL_HOSTNAME")
@@ -227,7 +227,7 @@ async def admin_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if user.id != ADMIN_ID:
         if update.message:
-            await update.message.reply_text(f"❌ Access Denied. Aapki ID `{user.id}` hai, Admin ID `{ADMIN_ID}` set hai.", parse_mode="Markdown")
+            await update.message.reply_text("❌ Access Denied.")
         elif update.callback_query:
             await update.callback_query.answer("❌ Admin only!", show_alert=True)
         return
@@ -520,13 +520,14 @@ async def handle_media(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "👇 *Review payment screenshot below and take action:*"
         )
 
-        await context.bot.send_photo(
-            chat_id=ADMIN_ID,
-            photo=photo_id,
-            caption=proof_caption,
-            parse_mode="Markdown",
-            reply_markup=admin_markup,
-        )
+        if ADMIN_ID:
+            await context.bot.send_photo(
+                chat_id=ADMIN_ID,
+                photo=photo_id,
+                caption=proof_caption,
+                parse_mode="Markdown",
+                reply_markup=admin_markup,
+            )
 
 
 async def start_edit_welcome(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -636,7 +637,7 @@ def main():
     # Media & Non-Command Text Handler
     app.add_handler(MessageHandler((filters.PHOTO | filters.VIDEO | filters.TEXT) & ~filters.COMMAND, handle_media))
 
-    print(f"Starting webhook on port {PORT} with URL {WEBHOOK_URL} for ADMIN_ID={ADMIN_ID}...")
+    print(f"Starting webhook on port {PORT} with URL {WEBHOOK_URL}...")
 
     app.run_webhook(
         listen="0.0.0.0",
