@@ -124,35 +124,38 @@ def get_main_menu_markup():
     return InlineKeyboardMarkup(keyboard)
 
 
-def build_admin_panel_content():
+def get_admin_panel_view():
     total_users = len(UNIQUE_USERS)
-    total_sales = STATS["approved"]
+    approved_orders = STATS["approved"]
+    pending_orders = STATS["pending"]
+    rejected_orders = STATS["rejected"]
+    how_to_status = "Uploaded ✅" if MEDIA_CONFIG["how_to_use_video"] else "Not Uploaded ❌"
 
-    admin_text = (
-        "👑 **ADVANCED ADMIN CONTROL PANEL** 👑\n"
+    panel_text = (
+        "👑 **ADMIN & OWNER CONTROL PANEL** 👑\n"
         "━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-        f"👥 **Total Bot Users:** `{total_users}`\n"
-        f"📦 **Total Orders Approved:** `{total_sales}`\n"
-        f"⏳ **Pending Requests:** `{STATS['pending']}`\n"
-        f"❌ **Rejected Requests:** `{STATS['rejected']}`\n"
+        f"👥 **Total Users:** `{total_users}`\n"
+        f"✅ **Approved Orders:** `{approved_orders}`\n"
+        f"⏳ **Pending Requests:** `{pending_orders}`\n"
+        f"❌ **Rejected Requests:** `{rejected_orders}`\n"
         "━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
         f"🚨 **Report Username:** @{CONFIG['report_username']}\n"
-        f"🎬 **Welcome Videos:** `{len(MEDIA_CONFIG['welcome_videos'])}`\n"
-        f"📌 **How to Use Video:** `{'Set ✅' if MEDIA_CONFIG['how_to_use_video'] else 'Not Set ❌'}`\n\n"
-        "💬 *Direct Msg Command:* `/send <ID or @username> <Message>`"
+        f"🎬 **Welcome Album Videos:** `{len(MEDIA_CONFIG['welcome_videos'])}`\n"
+        f"🎥 **How to Use Video:** `{how_to_status}`\n\n"
+        "💬 **Direct Message:** `/send <User_ID or @username> <Message>`"
     )
 
-    admin_buttons = InlineKeyboardMarkup([
+    panel_keyboard = InlineKeyboardMarkup([
         [InlineKeyboardButton("✏️ Edit Welcome Text", callback_data="admin_edit_welcome")],
         [InlineKeyboardButton("🎬 Add Welcome Video", callback_data="admin_add_video")],
         [InlineKeyboardButton("🎥 Add/Change How to Use Video", callback_data="admin_how_to_video")],
-        [InlineKeyboardButton("🗑️ Clear All Welcome Videos", callback_data="admin_clear_videos")],
+        [InlineKeyboardButton("🗑️ Clear Welcome Videos", callback_data="admin_clear_videos")],
         [InlineKeyboardButton("🖼️ Change Payment QR Code", callback_data="admin_change_qr")],
         [InlineKeyboardButton("✏️ Edit Report Username", callback_data="admin_edit_users")],
-        [InlineKeyboardButton("🗑️ Delete Button", callback_data="admin_del_btn")],
-        [InlineKeyboardButton("🔄 Refresh Dashboard", callback_data="admin_refresh")],
+        [InlineKeyboardButton("🗑️ Delete Pack Button", callback_data="admin_del_btn")],
+        [InlineKeyboardButton("🔄 Refresh Panel", callback_data="admin_refresh")],
     ])
-    return admin_text, admin_buttons
+    return panel_text, panel_keyboard
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -229,24 +232,43 @@ async def admin_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if update.message:
             await update.message.reply_text("❌ Access Denied.")
         elif update.callback_query:
-            await update.callback_query.answer("❌ Admin only!", show_alert=True)
+            await update.callback_query.answer("❌ Access Denied.", show_alert=True)
         return
 
-    admin_text, admin_buttons = build_admin_panel_content()
+    panel_text, panel_keyboard = get_admin_panel_view()
 
     if update.message:
-        await update.message.reply_text(admin_text, parse_mode="Markdown", reply_markup=admin_buttons)
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=panel_text,
+            parse_mode="Markdown",
+            reply_markup=panel_keyboard,
+        )
     elif update.callback_query:
         query = update.callback_query
         chat_id = query.message.chat_id
         try:
             if query.message.photo or query.message.video:
                 await query.message.delete()
-                await context.bot.send_message(chat_id=chat_id, text=admin_text, parse_mode="Markdown", reply_markup=admin_buttons)
+                await context.bot.send_message(
+                    chat_id=chat_id,
+                    text=panel_text,
+                    parse_mode="Markdown",
+                    reply_markup=panel_keyboard,
+                )
             else:
-                await query.message.edit_text(admin_text, parse_mode="Markdown", reply_markup=admin_buttons)
+                await query.message.edit_text(
+                    panel_text,
+                    parse_mode="Markdown",
+                    reply_markup=panel_keyboard,
+                )
         except Exception:
-            await context.bot.send_message(chat_id=chat_id, text=admin_text, parse_mode="Markdown", reply_markup=admin_buttons)
+            await context.bot.send_message(
+                chat_id=chat_id,
+                text=panel_text,
+                parse_mode="Markdown",
+                reply_markup=panel_keyboard,
+            )
 
 
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -618,23 +640,19 @@ def main():
         fallbacks=[],
     )
 
-    # Command Handlers
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("admin", admin_panel))
     app.add_handler(CommandHandler("owner", admin_panel))
     app.add_handler(CommandHandler("send", send_user_message))
 
-    # Conversation Handlers
     app.add_handler(edit_welcome_conv)
     app.add_handler(edit_users_conv)
 
-    # Callback Handlers
     app.add_handler(CallbackQueryHandler(start_add_video, pattern="^admin_add_video$"))
     app.add_handler(CallbackQueryHandler(start_how_to_video, pattern="^admin_how_to_video$"))
     app.add_handler(CallbackQueryHandler(start_change_qr, pattern="^admin_change_qr$"))
     app.add_handler(CallbackQueryHandler(button_handler))
 
-    # Media & Non-Command Text Handler
     app.add_handler(MessageHandler((filters.PHOTO | filters.VIDEO | filters.TEXT) & ~filters.COMMAND, handle_media))
 
     print(f"Starting webhook on port {PORT} with URL {WEBHOOK_URL}...")
