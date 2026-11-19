@@ -49,7 +49,8 @@ BTN_7_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 # =====================================================================
 
 TOKEN = os.getenv("BOT_TOKEN")
-ADMIN_ID = int(os.getenv("ADMIN_ID", "0"))
+_raw_admin = os.getenv("ADMIN_ID", "0").strip()
+ADMIN_ID = int(_raw_admin) if _raw_admin.isdigit() else 0
 PORT = int(os.environ.get("PORT", 10000))
 
 RENDER_HOST = os.getenv("RENDER_EXTERNAL_HOSTNAME")
@@ -73,26 +74,26 @@ QR_IMAGE = DEFAULT_QR
 
 DETAILS_199 = (
     "━━━━━━━━━━━━━━━━━━━\n"
-    "💎 **PAYMENT INVOICE - ₹199**\n"
+    "💎 PAYMENT INVOICE - ₹199\n"
     "━━━━━━━━━━━━━━━━━━━\n\n"
-    "💰 **Price:** ₹199\n"
-    "📌 **Step 1:** Scan QR and pay exact amount.\n"
-    "📌 **Step 2:** Tap **“I HAVE PAID”** below.\n"
-    "📌 **Step 3:** Send your payment screenshot.\n\n"
-    "🔐 *Instant delivery after manual verification.*\n"
-    "🎁 *Lifetime Access | No Extra Charges*"
+    "💰 Price: ₹199\n"
+    "📌 Step 1: Scan QR and pay exact amount.\n"
+    "📌 Step 2: Tap “I HAVE PAID” below.\n"
+    "📌 Step 3: Send your payment screenshot.\n\n"
+    "🔐 Instant delivery after manual verification.\n"
+    "🎁 Lifetime Access | No Extra Charges"
 )
 
 DETAILS_98 = (
     "━━━━━━━━━━━━━━━━━━━\n"
-    "💎 **PAYMENT INVOICE - ₹98**\n"
+    "💎 PAYMENT INVOICE - ₹98\n"
     "━━━━━━━━━━━━━━━━━━━\n\n"
-    "💰 **Price:** ₹98\n"
-    "📌 **Step 1:** Scan QR and pay exact amount.\n"
-    "📌 **Step 2:** Tap **“I HAVE PAID”** below.\n"
-    "📌 **Step 3:** Send your payment screenshot.\n\n"
-    "🔐 *Instant delivery after manual verification.*\n"
-    "🎁 *Lifetime Access | No Extra Charges*"
+    "💰 Price: ₹98\n"
+    "📌 Step 1: Scan QR and pay exact amount.\n"
+    "📌 Step 2: Tap “I HAVE PAID” below.\n"
+    "📌 Step 3: Send your payment screenshot.\n\n"
+    "🔐 Instant delivery after manual verification.\n"
+    "🎁 Lifetime Access | No Extra Charges"
 )
 
 DATA = {
@@ -132,17 +133,17 @@ def get_admin_panel_view():
     how_to_status = "Uploaded ✅" if MEDIA_CONFIG["how_to_use_video"] else "Not Uploaded ❌"
 
     panel_text = (
-        "👑 **ADMIN & OWNER CONTROL PANEL** 👑\n"
+        "👑 ADMIN & OWNER CONTROL PANEL 👑\n"
         "━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-        f"👥 **Total Users:** `{total_users}`\n"
-        f"✅ **Approved Orders:** `{approved_orders}`\n"
-        f"⏳ **Pending Requests:** `{pending_orders}`\n"
-        f"❌ **Rejected Requests:** `{rejected_orders}`\n"
+        f"👥 Total Users: {total_users}\n"
+        f"✅ Approved Orders: {approved_orders}\n"
+        f"⏳ Pending Requests: {pending_orders}\n"
+        f"❌ Rejected Requests: {rejected_orders}\n"
         "━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-        f"🚨 **Report Username:** @{CONFIG['report_username']}\n"
-        f"🎬 **Welcome Album Videos:** `{len(MEDIA_CONFIG['welcome_videos'])}`\n"
-        f"🎥 **How to Use Video:** `{how_to_status}`\n\n"
-        "💬 **Direct Message:** `/send <User_ID or @username> <Message>`"
+        f"🚨 Report Username: @{CONFIG['report_username']}\n"
+        f"🎬 Welcome Album Videos: {len(MEDIA_CONFIG['welcome_videos'])}\n"
+        f"🎥 How to Use Video: {how_to_status}\n\n"
+        "💬 Direct Message: /send <User_ID or @username> <Message>"
     )
 
     panel_keyboard = InlineKeyboardMarkup([
@@ -197,7 +198,7 @@ async def send_user_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     if not context.args or len(context.args) < 2:
-        await update.message.reply_text("⚠️ Format: `/send <User_ID ya @username> <Message>`", parse_mode="Markdown")
+        await update.message.reply_text("⚠️ Format: /send <User_ID ya @username> <Message>")
         return
 
     target = context.args[0].strip()
@@ -228,6 +229,11 @@ async def admin_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not user:
         return
 
+    if ADMIN_ID == 0:
+        if update.message:
+            await update.message.reply_text("⚠️ Render me ADMIN_ID set nahi hai. Environment me ADMIN_ID set karein.")
+        return
+
     if user.id != ADMIN_ID:
         if update.message:
             await update.message.reply_text("❌ Access Denied.")
@@ -241,7 +247,6 @@ async def admin_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
             text=panel_text,
-            parse_mode="Markdown",
             reply_markup=panel_keyboard,
         )
     elif update.callback_query:
@@ -253,20 +258,17 @@ async def admin_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 await context.bot.send_message(
                     chat_id=chat_id,
                     text=panel_text,
-                    parse_mode="Markdown",
                     reply_markup=panel_keyboard,
                 )
             else:
                 await query.message.edit_text(
                     panel_text,
-                    parse_mode="Markdown",
                     reply_markup=panel_keyboard,
                 )
         except Exception:
             await context.bot.send_message(
                 chat_id=chat_id,
                 text=panel_text,
-                parse_mode="Markdown",
                 reply_markup=panel_keyboard,
             )
 
@@ -291,7 +293,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         context.user_data["selected_item_id"] = item_id
 
-        text = f"🛒 *{selected_item['name']}*\n\nSelect your preferred payment method below:"
+        text = f"🛒 {selected_item['name']}\n\nSelect your preferred payment method below:"
 
         method_keyboard = InlineKeyboardMarkup([
             [InlineKeyboardButton("🇮🇳 UPI Payment", callback_data=f"pay_upi_{item_id}")],
@@ -302,11 +304,11 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         try:
             if query.message.photo or query.message.video:
                 await query.message.delete()
-                await context.bot.send_message(chat_id=chat_id, text=text, parse_mode="Markdown", reply_markup=method_keyboard)
+                await context.bot.send_message(chat_id=chat_id, text=text, reply_markup=method_keyboard)
             else:
-                await query.message.edit_text(text, parse_mode="Markdown", reply_markup=method_keyboard)
+                await query.message.edit_text(text, reply_markup=method_keyboard)
         except Exception:
-            await context.bot.send_message(chat_id=chat_id, text=text, parse_mode="Markdown", reply_markup=method_keyboard)
+            await context.bot.send_message(chat_id=chat_id, text=text, reply_markup=method_keyboard)
 
     elif data.startswith("pay_upi_"):
         item_id = data.replace("pay_upi_", "")
@@ -316,7 +318,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return
 
         context.user_data["selected_item_id"] = item_id
-        caption = f"🛒 *{selected_item['name']}*\n\n{selected_item['details']}"
+        caption = f"🛒 {selected_item['name']}\n\n{selected_item['details']}"
 
         pay_buttons = InlineKeyboardMarkup([
             [InlineKeyboardButton("✅ I Have Paid", callback_data="paid")],
@@ -329,11 +331,10 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 chat_id=chat_id,
                 photo=QR_IMAGE,
                 caption=caption,
-                parse_mode="Markdown",
                 reply_markup=pay_buttons,
             )
         except Exception:
-            await context.bot.send_message(chat_id=chat_id, text=caption, parse_mode="Markdown", reply_markup=pay_buttons)
+            await context.bot.send_message(chat_id=chat_id, text=caption, reply_markup=pay_buttons)
 
     elif data.startswith("pay_crypto_"):
         item_id = data.replace("pay_crypto_", "")
@@ -359,8 +360,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 await context.bot.send_video(
                     chat_id=chat_id,
                     video=vid,
-                    caption="📌 **How to Use / Guide Video**",
-                    parse_mode="Markdown",
+                    caption="📌 How to Use / Guide Video",
                     reply_markup=back_kb,
                 )
             else:
@@ -375,7 +375,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif data == "report_issue":
         rep_user = CONFIG.get("report_username", REPORT_USERNAME)
         text = (
-            "🚨 **Report an Issue**\n\n"
+            "🚨 Report an Issue\n\n"
             "Agar aapko koi samasya aa rahi hai ya payment verification mein deri ho rahi hai, "
             f"toh turant hamare support se contact karein:\n\n👉 @{rep_user}"
         )
@@ -383,11 +383,11 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         try:
             if query.message.photo or query.message.video:
                 await query.message.delete()
-                await context.bot.send_message(chat_id=chat_id, text=text, parse_mode="Markdown", reply_markup=back_kb)
+                await context.bot.send_message(chat_id=chat_id, text=text, reply_markup=back_kb)
             else:
-                await query.message.edit_text(text, parse_mode="Markdown", reply_markup=back_kb)
+                await query.message.edit_text(text, reply_markup=back_kb)
         except Exception:
-            await context.bot.send_message(chat_id=chat_id, text=text, parse_mode="Markdown", reply_markup=back_kb)
+            await context.bot.send_message(chat_id=chat_id, text=text, reply_markup=back_kb)
 
     elif data == "paid":
         context.user_data["waiting_for_proof"] = True
@@ -416,8 +416,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
             await query.edit_message_caption(
                 caption=(query.message.caption or "")
-                + "\n\n━━━━━━━━━━━━━━━━━━━\n✅ **STATUS: APPROVED BY ADMIN**\n━━━━━━━━━━━━━━━━━━━",
-                parse_mode="Markdown",
+                + "\n\n━━━━━━━━━━━━━━━━━━━\n✅ STATUS: APPROVED BY ADMIN\n━━━━━━━━━━━━━━━━━━━"
             )
         except Exception as e:
             await context.bot.send_message(chat_id=chat_id, text=f"⚠️ Approved! Par user ko message nahi bhej paaye: {str(e)}")
@@ -437,8 +436,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
             await query.edit_message_caption(
                 caption=(query.message.caption or "")
-                + "\n\n━━━━━━━━━━━━━━━━━━━\n❌ **STATUS: REJECTED BY ADMIN**\n━━━━━━━━━━━━━━━━━━━",
-                parse_mode="Markdown",
+                + "\n\n━━━━━━━━━━━━━━━━━━━\n❌ STATUS: REJECTED BY ADMIN\n━━━━━━━━━━━━━━━━━━━"
             )
         except Exception as e:
             await context.bot.send_message(chat_id=chat_id, text=f"⚠️ Rejected! Par user ko message nahi bhej paaye: {str(e)}")
@@ -533,13 +531,13 @@ async def handle_media(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ])
 
         proof_caption = (
-            "📥 **NEW PAYMENT PROOF RECEIVED**\n"
+            "📥 NEW PAYMENT PROOF RECEIVED\n"
             "━━━━━━━━━━━━━━━━━━━\n"
-            f"👤 **Customer:** @{user.username or 'No Username'}\n"
-            f"🆔 **User ID:** `{user.id}`\n"
-            f"📦 **Selected Pack:** {item_name}\n"
+            f"👤 Customer: @{user.username or 'No Username'}\n"
+            f"🆔 User ID: {user.id}\n"
+            f"📦 Selected Pack: {item_name}\n"
             "━━━━━━━━━━━━━━━━━━━\n"
-            "👇 *Review payment screenshot below and take action:*"
+            "👇 Review payment screenshot below and take action:"
         )
 
         if ADMIN_ID:
@@ -547,7 +545,6 @@ async def handle_media(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 chat_id=ADMIN_ID,
                 photo=photo_id,
                 caption=proof_caption,
-                parse_mode="Markdown",
                 reply_markup=admin_markup,
             )
 
@@ -655,7 +652,7 @@ def main():
 
     app.add_handler(MessageHandler((filters.PHOTO | filters.VIDEO | filters.TEXT) & ~filters.COMMAND, handle_media))
 
-    print(f"Starting webhook on port {PORT} with URL {WEBHOOK_URL}...")
+    print(f"Starting webhook on port {PORT} with URL {WEBHOOK_URL} | ADMIN_ID={ADMIN_ID}")
 
     app.run_webhook(
         listen="0.0.0.0",
