@@ -45,6 +45,23 @@ BTN_7_NAME = "7. Pack 7 (₹98)"
 BTN_7_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
 # =====================================================================
+# 🖼️ PERMANENT MEDIA DEFAULTS (1 QR + 5 Welcome Videos + 1 How to Use)
+# Yahan apne QR aur Videos ke Telegram file_id ya URL daal dein
+# =====================================================================
+
+DEFAULT_QR = "https://raw.githubusercontent.com/telegram-bot-sdk/telegram-bot-sdk/main/tests/fixtures/image.jpg"
+
+WELCOME_VIDEOS = [
+    # "WELCOME_VIDEO_1_FILE_ID",
+    # "WELCOME_VIDEO_2_FILE_ID",
+    # "WELCOME_VIDEO_3_FILE_ID",
+    # "WELCOME_VIDEO_4_FILE_ID",
+    # "WELCOME_VIDEO_5_FILE_ID",
+]
+
+HOW_TO_USE_VIDEO = None  # Jaise: "HOW_TO_USE_VIDEO_FILE_ID"
+
+# =====================================================================
 # ⚙️ SYSTEM CONFIGURATIONS
 # =====================================================================
 
@@ -56,8 +73,6 @@ PORT = int(os.environ.get("PORT", 10000))
 RENDER_HOST = os.getenv("RENDER_EXTERNAL_HOSTNAME")
 WEBHOOK_URL = os.getenv("WEBHOOK_URL", f"https://{RENDER_HOST}" if RENDER_HOST else None)
 
-DEFAULT_QR = "https://raw.githubusercontent.com/telegram-bot-sdk/telegram-bot-sdk/main/tests/fixtures/image.jpg"
-
 STATS = {"pending": 0, "approved": 0, "rejected": 0}
 UNIQUE_USERS = set()
 USER_MAP = {}
@@ -66,8 +81,8 @@ CONFIG = {
 }
 
 MEDIA_CONFIG = {
-    "welcome_videos": [],
-    "how_to_use_video": None,
+    "welcome_videos": list(WELCOME_VIDEOS[:5]),
+    "how_to_use_video": HOW_TO_USE_VIDEO,
 }
 
 QR_IMAGE = DEFAULT_QR
@@ -141,7 +156,7 @@ def get_admin_panel_view():
         f"❌ Rejected Requests: {rejected_orders}\n"
         "━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
         f"🚨 Report Username: @{CONFIG['report_username']}\n"
-        f"🎬 Welcome Album Videos: {len(MEDIA_CONFIG['welcome_videos'])}\n"
+        f"🎬 Welcome Album Videos: {len(MEDIA_CONFIG['welcome_videos'])}/5\n"
         f"🎥 How to Use Video: {how_to_status}\n\n"
         "💬 Direct Message: /send <User_ID or @username> <Message>"
     )
@@ -159,7 +174,7 @@ def get_admin_panel_view():
     return panel_text, panel_keyboard
 
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE, send_welcome_videos: bool = True):
     user = update.effective_user
     if user:
         UNIQUE_USERS.add(user.id)
@@ -168,13 +183,14 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     chat_id = update.effective_chat.id
 
-    videos = MEDIA_CONFIG["welcome_videos"]
-    if videos:
-        try:
-            media_group = [InputMediaVideo(media=vid) for vid in videos[:10]]
-            await context.bot.send_media_group(chat_id=chat_id, media=media_group)
-        except Exception:
-            pass
+    if send_welcome_videos:
+        videos = MEDIA_CONFIG["welcome_videos"]
+        if videos:
+            try:
+                media_group = [InputMediaVideo(media=vid) for vid in videos[:5]]
+                await context.bot.send_media_group(chat_id=chat_id, media=media_group)
+            except Exception:
+                pass
 
     welcome_msg = DATA.get("welcome_text")
     reply_markup = get_main_menu_markup()
@@ -366,7 +382,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             else:
                 await context.bot.send_message(
                     chat_id=chat_id,
-                    text="⚠️ 'How to Use' video abhi admin dwara set nahi kiya gaya hai.",
+                    text="⚠️ 'How to Use' video abhi set nahi kiya gaya hai.",
                     reply_markup=back_kb,
                 )
         except Exception as e:
@@ -394,7 +410,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_message(chat_id=chat_id, text="📸 Kripya apne payment ka Screenshot yahan bhejein:")
 
     elif data == "customer_back":
-        await start(update, context)
+        await start(update, context, send_welcome_videos=False)
 
     elif data.startswith("approve:"):
         payload = data.replace("approve:", "")
@@ -481,9 +497,13 @@ async def handle_media(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if context.user_data.get("waiting_for_welcome_video") and user_id == ADMIN_ID:
         if update.message.video:
             file_id = update.message.video.file_id
+            if len(MEDIA_CONFIG["welcome_videos"]) >= 5:
+                await update.message.reply_text("⚠️ Pehle se 5 welcome videos set hain. Naye add karne ke liye 'Clear Welcome Videos' dabayein.")
+                return
             MEDIA_CONFIG["welcome_videos"].append(file_id)
             await update.message.reply_text(
-                f"✅ Welcome video add ho gaya! Total: {len(MEDIA_CONFIG['welcome_videos'])}\n\n"
+                f"✅ Welcome video add ho gaya! Total: {len(MEDIA_CONFIG['welcome_videos'])}/5\n"
+                f"File ID: {file_id}\n\n"
                 "Aur video bhejna ho toh bhejein, ya /owner dabayein."
             )
         else:
@@ -492,9 +512,12 @@ async def handle_media(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if context.user_data.get("waiting_for_how_to_video") and user_id == ADMIN_ID:
         if update.message.video:
-            MEDIA_CONFIG["how_to_use_video"] = update.message.video.file_id
+            file_id = update.message.video.file_id
+            MEDIA_CONFIG["how_to_use_video"] = file_id
             context.user_data["waiting_for_how_to_video"] = False
-            await update.message.reply_text("✅ 'How to Use' video successfully set ho gaya!")
+            await update.message.reply_text(
+                f"✅ 'How to Use' video successfully set ho gaya!\nFile ID: {file_id}"
+            )
             await admin_panel(update, context)
         else:
             await update.message.reply_text("⚠️ Kripya valid video file hi bhejein.")
@@ -502,10 +525,13 @@ async def handle_media(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if context.user_data.get("waiting_for_qr") and user_id == ADMIN_ID:
         if update.message.photo:
+            file_id = update.message.photo[-1].file_id
             context.user_data["waiting_for_qr"] = False
             global QR_IMAGE
-            QR_IMAGE = update.message.photo[-1].file_id
-            await update.message.reply_text("✅ Naya Payment QR Code successfully set ho gaya!")
+            QR_IMAGE = file_id
+            await update.message.reply_text(
+                f"✅ Naya Payment QR Code successfully set ho gaya!\nFile ID: {file_id}"
+            )
             await admin_panel(update, context)
         else:
             await update.message.reply_text("⚠️ Kripya QR Code photo format me bhejein.")
@@ -573,7 +599,7 @@ async def start_add_video(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data["waiting_for_welcome_video"] = True
     await context.bot.send_message(
         chat_id=query.message.chat_id,
-        text="🎬 Welcome ke liye video bhejein (Aap ek-ek karke kai video bhej sakte hain):",
+        text="🎬 Welcome ke liye video bhejein (Maximum 5 videos):",
     )
 
 
