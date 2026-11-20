@@ -16,50 +16,42 @@ from telegram.ext import (
 
 WELCOME_MESSAGE = """𝗦𝗘𝗟𝗟𝗘𝗥 𝗜𝗗 :- @STARK_SELLER7
 
-𝗣𝗥𝗢𝗢𝗙:- https://t.me/+btM9o9BM_So2MzU1
+𝗣𝗥𝗢𝗢𝗙:- t.me/+QtunfHJIqyowMjg9
 
-𝗗𝗘𝗠𝗢:- https://t.me/+xUkcjhgaoksxODVl"""
+𝗗𝗘𝗠𝗢:- t.me/+AXcdDYSki31kMmM1"""
 
 REPORT_USERNAME = "STARK_SELLER7"
 
 # 7 Buttons Configuration (1 Combo ₹199 and 6 Packs ₹98)
-BTN_1_NAME = "✨𝗔𝗟𝗟 𝗩𝗜𝗗𝗘𝗢✨ -- ₹𝟭𝟵𝟵|𝟭𝗠 𝗩𝗜𝗗𝗘𝗢"
-BTN_1_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+BTN_1_NAME = "1. All Category Combo (₹199)"
+BTN_1_LINK = "https://t.me/+ehTHId3ryhY3YmJl"
 
-BTN_2_NAME = "🌽𝗖𝗛𝗜𝗟𝗗 𝗖𝗛𝗢𝗥𝗡🌽 -- ₹𝟵𝟴| 𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_2_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+BTN_2_NAME = "2. Pack 2 (₹98)"
+BTN_2_LINK = "https://t.me/+bPhyrYiSBQozNDBl"
 
-BTN_3_NAME = "❤️‍🔥𝗩𝗜𝗥𝗔𝗟 𝗠𝗠𝗦 𝗟𝗜𝗖𝗞❤️‍🔥 -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
+BTN_3_NAME = "3. Pack 3 (₹98)"
 BTN_3_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_4_NAME = "💋𝗠𝗢𝗠 𝗦𝗢𝗡,𝗦💋 -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
+BTN_4_NAME = "4. Pack 4 (₹98)"
 BTN_4_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_5_NAME = "💦𝗜𝗡𝗗𝗜𝗔𝗡 𝗥𝗔𝗣𝗘💦-- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
+BTN_5_NAME = "5. Pack 5 (₹98)"
 BTN_5_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_6_NAME = "🪅𝗧𝗔𝗠𝗜𝗟🪅-- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
+BTN_6_NAME = "6. Pack 6 (₹98)"
 BTN_6_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_7_NAME = "👄𝗦𝗖𝗛𝗢𝗢𝗟 𝗚𝗜𝗥𝗟👄-- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
+BTN_7_NAME = "7. Pack 7 (₹98)"
 BTN_7_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
 # =====================================================================
-# 🖼️ PERMANENT MEDIA DEFAULTS (1 QR + 5 Welcome Videos + 1 How to Use)
-# Yahan apne QR aur Videos ke Telegram file_id ya URL daal dein
+# 🖼️ PERMANENT MEDIA DEFAULTS (QR + Welcome Videos + How to Use)
 # =====================================================================
 
 DEFAULT_QR = "https://raw.githubusercontent.com/telegram-bot-sdk/telegram-bot-sdk/main/tests/fixtures/image.jpg"
 
-WELCOME_VIDEOS = [
-    # "WELCOME_VIDEO_1_FILE_ID",
-    # "WELCOME_VIDEO_2_FILE_ID",
-    # "WELCOME_VIDEO_3_FILE_ID",
-    # "WELCOME_VIDEO_4_FILE_ID",
-    # "WELCOME_VIDEO_5_FILE_ID",
-]
-
-HOW_TO_USE_VIDEO = None  # Jaise: "HOW_TO_USE_VIDEO_FILE_ID"
+WELCOME_VIDEOS = []
+HOW_TO_USE_VIDEO = None
 
 # =====================================================================
 # ⚙️ SYSTEM CONFIGURATIONS
@@ -81,11 +73,12 @@ CONFIG = {
 }
 
 MEDIA_CONFIG = {
-    "welcome_videos": list(WELCOME_VIDEOS[:5]),
+    "welcome_videos": list(WELCOME_VIDEOS),
     "how_to_use_video": HOW_TO_USE_VIDEO,
 }
 
 QR_IMAGE = DEFAULT_QR
+QR_IS_VIDEO = False
 
 DETAILS_199 = (
     "━━━━━━━━━━━━━━━━━━━\n"
@@ -127,6 +120,12 @@ DATA = {
 WAITING_WELCOME_TEXT, WAITING_REPORT_USER = range(2)
 
 
+def reset_admin_media_flags(context: ContextTypes.DEFAULT_TYPE):
+    context.user_data["waiting_for_welcome_video"] = False
+    context.user_data["waiting_for_how_to_video"] = False
+    context.user_data["waiting_for_qr"] = False
+
+
 def get_main_menu_markup():
     keyboard = []
     for item in DATA["items"]:
@@ -156,7 +155,7 @@ def get_admin_panel_view():
         f"❌ Rejected Requests: {rejected_orders}\n"
         "━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
         f"🚨 Report Username: @{CONFIG['report_username']}\n"
-        f"🎬 Welcome Album Videos: {len(MEDIA_CONFIG['welcome_videos'])}/5\n"
+        f"🎬 Welcome Videos: {len(MEDIA_CONFIG['welcome_videos'])}\n"
         f"🎥 How to Use Video: {how_to_status}\n\n"
         "💬 Direct Message: /send <User_ID or @username> <Message>"
     )
@@ -174,6 +173,23 @@ def get_admin_panel_view():
     return panel_text, panel_keyboard
 
 
+async def send_welcome_media_album(chat_id: int, context: ContextTypes.DEFAULT_TYPE):
+    videos = MEDIA_CONFIG["welcome_videos"]
+    if not videos:
+        return
+    # Telegram media group allows up to 10 items per group
+    for i in range(0, len(videos), 10):
+        chunk = videos[i : i + 10]
+        try:
+            if len(chunk) == 1:
+                await context.bot.send_video(chat_id=chat_id, video=chunk[0])
+            else:
+                media_group = [InputMediaVideo(media=vid) for vid in chunk]
+                await context.bot.send_media_group(chat_id=chat_id, media=media_group)
+        except Exception:
+            pass
+
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE, send_welcome_videos: bool = True):
     user = update.effective_user
     if user:
@@ -184,13 +200,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE, send_welcome
     chat_id = update.effective_chat.id
 
     if send_welcome_videos:
-        videos = MEDIA_CONFIG["welcome_videos"]
-        if videos:
-            try:
-                media_group = [InputMediaVideo(media=vid) for vid in videos[:5]]
-                await context.bot.send_media_group(chat_id=chat_id, media=media_group)
-            except Exception:
-                pass
+        await send_welcome_media_album(chat_id, context)
 
     welcome_msg = DATA.get("welcome_text")
     reply_markup = get_main_menu_markup()
@@ -257,6 +267,7 @@ async def admin_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.callback_query.answer("❌ Access Denied.", show_alert=True)
         return
 
+    reset_admin_media_flags(context)
     panel_text, panel_keyboard = get_admin_panel_view()
 
     if update.message:
@@ -343,12 +354,20 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         try:
             await query.message.delete()
-            await context.bot.send_photo(
-                chat_id=chat_id,
-                photo=QR_IMAGE,
-                caption=caption,
-                reply_markup=pay_buttons,
-            )
+            if QR_IS_VIDEO:
+                await context.bot.send_video(
+                    chat_id=chat_id,
+                    video=QR_IMAGE,
+                    caption=caption,
+                    reply_markup=pay_buttons,
+                )
+            else:
+                await context.bot.send_photo(
+                    chat_id=chat_id,
+                    photo=QR_IMAGE,
+                    caption=caption,
+                    reply_markup=pay_buttons,
+                )
         except Exception:
             await context.bot.send_message(chat_id=chat_id, text=caption, reply_markup=pay_buttons)
 
@@ -494,47 +513,54 @@ async def handle_media(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     user_id = user.id if user else None
 
-    if context.user_data.get("waiting_for_welcome_video") and user_id == ADMIN_ID:
+    if user_id == ADMIN_ID and context.user_data.get("waiting_for_welcome_video"):
         if update.message.video:
             file_id = update.message.video.file_id
-            if len(MEDIA_CONFIG["welcome_videos"]) >= 5:
-                await update.message.reply_text("⚠️ Pehle se 5 welcome videos set hain. Naye add karne ke liye 'Clear Welcome Videos' dabayein.")
-                return
             MEDIA_CONFIG["welcome_videos"].append(file_id)
             await update.message.reply_text(
-                f"✅ Welcome video add ho gaya! Total: {len(MEDIA_CONFIG['welcome_videos'])}/5\n"
+                f"✅ Welcome video add ho gaya! Total Welcome Videos: {len(MEDIA_CONFIG['welcome_videos'])}\n"
                 f"File ID: {file_id}\n\n"
-                "Aur video bhejna ho toh bhejein, ya /owner dabayein."
+                "Aur welcome video bhejna ho toh bhejein, ya /owner dabayein."
             )
         else:
-            await update.message.reply_text("⚠️ Kripya valid video file hi bhejein.")
+            await update.message.reply_text("⚠️ Welcome video ke liye kripya video file bhejein.")
         return
 
-    if context.user_data.get("waiting_for_how_to_video") and user_id == ADMIN_ID:
+    if user_id == ADMIN_ID and context.user_data.get("waiting_for_how_to_video"):
         if update.message.video:
             file_id = update.message.video.file_id
             MEDIA_CONFIG["how_to_use_video"] = file_id
-            context.user_data["waiting_for_how_to_video"] = False
+            reset_admin_media_flags(context)
             await update.message.reply_text(
                 f"✅ 'How to Use' video successfully set ho gaya!\nFile ID: {file_id}"
             )
             await admin_panel(update, context)
         else:
-            await update.message.reply_text("⚠️ Kripya valid video file hi bhejein.")
+            await update.message.reply_text("⚠️ 'How to Use' ke liye kripya video file bhejein.")
         return
 
-    if context.user_data.get("waiting_for_qr") and user_id == ADMIN_ID:
+    if user_id == ADMIN_ID and context.user_data.get("waiting_for_qr"):
+        global QR_IMAGE, QR_IS_VIDEO
         if update.message.photo:
             file_id = update.message.photo[-1].file_id
-            context.user_data["waiting_for_qr"] = False
-            global QR_IMAGE
             QR_IMAGE = file_id
+            QR_IS_VIDEO = False
+            reset_admin_media_flags(context)
             await update.message.reply_text(
-                f"✅ Naya Payment QR Code successfully set ho gaya!\nFile ID: {file_id}"
+                f"✅ Naya Payment QR Code (Photo) set ho gaya!\nFile ID: {file_id}"
+            )
+            await admin_panel(update, context)
+        elif update.message.video:
+            file_id = update.message.video.file_id
+            QR_IMAGE = file_id
+            QR_IS_VIDEO = True
+            reset_admin_media_flags(context)
+            await update.message.reply_text(
+                f"✅ Naya Payment QR Code (Video) set ho gaya!\nFile ID: {file_id}"
             )
             await admin_panel(update, context)
         else:
-            await update.message.reply_text("⚠️ Kripya QR Code photo format me bhejein.")
+            await update.message.reply_text("⚠️ QR ke liye photo ya video bhejein.")
         return
 
     if context.user_data.get("waiting_for_proof") and update.message.photo:
@@ -580,6 +606,7 @@ async def start_edit_welcome(update: Update, context: ContextTypes.DEFAULT_TYPE)
     await query.answer()
     if query.from_user.id != ADMIN_ID:
         return ConversationHandler.END
+    reset_admin_media_flags(context)
     await context.bot.send_message(chat_id=query.message.chat_id, text="📝 Naya Welcome Message text likhkar bhejein:")
     return WAITING_WELCOME_TEXT
 
@@ -596,10 +623,11 @@ async def start_add_video(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer()
     if query.from_user.id != ADMIN_ID:
         return
+    reset_admin_media_flags(context)
     context.user_data["waiting_for_welcome_video"] = True
     await context.bot.send_message(
         chat_id=query.message.chat_id,
-        text="🎬 Welcome ke liye video bhejein (Maximum 5 videos):",
+        text="🎬 Welcome videos bhejein (5 ya usse zyada bhi add kar sakte hain):",
     )
 
 
@@ -608,6 +636,7 @@ async def start_how_to_video(update: Update, context: ContextTypes.DEFAULT_TYPE)
     await query.answer()
     if query.from_user.id != ADMIN_ID:
         return
+    reset_admin_media_flags(context)
     context.user_data["waiting_for_how_to_video"] = True
     await context.bot.send_message(chat_id=query.message.chat_id, text="🎥 'How to Use' ke liye apna guide video bhejein:")
 
@@ -617,8 +646,9 @@ async def start_change_qr(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer()
     if query.from_user.id != ADMIN_ID:
         return
+    reset_admin_media_flags(context)
     context.user_data["waiting_for_qr"] = True
-    await context.bot.send_message(chat_id=query.message.chat_id, text="🖼️ Naya Payment QR Code photo format me bhejein:")
+    await context.bot.send_message(chat_id=query.message.chat_id, text="🖼️ Naya Payment QR Code (Photo ya Video) bhejein:")
 
 
 async def start_edit_users(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -626,6 +656,7 @@ async def start_edit_users(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer()
     if query.from_user.id != ADMIN_ID:
         return ConversationHandler.END
+    reset_admin_media_flags(context)
     await context.bot.send_message(
         chat_id=query.message.chat_id,
         text="✏️ Naya Report Issue Username bhejein (bina @ ke, jaise: STARK_SELLER7):",
