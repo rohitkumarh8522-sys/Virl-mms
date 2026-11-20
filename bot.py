@@ -16,32 +16,32 @@ from telegram.ext import (
 
 WELCOME_MESSAGE = """𝗦𝗘𝗟𝗟𝗘𝗥 𝗜𝗗 :- @STARK_SELLER7
 
-𝗣𝗥𝗢𝗢𝗙:- t.me/+QtunfHJIqyowMjg9
+𝗣𝗥𝗢𝗢𝗙:- https://t.me/+btM9o9BM_So2MzU1
 
-𝗗𝗘𝗠𝗢:- t.me/+AXcdDYSki31kMmM1"""
+𝗗𝗘𝗠𝗢:- https://t.me/+N3WcHNQaA8BhZDY1"""
 
 REPORT_USERNAME = "STARK_SELLER7"
 
 # 7 Buttons Configuration (1 Combo ₹199 and 6 Packs ₹98)
-BTN_1_NAME = "1. All Category Combo (₹199)"
-BTN_1_LINK = "https://t.me/+ehTHId3ryhY3YmJl"
+BTN_1_NAME = "✨𝗔𝗟𝗟 𝗩𝗜𝗗𝗘𝗢✨ -- ₹𝟭𝟵𝟵|𝟭𝗠 𝗩𝗜𝗗𝗘𝗢"
+BTN_1_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_2_NAME = "2. Pack 2 (₹98)"
-BTN_2_LINK = "https://t.me/+bPhyrYiSBQozNDBl"
+BTN_2_NAME = "🌽𝗖𝗛𝗜𝗟𝗗 𝗖𝗛𝗢𝗥𝗡🌽 -- ₹𝟵𝟴| 𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
+BTN_2_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_3_NAME = "3. Pack 3 (₹98)"
+BTN_3_NAME = "❤️‍🔥𝗩𝗜𝗥𝗔𝗟 𝗠𝗠𝗦 𝗟𝗜𝗖𝗞❤️‍🔥 -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
 BTN_3_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_4_NAME = "4. Pack 4 (₹98)"
+BTN_4_NAME = "💋𝗠𝗢𝗠 𝗦𝗢𝗡,𝗦💋 -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
 BTN_4_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_5_NAME = "5. Pack 5 (₹98)"
+BTN_5_NAME = "💦𝗜𝗡𝗗𝗜𝗔𝗡 𝗥𝗔𝗣𝗘💦-- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
 BTN_5_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_6_NAME = "6. Pack 6 (₹98)"
+BTN_6_NAME = "🪅𝗧𝗔𝗠𝗜𝗟🪅-- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
 BTN_6_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_7_NAME = "7. Pack 7 (₹98)"
+BTN_7_NAME = "👄𝗦𝗖𝗛𝗢𝗢𝗟 𝗚𝗜𝗥𝗟👄-- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
 BTN_7_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
 # =====================================================================
