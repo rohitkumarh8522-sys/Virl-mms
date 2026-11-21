@@ -1,3 +1,4 @@
+import json
 import os
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, InputMediaVideo
 from telegram.ext import (
@@ -16,42 +17,57 @@ from telegram.ext import (
 
 WELCOME_MESSAGE = """𝗦𝗘𝗟𝗟𝗘𝗥 𝗜𝗗 :- @STARK_SELLER7
 
-𝗣𝗥𝗢𝗢𝗙:- https://t.me/+btM9o9BM_So2MzU1
+𝗣𝗥𝗢𝗢𝗙:- t.me/+QtunfHJIqyowMjg9
 
-𝗗𝗘𝗠𝗢:- https://t.me/+N3WcHNQaA8BhZDY1"""
+𝗗𝗘𝗠𝗢:- t.me/+AXcdDYSki31kMmM1"""
 
 REPORT_USERNAME = "STARK_SELLER7"
 
 # 7 Buttons Configuration (1 Combo ₹199 and 6 Packs ₹98)
-BTN_1_NAME = "✨𝗔𝗟𝗟 𝗩𝗜𝗗𝗘𝗢✨ -- ₹𝟭𝟵𝟵|𝟭𝗠 𝗩𝗜𝗗𝗘𝗢"
-BTN_1_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+BTN_1_NAME = "1. All Category Combo (₹199)"
+BTN_1_LINK = "https://t.me/+ehTHId3ryhY3YmJl"
 
-BTN_2_NAME = "🌽𝗖𝗛𝗜𝗟𝗗 𝗖𝗛𝗢𝗥𝗡🌽 -- ₹𝟵𝟴| 𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
-BTN_2_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
+BTN_2_NAME = "2. Pack 2 (₹98)"
+BTN_2_LINK = "https://t.me/+bPhyrYiSBQozNDBl"
 
-BTN_3_NAME = "❤️‍🔥𝗩𝗜𝗥𝗔𝗟 𝗠𝗠𝗦 𝗟𝗜𝗖𝗞❤️‍🔥 -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
+BTN_3_NAME = "3. Pack 3 (₹98)"
 BTN_3_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_4_NAME = "💋𝗠𝗢𝗠 𝗦𝗢𝗡,𝗦💋 -- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
+BTN_4_NAME = "4. Pack 4 (₹98)"
 BTN_4_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_5_NAME = "💦𝗜𝗡𝗗𝗜𝗔𝗡 𝗥𝗔𝗣𝗘💦-- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
+BTN_5_NAME = "5. Pack 5 (₹98)"
 BTN_5_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_6_NAME = "🪅𝗧𝗔𝗠𝗜𝗟🪅-- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
+BTN_6_NAME = "6. Pack 6 (₹98)"
 BTN_6_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
-BTN_7_NAME = "👄𝗦𝗖𝗛𝗢𝗢𝗟 𝗚𝗜𝗥𝗟👄-- ₹𝟵𝟴|𝟮𝟬𝗞+ 𝗩𝗜𝗗𝗘𝗢"
+BTN_7_NAME = "7. Pack 7 (₹98)"
 BTN_7_LINK = "https://t.me/+b4HvE2hp_Cs2ZDBl"
 
 # =====================================================================
-# 🖼️ PERMANENT MEDIA DEFAULTS (QR + Welcome Videos + How to Use)
+# 🖼️ ENVIRONMENT MEDIA DEFAULTS (Render Env Vars Supported)
+# Env Keys:
+#   QR_IMAGE         -> 1 QR file_id or URL
+#   QR_IS_VIDEO      -> "true" or "false"
+#   WELCOME_VIDEOS   -> comma-separated video file_ids/URLs (5+ supported)
+#   HOW_TO_USE_VIDEO -> 1 guide video file_id or URL
 # =====================================================================
 
-DEFAULT_QR = "https://raw.githubusercontent.com/telegram-bot-sdk/telegram-bot-sdk/main/tests/fixtures/image.jpg"
+DEFAULT_QR = os.getenv(
+    "QR_IMAGE",
+    "https://raw.githubusercontent.com/telegram-bot-sdk/telegram-bot-sdk/main/tests/fixtures/image.jpg",
+).strip() or "https://raw.githubusercontent.com/telegram-bot-sdk/telegram-bot-sdk/main/tests/fixtures/image.jpg"
 
-WELCOME_VIDEOS = []
-HOW_TO_USE_VIDEO = None
+DEFAULT_QR_IS_VIDEO = os.getenv("QR_IS_VIDEO", "false").strip().lower() in ("1", "true", "yes", "on")
+
+_env_welcome_videos = os.getenv("WELCOME_VIDEOS", "")
+WELCOME_VIDEOS = [v.strip() for v in _env_welcome_videos.split(",") if v.strip()]
+
+_env_how_to = os.getenv("HOW_TO_USE_VIDEO", "").strip()
+HOW_TO_USE_VIDEO = _env_how_to if _env_how_to else None
+
+DATA_FILE = "bot_data.json"
 
 # =====================================================================
 # ⚙️ SYSTEM CONFIGURATIONS
@@ -78,7 +94,7 @@ MEDIA_CONFIG = {
 }
 
 QR_IMAGE = DEFAULT_QR
-QR_IS_VIDEO = False
+QR_IS_VIDEO = DEFAULT_QR_IS_VIDEO
 
 DETAILS_199 = (
     "━━━━━━━━━━━━━━━━━━━\n"
@@ -116,6 +132,81 @@ DATA = {
         {"id": "btn_7", "name": BTN_7_NAME, "details": DETAILS_98, "link": BTN_7_LINK, "price_type": "98"},
     ],
 }
+
+
+def save_persistent_data():
+    payload = {
+        "welcome_text": DATA.get("welcome_text", WELCOME_MESSAGE),
+        "deleted_item_ids": [
+            item_id
+            for item_id in ["btn_1", "btn_2", "btn_3", "btn_4", "btn_5", "btn_6", "btn_7"]
+            if all(existing["id"] != item_id for existing in DATA.get("items", []))
+        ],
+        "report_username": CONFIG.get("report_username", REPORT_USERNAME),
+        "welcome_videos": list(MEDIA_CONFIG.get("welcome_videos", [])),
+        "how_to_use_video": MEDIA_CONFIG.get("how_to_use_video"),
+        "qr_image": QR_IMAGE,
+        "qr_is_video": QR_IS_VIDEO,
+        "stats": dict(STATS),
+        "unique_users": list(UNIQUE_USERS),
+        "user_map": dict(USER_MAP),
+    }
+    try:
+        tmp_file = f"{DATA_FILE}.tmp"
+        with open(tmp_file, "w", encoding="utf-8") as f:
+            json.dump(payload, f, ensure_ascii=False, indent=2)
+        os.replace(tmp_file, DATA_FILE)
+    except Exception as e:
+        print("Error saving persistent data:", e)
+
+
+def load_persistent_data():
+    global QR_IMAGE, QR_IS_VIDEO
+    if not os.path.exists(DATA_FILE):
+        return
+    try:
+        with open(DATA_FILE, "r", encoding="utf-8") as f:
+            payload = json.load(f)
+        if not isinstance(payload, dict):
+            return
+
+        if payload.get("welcome_text"):
+            DATA["welcome_text"] = payload["welcome_text"]
+
+        deleted_ids = set(payload.get("deleted_item_ids", []))
+        if deleted_ids:
+            DATA["items"] = [item for item in DATA["items"] if item["id"] not in deleted_ids]
+
+        if payload.get("report_username"):
+            CONFIG["report_username"] = payload["report_username"]
+
+        if not WELCOME_VIDEOS and isinstance(payload.get("welcome_videos"), list) and payload["welcome_videos"]:
+            MEDIA_CONFIG["welcome_videos"] = list(payload["welcome_videos"])
+
+        if not HOW_TO_USE_VIDEO and payload.get("how_to_use_video"):
+            MEDIA_CONFIG["how_to_use_video"] = payload["how_to_use_video"]
+
+        if not os.getenv("QR_IMAGE") and payload.get("qr_image"):
+            QR_IMAGE = payload["qr_image"]
+            QR_IS_VIDEO = bool(payload.get("qr_is_video", False))
+
+        if isinstance(payload.get("stats"), dict):
+            STATS.update({
+                "pending": int(payload["stats"].get("pending", 0)),
+                "approved": int(payload["stats"].get("approved", 0)),
+                "rejected": int(payload["stats"].get("rejected", 0)),
+            })
+
+        if isinstance(payload.get("unique_users"), list):
+            UNIQUE_USERS.update(int(u) for u in payload["unique_users"])
+
+        if isinstance(payload.get("user_map"), dict):
+            USER_MAP.update(payload["user_map"])
+    except Exception as e:
+        print("Error loading persistent data:", e)
+
+
+load_persistent_data()
 
 WAITING_WELCOME_TEXT, WAITING_REPORT_USER = range(2)
 
@@ -177,7 +268,6 @@ async def send_welcome_media_album(chat_id: int, context: ContextTypes.DEFAULT_T
     videos = MEDIA_CONFIG["welcome_videos"]
     if not videos:
         return
-    # Telegram media group allows up to 10 items per group
     for i in range(0, len(videos), 10):
         chunk = videos[i : i + 10]
         try:
@@ -443,6 +533,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if STATS["pending"] > 0:
             STATS["pending"] -= 1
         STATS["approved"] += 1
+        save_persistent_data()
 
         try:
             await context.bot.send_message(
@@ -463,6 +554,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if STATS["pending"] > 0:
             STATS["pending"] -= 1
         STATS["rejected"] += 1
+        save_persistent_data()
 
         try:
             await context.bot.send_message(
@@ -480,6 +572,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if query.from_user.id != ADMIN_ID:
             return
         MEDIA_CONFIG["welcome_videos"] = []
+        save_persistent_data()
         await context.bot.send_message(chat_id=chat_id, text="✅ Sabhi welcome videos hata diye gaye hain!")
         await admin_panel(update, context)
 
@@ -500,6 +593,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return
         item_id = data.replace("confirm_del_", "")
         DATA["items"] = [item for item in DATA["items"] if item["id"] != item_id]
+        save_persistent_data()
         await context.bot.send_message(chat_id=chat_id, text="✅ Button delete ho gaya!")
         await admin_panel(update, context)
 
@@ -517,6 +611,7 @@ async def handle_media(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if update.message.video:
             file_id = update.message.video.file_id
             MEDIA_CONFIG["welcome_videos"].append(file_id)
+            save_persistent_data()
             await update.message.reply_text(
                 f"✅ Welcome video add ho gaya! Total Welcome Videos: {len(MEDIA_CONFIG['welcome_videos'])}\n"
                 f"File ID: {file_id}\n\n"
@@ -531,6 +626,7 @@ async def handle_media(update: Update, context: ContextTypes.DEFAULT_TYPE):
             file_id = update.message.video.file_id
             MEDIA_CONFIG["how_to_use_video"] = file_id
             reset_admin_media_flags(context)
+            save_persistent_data()
             await update.message.reply_text(
                 f"✅ 'How to Use' video successfully set ho gaya!\nFile ID: {file_id}"
             )
@@ -546,6 +642,7 @@ async def handle_media(update: Update, context: ContextTypes.DEFAULT_TYPE):
             QR_IMAGE = file_id
             QR_IS_VIDEO = False
             reset_admin_media_flags(context)
+            save_persistent_data()
             await update.message.reply_text(
                 f"✅ Naya Payment QR Code (Photo) set ho gaya!\nFile ID: {file_id}"
             )
@@ -555,6 +652,7 @@ async def handle_media(update: Update, context: ContextTypes.DEFAULT_TYPE):
             QR_IMAGE = file_id
             QR_IS_VIDEO = True
             reset_admin_media_flags(context)
+            save_persistent_data()
             await update.message.reply_text(
                 f"✅ Naya Payment QR Code (Video) set ho gaya!\nFile ID: {file_id}"
             )
@@ -572,6 +670,7 @@ async def handle_media(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         context.user_data["waiting_for_proof"] = False
         STATS["pending"] += 1
+        save_persistent_data()
 
         await update.message.reply_text("⏳ Aapka screenshot admin ko bhej diya gaya hai. Verification ke baad link mil jayega.")
 
@@ -613,6 +712,7 @@ async def start_edit_welcome(update: Update, context: ContextTypes.DEFAULT_TYPE)
 
 async def get_welcome_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
     DATA["welcome_text"] = update.message.text
+    save_persistent_data()
     await update.message.reply_text("✅ Welcome Message update ho gaya!")
     await admin_panel(update, context)
     return ConversationHandler.END
@@ -667,6 +767,7 @@ async def start_edit_users(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def get_report_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
     uname = update.message.text.replace("@", "").strip()
     CONFIG["report_username"] = uname
+    save_persistent_data()
     await update.message.reply_text(f"✅ Report username update ho gaya: @{uname}")
     await admin_panel(update, context)
     return ConversationHandler.END
